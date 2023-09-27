@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./slider.css";
 import Slide from "./Slide";
 
-function Slider({ slides, showButtons = false }) {
+function Slider({
+  slides,
+  showButtons = false,
+  watchlist,
+  onWatchlist,
+  isWatchlist,
+}) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const transformX = `translateX(-${currentSlide * 100}%)`;
@@ -59,16 +65,11 @@ function Slider({ slides, showButtons = false }) {
         {slides.map((movie, index) => (
           <Slide
             key={index}
-            title={movie.title}
-            desc={movie.description}
-            genre={movie.genre}
-            type={movie.type}
-            tag={movie.tag}
-            duration={movie.duration}
-            image={movie.imageUrl}
-            releaseYear={movie.releaseYear}
+            watchlist={watchlist}
+            movie={movie}
             index={index}
             currentSlide={currentSlide}
+            onWatchlist={onWatchlist}
           />
         ))}
       </div>

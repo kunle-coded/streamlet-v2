@@ -1,38 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Buttons from "../buttons/Buttons";
 
 function Slide({
-  image,
-  title,
-  desc,
-  genre,
-  type,
-  duration,
-  tag,
-  releaseYear,
+  watchlist,
+  movie,
   index,
   currentSlide,
+  onWatchlist,
   children,
 }) {
+  let watchlisted;
+
+  watchlist.forEach((watched) => {
+    if (watched.title === movie.title) {
+      watchlisted = movie;
+    }
+  });
+
   return (
     <div className={`slide ${index === currentSlide ? "active" : ""}`}>
       <div className="slide-overlay"></div>
       <div
         className="slide-image"
-        style={{ backgroundImage: `url(${image})` }}
+        style={{ backgroundImage: `url(${movie.imageUrl})` }}
       ></div>
       <div className="slide-text-area">
-        <div className="slide-movie-tag">{tag}</div>
+        <div className="slide-movie-tag">{movie.tag}</div>
         <div className="slide-movie-title">
-          <h3>{title}</h3>
+          <h3>{movie.title}</h3>
         </div>
         <div className="slide-movie-info">
-          <span>{duration} · </span>
-          <span>{releaseYear} · </span>
-          <span>{type} · </span>
-          <span>{genre}</span>
+          <span>{movie.duration} · </span>
+          <span>{movie.releaseYear} · </span>
+          <span>{movie.type} · </span>
+          <span>{movie.genre}</span>
         </div>
-        <div className="slide-movie-desc">{desc}</div>
+        <div className="slide-movie-desc">{movie.description}</div>
         <div className="slide-movie-buttons">
           <Buttons
             width="150px"
@@ -58,13 +61,19 @@ function Slide({
             </span>{" "}
             Watch Trailer
           </Buttons>
-          <Buttons width="150px" height="35px" borderRadius="9px">
+          <Buttons
+            width="150px"
+            height="35px"
+            borderRadius="9px"
+            onClick={() => onWatchlist(movie)}
+          >
             <span>
               <svg
+                className=""
                 width="14"
                 height="17"
                 viewBox="0 0 14 17"
-                fill="none"
+                fill={watchlisted ? "#fff" : "none"}
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
