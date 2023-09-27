@@ -15,7 +15,7 @@ function Buttons({
     width: width,
     height: height,
     background: background,
-    border: border ? "1px solid #fff" : "none",
+    border: border ? `1px solid ${color}` : "none",
     borderRadius: borderRadius,
     color: color,
   };

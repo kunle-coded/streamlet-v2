@@ -5,14 +5,10 @@
   align-items: center;
   height: 90px;
   width: 100%;
-  padding: 20px 50px;
+  padding: 20px var(--left-right-padding);
   background-color: transparent;
   position: absolute;
   z-index: 1;
-}
-
-.logo {
-  /* width: 15%; */
 }
 
 .nav-links {
@@ -53,19 +49,16 @@
   background: var(--black-dark);
   border: none;
   border-radius: 8px;
-  /* border: 1px solid #6e6d6f; */
   height: 30px;
   width: 0;
   opacity: 0;
   padding: 0 5px;
-  transform: translateX(0);
-  transition: opacity 0.3s ease, width 0.9s ease;
+  transition: opacity 0.9s ease, width 0.9s ease;
 }
 
 .search-input.reveal {
   opacity: 1;
   width: 200px;
-  /* transform: translateX(-5px); */
 }
 .search-input:focus {
   outline: none;
@@ -75,7 +68,6 @@
 .search-icon {
   position: absolute;
   right: 8px;
-
   cursor: pointer;
 }
 

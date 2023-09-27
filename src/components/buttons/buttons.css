@@ -1,6 +1,11 @@
 .global-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: inherit;
+  font-size: var(--font-sm);
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .global-btn:hover {

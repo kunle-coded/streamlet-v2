@@ -10,7 +10,7 @@ function App() {
     <div>
       <Header>
         <Navbar />
-        <Slider movies={movies} />
+        <Slider slides={movies} />
       </Header>
     </div>
   );

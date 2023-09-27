@@ -12,8 +12,15 @@
   --rating-color: #ffcd19;
 
   /* typography */
-  --font: Inter, sans-serif;
+  --body-font: Inter, sans-serif;
+  --title-font: Rubik, sans-serif;
   --font-normal: 16px;
+  --font-md: 14px;
+  --font-sm: 13px;
+  --font-xsm: 12px;
+
+  /* Miscellanous */
+  --left-right-padding: 50px;
 }
 
 /* Overlay 
