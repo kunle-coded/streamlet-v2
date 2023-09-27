@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Color palette */
+  --black-darkest: #08080a;
+  --black-darker: #0d0c0f;
+  --black-dark: #28262d;
+  --gray: #9ca4ab;
+  --white: #ffffff;
+  --accent-color: #00925d;
+  --red-color: #eb3f5e;
+  --rating-color: #ffcd19;
+
+  /* typography */
+  --font: Inter, sans-serif;
+  --font-normal: 16px;
+}
+
+/* Overlay 
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: linear-gradient(358.93deg, #0D0C0F 0.83%, rgba(13, 12, 15, 0.85) 28.55%, rgba(13, 12, 15, 0) 48.81%, rgba(13, 12, 15, 0.284314) 70.66%, #0D0C0F 103.18%);
+ */

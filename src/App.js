@@ -1,7 +1,13 @@
 import React from "react";
+import "./App.css";
+import { Header, Navbar } from "./components";
 
 function App() {
-  return <div>App</div>;
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 }
 
 export default App;
