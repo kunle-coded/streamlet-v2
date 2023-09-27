@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import "./navbar.css";
-import logo from "../../assets/Streamlet.svg";
+import logo from "../../assets/Streamlet2.svg";
+import Buttons from "../buttons/Buttons";
 
 function Navbar() {
   const [isExpanded, setExpanded] = useState(false);
+
+  function handleSignup() {
+    console.log("sign up");
+  }
+  function handleLogin() {
+    console.log("login");
+  }
 
   return (
     <nav className="navbar">
@@ -33,6 +41,7 @@ function Navbar() {
         <div className="search-area ">
           <input
             type="text"
+            placeholder="Search movies..."
             className={`search-input ${isExpanded ? "reveal" : ""}`}
           />
           <svg
@@ -60,7 +69,19 @@ function Navbar() {
             />
           </svg>
         </div>
-        <div className="login-buttons"></div>
+        <div className="login-buttons">
+          <Buttons onClick={handleSignup}>Sign up</Buttons>
+          <Buttons
+            background="#00925d"
+            border={false}
+            borderRadius="6px"
+            color="#fff"
+            onClick={handleLogin}
+          >
+            Login
+          </Buttons>
+        </div>
+        <div className="profile-buttons"></div>
       </div>
     </nav>
   );

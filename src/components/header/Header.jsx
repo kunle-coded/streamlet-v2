@@ -3,12 +3,7 @@ import "./header.css";
 import Navbar from "../navbar/Navbar";
 import Slider from "../slider/Slider";
 
-function Header() {
-  return (
-    <header className="header">
-      <Navbar />
-      <Slider />
-    </header>
-  );
+function Header({ children }) {
+  return <header className="header">{children}</header>;
 }
 export default Header;

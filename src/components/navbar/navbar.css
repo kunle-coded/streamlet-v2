@@ -18,6 +18,7 @@
 .nav-links {
   display: flex;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .nav-links_items {
@@ -39,6 +40,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 15px;
 }
 
 .search-area {
@@ -50,17 +52,20 @@
 .search-input {
   background: var(--black-dark);
   border: none;
+  border-radius: 8px;
   /* border: 1px solid #6e6d6f; */
   height: 30px;
-  width: 200px;
+  width: 0;
   opacity: 0;
+  padding: 0 5px;
   transform: translateX(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, width 0.9s ease;
 }
 
 .search-input.reveal {
   opacity: 1;
-  transform: translateX(-5px);
+  width: 200px;
+  /* transform: translateX(-5px); */
 }
 .search-input:focus {
   outline: none;
@@ -72,4 +77,10 @@
   right: 8px;
 
   cursor: pointer;
+}
+
+.login-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
