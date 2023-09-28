@@ -5,3 +5,7 @@ export { default as Buttons } from "./buttons/Buttons";
 export { default as Header } from "./header/Header";
 export { default as Arrow } from "./arrow_button/Arrow";
 export { default as Main } from "./main/Main";
+export { default as Poster } from "./poster/Poster";
+export { default as Rating } from "./rating/Rating";
+export { default as Genre } from "./genres/Genre";
+export { default as RatingLabel } from "./poster_rating_label/RatingLabel";

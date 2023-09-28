@@ -1,0 +1,9 @@
+.rating {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-xsm);
+}
+
+.rating-star {
+  padding: 2px 5px 0 0;
+}

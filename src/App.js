@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 
-import { Header, Navbar, Slider } from "./components";
+import {
+  Genre,
+  Header,
+  Main,
+  Navbar,
+  Rating,
+  RatingLabel,
+  Slider,
+} from "./components";
 import movieData from "./data";
+import genres from "./genres";
+import useGenreFetcher from "./utils/useGenreFetcher";
 
 function App() {
-  const [movies, setMovies] = useState(movieData.slice(0, 5));
+  const [movies, setMovies] = useState([]);
+  const [newMovies, setNewMovies] = useState(movieData.slice(5, 10));
   const [watchlist, setWatchlist] = useState([]);
   const [login, setLogin] = useState(false);
 
@@ -17,6 +28,12 @@ function App() {
       Authorization: `Bearer ${process.env.ACCESS_TOKEN_AUTH}`,
     },
   };
+
+  // Add genres property to movie data using custom hook
+  const updatedMovieData = useGenreFetcher(movieData.slice(0, 5), genres);
+  useEffect(() => {
+    setMovies(updatedMovieData);
+  }, []);
 
   function handleWatchlist(mov) {
     const isMovieInWatchlist = watchlist.some(
@@ -34,7 +51,7 @@ function App() {
     }
   }
 
-  console.log(movies);
+  // console.log(useGenreFetcher(movies, genres));
 
   return (
     <div>
@@ -46,6 +63,7 @@ function App() {
           watchlist={watchlist}
         />
       </Header>
+      <Main newMovies={movies} />
     </div>
   );
 }

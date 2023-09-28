@@ -13,14 +13,17 @@ body {
   color: var(--white);
 }
 
+h1,
+h2,
 h3 {
   display: block;
+  font-family: var(--title-font);
   font-size: 1.7em;
   margin-block-start: 0;
   margin-block-end: 0;
   margin-inline-start: 0;
   margin-inline-end: 0;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 ul {

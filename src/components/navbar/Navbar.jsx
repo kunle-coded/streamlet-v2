@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./navbar.css";
-import logo from "../../assets/Streamlet2.svg";
+import logo from "../../assets/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
 
 function Navbar() {

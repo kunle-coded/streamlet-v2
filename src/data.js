@@ -100,6 +100,7 @@ const movieData = [
     adult: false,
     backdrop_path: "/ctMserH8g2SeOAnCw5gFjdQF8mo.jpg",
     genre_ids: [35, 12, 14],
+    genre: ["Fantasy", "Comedy"],
     id: 346698,
     original_language: "en",
     original_title: "Barbie",
@@ -117,6 +118,7 @@ const movieData = [
     adult: false,
     backdrop_path: "/53z2fXEKfnNg2uSOPss2unPBGX1.jpg",
     genre_ids: [27, 9648, 53],
+    genre: ["Fantasy", "Comedy"],
     id: 968051,
     original_language: "en",
     original_title: "The Nun II",
@@ -533,5 +535,5 @@ export default movieData;
     }
   ]
 }
-
+35, 12, 14
 */

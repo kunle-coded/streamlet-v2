@@ -20,7 +20,8 @@
   --font-xsm: 12px;
 
   /* Miscellanous */
-  --left-right-padding: 50px;
+  --left-right-padding: 70px;
+  --global-padding: 70px;
 }
 
 /* Overlay 
