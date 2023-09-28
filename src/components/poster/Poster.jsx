@@ -10,7 +10,10 @@ function Poster({ movie }) {
     <div className="movie-poster">
       <div className="poster-overlay"></div>
       <div className="poster-image">
-        <img src={fastX} alt="" />
+        <img
+          src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}
+          alt=""
+        />
       </div>
       <div className="poster-info">
         <div className="poster-title"> Fast X</div>

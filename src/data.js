@@ -1,13 +1,8 @@
-import img1 from "./assets/img/star-wars.jpeg";
-import img2 from "./assets/img/last-of-us.png";
-import img3 from "./assets/img/wakanda.webp";
-
 const movieData = [
   {
     adult: false,
     backdrop_path: "/H6j5smdpRqP9a8UnhWp6zfl0SC.jpg",
     genre_ids: [28, 878, 12],
-    genre: ["Science Fiction", "Adventure"],
     id: 565770,
     original_language: "en",
     original_title: "Blue Beetle",
@@ -25,7 +20,6 @@ const movieData = [
     adult: false,
     backdrop_path: "/iiXliCeykkzmJ0Eg9RYJ7F2CWSz.jpg",
     genre_ids: [28, 9648, 53, 80],
-    genre: ["Thriller", "Action"],
     id: 762430,
     original_language: "en",
     original_title: "Retribution",
@@ -43,7 +37,6 @@ const movieData = [
     adult: false,
     backdrop_path: "/8pjWz2lt29KyVGoq1mXYu6Br7dE.jpg",
     genre_ids: [28, 878, 27],
-    genre: ["Action", "Science Fiction"],
     id: 615656,
     original_language: "en",
     original_title: "Meg 2: The Trench",
@@ -62,7 +55,6 @@ const movieData = [
     adult: false,
     backdrop_path: "/4XM8DUTQb3lhLemJC51Jx4a2EuA.jpg",
     genre_ids: [28, 80, 53],
-    genre: ["Crime", "Thriller"],
     id: 385687,
     original_language: "en",
     original_title: "Fast X",
@@ -81,7 +73,6 @@ const movieData = [
     adult: false,
     backdrop_path: "/iIvQnZyzgx9TkbrOgcXx0p7aLiq.jpg",
     genre_ids: [27, 53],
-    genre: ["Horror", "Thriller"],
     id: 1008042,
     original_language: "en",
     original_title: "Talk to Me",
@@ -100,7 +91,6 @@ const movieData = [
     adult: false,
     backdrop_path: "/ctMserH8g2SeOAnCw5gFjdQF8mo.jpg",
     genre_ids: [35, 12, 14],
-    genre: ["Fantasy", "Comedy"],
     id: 346698,
     original_language: "en",
     original_title: "Barbie",
@@ -118,7 +108,6 @@ const movieData = [
     adult: false,
     backdrop_path: "/53z2fXEKfnNg2uSOPss2unPBGX1.jpg",
     genre_ids: [27, 9648, 53],
-    genre: ["Fantasy", "Comedy"],
     id: 968051,
     original_language: "en",
     original_title: "The Nun II",

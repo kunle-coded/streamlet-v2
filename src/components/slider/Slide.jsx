@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Buttons from "../buttons/Buttons";
 
 function Slide({
@@ -34,8 +34,8 @@ function Slide({
         <div className="slide-movie-info">
           <span>2h40m · </span>
           <span>{movie.release_date.split("-")[0]} · </span>
-          <span>{movie.genre[0]} · </span>
-          <span>{movie.genre[1]}</span>
+          <span>{movie.genres[0]} · </span>
+          <span>{movie.genres[1]}</span>
         </div>
         <div className="slide-movie-desc">{movie.overview}</div>
         <div className="slide-movie-buttons">

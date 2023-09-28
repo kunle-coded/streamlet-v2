@@ -2,7 +2,7 @@ import React from "react";
 import "./main.css";
 import Poster from "../poster/Poster";
 
-function Main({ movies }) {
+function Main({ newMovies }) {
   return (
     <main className="main-section">
       <section className="new-release">
@@ -10,10 +10,9 @@ function Main({ movies }) {
           <h2>New Release</h2>
         </div>
         <div className="section-content">
-          <Poster />
-          <Poster />
-          <Poster />
-          <Poster />
+          {newMovies.map((movie) => (
+            <Poster key={movie.id} movie={movie} />
+          ))}
         </div>
       </section>
     </main>
