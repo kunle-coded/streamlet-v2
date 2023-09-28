@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
+
 import { Header, Navbar, Slider } from "./components";
 import movieData from "./data";
 
 function App() {
-  const [movies, setMovies] = useState(movieData);
+  const [movies, setMovies] = useState(movieData.slice(0, 5));
   const [watchlist, setWatchlist] = useState([]);
   const [login, setLogin] = useState(false);
+
+  const url = process.env.API_URL;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${process.env.ACCESS_TOKEN_AUTH}`,
+    },
+  };
 
   function handleWatchlist(mov) {
     const isMovieInWatchlist = watchlist.some(
@@ -23,6 +33,8 @@ function App() {
       );
     }
   }
+
+  console.log(movies);
 
   return (
     <div>

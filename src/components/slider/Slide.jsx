@@ -22,20 +22,22 @@ function Slide({
       <div className="slide-overlay"></div>
       <div
         className="slide-image"
-        style={{ backgroundImage: `url(${movie.imageUrl})` }}
+        style={{
+          backgroundImage: `url(https://image.tmdb.org/t/p/w1280/${movie.backdrop_path})`,
+        }}
       ></div>
       <div className="slide-text-area">
-        <div className="slide-movie-tag">{movie.tag}</div>
+        <div className="slide-movie-tag">Movie</div>
         <div className="slide-movie-title">
           <h3>{movie.title}</h3>
         </div>
         <div className="slide-movie-info">
-          <span>{movie.duration} · </span>
-          <span>{movie.releaseYear} · </span>
-          <span>{movie.type} · </span>
-          <span>{movie.genre}</span>
+          <span>2h40m · </span>
+          <span>{movie.release_date.split("-")[0]} · </span>
+          <span>{movie.genre[0]} · </span>
+          <span>{movie.genre[1]}</span>
         </div>
-        <div className="slide-movie-desc">{movie.description}</div>
+        <div className="slide-movie-desc">{movie.overview}</div>
         <div className="slide-movie-buttons">
           <Buttons
             width="150px"

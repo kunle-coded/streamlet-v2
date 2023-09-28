@@ -62,11 +62,11 @@ function Slider({
         </button>
       )}
       <div className="slide-container" style={{ transform: transformX }}>
-        {slides.map((movie, index) => (
+        {slides.map((slide, index) => (
           <Slide
-            key={index}
+            key={slide.id}
             watchlist={watchlist}
-            movie={movie}
+            movie={slide}
             index={index}
             currentSlide={currentSlide}
             onWatchlist={onWatchlist}
