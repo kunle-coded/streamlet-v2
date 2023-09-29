@@ -18,7 +18,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [newMovies, setNewMovies] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
-  const [login, setLogin] = useState(false);
+  // const [login, setLogin] = useState(false);
 
   const url = process.env.API_URL;
   const options = {
@@ -30,11 +30,12 @@ function App() {
   };
 
   // Add genres property to movie data using custom hook
-  const updatedMovieData = useGenreFetcher(movieData.slice(0, 10), genres);
+  const updatedMovieData = useGenreFetcher(movieData.slice(0, 5), genres);
+  const updatedNewMovieData = useGenreFetcher(movieData.slice(5, 10), genres);
 
   useEffect(() => {
     setMovies(updatedMovieData);
-    setNewMovies(updatedMovieData.slice(5, 10));
+    setNewMovies(updatedNewMovieData);
   }, []);
 
   function handleWatchlist(mov) {
@@ -52,8 +53,6 @@ function App() {
       );
     }
   }
-
-  // console.log(useGenreFetcher(movies, genres));
 
   return (
     <div>

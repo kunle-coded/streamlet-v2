@@ -1,0 +1,8 @@
+.section-title {
+  margin-bottom: 30px;
+}
+
+.section-content {
+  display: flex;
+  gap: 15px;
+}

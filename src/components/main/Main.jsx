@@ -1,20 +1,17 @@
 import React from "react";
 import "./main.css";
 import Poster from "../poster/Poster";
+import Section from "../section/Section";
 
 function Main({ newMovies }) {
   return (
     <main className="main-section">
-      <section className="new-release">
-        <div className="section-title">
-          <h2>New Release</h2>
-        </div>
-        <div className="section-content">
-          {newMovies.map((movie) => (
-            <Poster key={movie.id} movie={movie} />
-          ))}
-        </div>
-      </section>
+      <Section title="New Release">
+        {newMovies.map((movie) => (
+          <Poster key={movie.id} movie={movie} />
+        ))}
+      </Section>
+      <Section title="Popular This Week"></Section>
     </main>
   );
 }

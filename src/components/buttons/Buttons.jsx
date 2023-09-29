@@ -3,7 +3,7 @@ import "./buttons.css";
 
 function Buttons({
   width = "75px",
-  height = "36px",
+  height = "32px",
   background = "#0d0c0f",
   border = true,
   borderRadius = "8px",

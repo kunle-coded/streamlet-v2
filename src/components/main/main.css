@@ -3,11 +3,9 @@
   padding: var(--global-padding);
 }
 
-.section-title {
-  margin-bottom: 30px;
+.main-section section:first-child {
+  margin-top: 0;
 }
-
-.section-content {
-  display: flex;
-  gap: 15px;
+.main-section section {
+  margin-top: 70px;
 }

@@ -16,13 +16,13 @@ function Poster({ movie }) {
         />
       </div>
       <div className="poster-info">
-        <div className="poster-title"> Fast X</div>
+        <div className="poster-title">{movie.title}</div>
         <div className="poster-label">
           <RatingLabel>
-            <Rating>4.6</Rating>
+            <Rating>{movie.vote_average}</Rating>
             <Genre>
-              <p>Action</p>
-              <p>Crime</p>
+              <p>{movie.genres[0]}</p>
+              <p>{movie.genres[1]}</p>
             </Genre>
           </RatingLabel>
         </div>

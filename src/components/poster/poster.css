@@ -3,6 +3,7 @@
   height: 370px;
   border-radius: 14px;
   position: relative;
+  cursor: pointer;
 }
 
 .poster-image {

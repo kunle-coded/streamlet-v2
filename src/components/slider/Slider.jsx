@@ -10,24 +10,22 @@ function Slider({
   isWatchlist,
 }) {
   const [currentSlide, setCurrentSlide] = useState(0);
-
   const transformX = `translateX(-${currentSlide * 100}%)`;
+  const totalSlides = slides.length;
 
   //   Next slide
   function nextSlide() {
-    setCurrentSlide((prevSlide) =>
-      prevSlide === slides.length - 1 ? 0 : prevSlide + 1
-    );
+    setCurrentSlide((prevSlide) => (prevSlide === 4 ? 0 : prevSlide + 1));
   }
 
   // Previuos slide
   const prevSlide = () => {
     setCurrentSlide((prevSlide) =>
-      prevSlide === 0 ? slides.length - 1 : prevSlide - 1
+      prevSlide === 0 ? totalSlides - 1 : prevSlide - 1
     );
   };
 
-  // Automatically advance to next slide
+  //Automatically advance to next slide
   function autoAdvance() {
     nextSlide();
   }
@@ -95,4 +93,5 @@ function Slider({
     </div>
   );
 }
+
 export default Slider;
