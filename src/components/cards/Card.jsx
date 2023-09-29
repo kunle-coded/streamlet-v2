@@ -5,7 +5,7 @@ import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 
 function Card({
-  height = "150px",
+  height = "140px",
   width = "250px",
   borderRadius = "12px",
   orientation = false,

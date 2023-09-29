@@ -31,9 +31,12 @@ function App() {
   };
 
   // Add genres property to movie data using custom hook
-  const updatedMovieData = useGenreFetcher(movieData.slice(0, 5), genres);
-  const updatedNewMovieData = useGenreFetcher(movieData.slice(5, 10), genres);
-  const updatedPopularMovie = useGenreFetcher(movieData.slice(10, 14), genres);
+  const trimmedMovieData = movieData.slice(0, 5);
+  const trimmedNewMovieData = movieData.slice(5, 10);
+  const trimmedPopularMovie = movieData.slice(10, 14);
+  const updatedMovieData = useGenreFetcher(trimmedMovieData, genres);
+  const updatedNewMovieData = useGenreFetcher(trimmedNewMovieData, genres);
+  const updatedPopularMovie = useGenreFetcher(trimmedPopularMovie, genres);
 
   useEffect(() => {
     setMovies(updatedMovieData);

@@ -19,7 +19,9 @@
 .card-text {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2px;
+  height: 90%;
 }
 
 .card-pg-label {
