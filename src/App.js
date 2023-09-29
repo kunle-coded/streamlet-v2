@@ -60,6 +60,12 @@ function App() {
     }
   }
 
+  function handleSlider(e) {
+    // const firstElement = e[0];
+    // firstElement.style.transform = "translateX(-110%)";
+    console.log("slider button clicked", e);
+  }
+
   return (
     <div>
       <Header>
@@ -70,7 +76,11 @@ function App() {
           watchlist={watchlist}
         />
       </Header>
-      <Main newMovies={newMovies} popular={popularMovies} />
+      <Main
+        newMovies={newMovies}
+        popular={popularMovies}
+        onSlide={handleSlider}
+      />
     </div>
   );
 }

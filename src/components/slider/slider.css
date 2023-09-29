@@ -63,33 +63,6 @@
   z-index: 1;
 }
 
-/* Slider left and right arrow buttons */
-
-.slider .arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  /* background: none; */
-  border: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: var(--black-dark);
-  opacity: 0.8;
-  font-size: 24px;
-  color: inherit;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.slider button:first-child {
-  left: var(--left-right-padding);
-}
-
-.slider button:last-child {
-  right: 65px;
-}
-
 /* Slide text area */
 .slide-text-area {
   display: flex;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./card.css";
 import Genre from "../genres/Genre";
 import RatingLabel from "../poster_rating_label/RatingLabel";
@@ -13,6 +13,7 @@ function Card({
   active = false,
   movie,
   index,
+  slide = false,
 }) {
   const cardStyle = {
     display: "flex",
@@ -23,8 +24,18 @@ function Card({
 
   const pg = movie.adult ? "18+" : "PG-13";
 
+  let count = 0;
+  for (let i = 0; i <= index; i++) {
+    count++;
+  }
+
   return (
-    <div className="card" style={cardStyle}>
+    <div
+      className={`card ${
+        index === count ? "half-visible" : slide ? "slide-card" : ""
+      }`}
+      style={cardStyle}
+    >
       <div className="card-number">
         <h1>{index + 1}</h1>
       </div>

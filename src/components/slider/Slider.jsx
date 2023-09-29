@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./slider.css";
 import Slide from "./Slide";
+import LeftArrow from "../left_arrow/LeftArrow";
+import { RightArrow } from "..";
 
 function Slider({
   slides,
@@ -42,25 +44,7 @@ function Slider({
 
   return (
     <div className="slider">
-      {showButtons && (
-        <button className="arrow left" onClick={prevSlide}>
-          <svg
-            width="10"
-            height="17"
-            viewBox="0 0 10 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8.5 1L1 8.5L8.5 16"
-              stroke="white"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      )}
+      {showButtons && <LeftArrow />}
       <div className="slide-container" style={{ transform: transformX }}>
         {slides.map((slide, index) => (
           <Slide
@@ -73,25 +57,7 @@ function Slider({
           />
         ))}
       </div>
-      {showButtons && (
-        <button className="arrow left" onClick={nextSlide}>
-          <svg
-            width="10"
-            height="17"
-            viewBox="0 0 10 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1 1L8.5 8.5L1 16"
-              stroke="white"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      )}
+      {showButtons && <RightArrow />}
     </div>
   );
 }

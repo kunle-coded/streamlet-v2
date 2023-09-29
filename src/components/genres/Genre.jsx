@@ -14,8 +14,12 @@ function Genre({ label = false, children }) {
     paddingTop: "5px",
   };
 
+  const genreStyle = {
+    paddingLeft: label ? 0 : "5px",
+  };
+
   return (
-    <div className="genre-label">
+    <div className="genre-label" style={genreStyle}>
       {label && (
         <span style={labelStyle}>
           <svg
