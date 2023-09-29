@@ -17,6 +17,7 @@ import useGenreFetcher from "./utils/useGenreFetcher";
 function App() {
   const [movies, setMovies] = useState([]);
   const [newMovies, setNewMovies] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   // const [login, setLogin] = useState(false);
 
@@ -32,10 +33,12 @@ function App() {
   // Add genres property to movie data using custom hook
   const updatedMovieData = useGenreFetcher(movieData.slice(0, 5), genres);
   const updatedNewMovieData = useGenreFetcher(movieData.slice(5, 10), genres);
+  const updatedPopularMovie = useGenreFetcher(movieData.slice(10, 14), genres);
 
   useEffect(() => {
     setMovies(updatedMovieData);
     setNewMovies(updatedNewMovieData);
+    setPopularMovies(updatedPopularMovie);
   }, []);
 
   function handleWatchlist(mov) {
@@ -64,7 +67,7 @@ function App() {
           watchlist={watchlist}
         />
       </Header>
-      <Main newMovies={newMovies} />
+      <Main newMovies={newMovies} popular={popularMovies} />
     </div>
   );
 }

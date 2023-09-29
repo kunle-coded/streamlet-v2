@@ -1,0 +1,36 @@
+.card {
+  align-items: center;
+}
+
+.card-number {
+  font-size: 30px;
+}
+
+.card-image {
+  width: 45%;
+  height: 100%;
+  margin: 0 10px 0 18px;
+}
+.card-image img {
+  /* width: 100%; */
+  height: 100%;
+}
+
+.card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-pg-label {
+  background-color: var(--black-darkest);
+  border: 1px solid #28262d;
+  border-radius: 7px;
+  font-size: var(--font-xxsm);
+  padding: 3px 7px;
+  width: fit-content;
+}
+
+.card-title h4 {
+  font-size: 15px;
+}

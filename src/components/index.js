@@ -10,3 +10,4 @@ export { default as Rating } from "./rating/Rating";
 export { default as Genre } from "./genres/Genre";
 export { default as RatingLabel } from "./poster_rating_label/RatingLabel";
 export { default as Section } from "./section/Section";
+export { default as Card } from "./cards/Card";
