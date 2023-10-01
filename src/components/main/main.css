@@ -1,6 +1,7 @@
 .main-section {
   width: 100%;
   padding: var(--global-padding);
+  position: relative;
 }
 
 .main-section section:first-child {
@@ -8,4 +9,37 @@
 }
 .main-section section {
   margin-top: 70px;
+}
+
+.featured-movies-container {
+  display: grid;
+  grid-template-columns: 38% 60%; /* Two columns, each taking 50% of container width */
+  grid-template-rows: 25% 75%; /* Two rows, each taking 50% of container height */
+  gap: 10px; /* Adjust the gap between the divs as needed */
+  height: 50%;
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 10px;
+}
+
+.featured-movies-section-info {
+  grid-column: 1 / 2; /* Position in the first column */
+  grid-row: 1 / 2; /* Position in the first row */
+}
+
+.featured-movies-details {
+  grid-column: 1 / 2; /* Position in the first column */
+  grid-row: 2 / 3; /* Position in the second row */
+  background-color: aquamarine;
+  margin-top: 30px;
+}
+
+.featured-movies-poster {
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+  margin-left: 40px;
+  display: flex;
+  gap: 15px;
+  overflow: hidden;
+  width: 100%;
 }

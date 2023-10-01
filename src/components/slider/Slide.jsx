@@ -1,5 +1,6 @@
 import React from "react";
 import Buttons from "../buttons/Buttons";
+import Genre from "../genres/Genre";
 
 function Slide({
   watchlist,
@@ -7,16 +8,10 @@ function Slide({
   index,
   currentSlide,
   onWatchlist,
+  isWatchlist,
+  onWatchlistMark,
   children,
 }) {
-  let watchlisted;
-
-  watchlist.forEach((watched) => {
-    if (watched.title === movie.title) {
-      watchlisted = movie;
-    }
-  });
-
   return (
     <div className={`slide ${index === currentSlide ? "active" : ""}`}>
       <div className="slide-overlay"></div>
@@ -31,12 +26,7 @@ function Slide({
         <div className="slide-movie-title">
           <h3>{movie.title}</h3>
         </div>
-        <div className="slide-movie-info">
-          <span>2h40m · </span>
-          <span>{movie.release_date.split("-")[0]} · </span>
-          <span>{movie.genres[0]} · </span>
-          <span>{movie.genres[1]}</span>
-        </div>
+        <Genre movie={movie} duration={true} year={true} />
         <div className="slide-movie-desc">{movie.overview}</div>
         <div className="slide-movie-buttons">
           <Buttons
@@ -64,6 +54,8 @@ function Slide({
             Watch Trailer
           </Buttons>
           <Buttons
+            btnMovie={movie}
+            watchlistMovie={watchlist}
             width="150px"
             height="35px"
             borderRadius="9px"
@@ -75,7 +67,7 @@ function Slide({
                 width="14"
                 height="17"
                 viewBox="0 0 14 17"
-                fill={watchlisted ? "#fff" : "none"}
+                fill={isWatchlist ? "#fff" : "none"}
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path

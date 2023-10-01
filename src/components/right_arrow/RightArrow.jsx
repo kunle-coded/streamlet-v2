@@ -1,14 +1,14 @@
 import React from "react";
 
 function RightArrow({ top = "50%", right = "0", slide = false, onClick }) {
-  const arrowStyle = {
-    top: top,
+  const btnStyle = {
     right: right,
+    top: top,
   };
 
   if (!slide) {
     return (
-      <button className="arrow no-slide" onClick={onClick} style={arrowStyle}>
+      <button className="arrow no-slide" onClick={onClick}>
         <svg
           width="10"
           height="17"
@@ -29,8 +29,8 @@ function RightArrow({ top = "50%", right = "0", slide = false, onClick }) {
   }
 
   return (
-    <div className="btn_arrow">
-      <button className="arrow right" onClick={onClick} style={arrowStyle}>
+    <div className="btn_arrow" style={btnStyle}>
+      <button className="arrow right" onClick={onClick}>
         <svg
           width="10"
           height="17"

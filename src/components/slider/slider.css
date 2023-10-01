@@ -92,11 +92,6 @@
   font-family: var(--title-font);
 }
 
-.slide-movie-info {
-  font-size: var(--font-xsm);
-  color: var(--gray);
-}
-
 .slide-movie-desc {
   font-size: var(--font-md);
   font-weight: 300;

@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./poster.css";
-import fastX from "../../assets/img/fast-x.jpeg";
 import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";
 
-function Poster({ movie }) {
+function Poster({ movie, index, border = false, onActive }) {
+  const [currentPoster, setCurrentPoster] = useState(0);
+
+  useEffect(() => {
+    if (index === currentPoster) {
+      onActive(movie);
+      console.log("index === currentPoster", movie);
+    }
+  }, []);
+
   return (
-    <div className="movie-poster">
+    <div
+      className={`movie-poster ${border && index === 0 ? "active-poster" : ""}`}
+    >
       <div className="poster-overlay"></div>
       <div className="poster-image">
         <img
@@ -20,10 +30,7 @@ function Poster({ movie }) {
         <div className="poster-label">
           <RatingLabel>
             <Rating>{movie.vote_average}</Rating>
-            <Genre>
-              <p>{movie.genres[0]}</p>
-              <p>{movie.genres[1]}</p>
-            </Genre>
+            <Genre movie={movie} divider={true} />
           </RatingLabel>
         </div>
       </div>

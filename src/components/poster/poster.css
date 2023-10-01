@@ -1,9 +1,13 @@
 .movie-poster {
-  width: 270px;
-  height: 370px;
+  min-width: 270px;
+  min-height: 370px;
   border-radius: 14px;
   position: relative;
   cursor: pointer;
+}
+
+.active-poster {
+  border: 1.5px solid var(--accent-color);
 }
 
 .poster-image {
@@ -39,8 +43,11 @@
   z-index: 1;
 }
 .poster-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   position: absolute;
   left: 25px;
-  bottom: 10px;
+  bottom: 25px;
   z-index: 2;
 }

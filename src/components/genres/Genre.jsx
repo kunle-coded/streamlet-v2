@@ -1,13 +1,26 @@
 import React from "react";
 import "./genre.css";
 
-function Genre({ label = false, children }) {
-  let child1, child2;
-  if (children.length > 1) {
-    child1 = children[0];
-    child2 = children[1];
-  } else {
-    child1 = children;
+function Genre({
+  genre = true,
+  label = false,
+  divider = false,
+  duration = false,
+  year = false,
+  movie,
+}) {
+  const genres = movie.genres;
+  let genre1, genre2, releaseDate;
+
+  if (genres) {
+    if (genres.length > 1) {
+      genre1 = genres[0];
+      genre2 = genres[1];
+    } else {
+      genre1 = genres[0];
+    }
+
+    releaseDate = movie.release_date.split("-")[0];
   }
 
   const labelStyle = {
@@ -36,10 +49,13 @@ function Genre({ label = false, children }) {
           </svg>
         </span>
       )}
-      <span> | </span>
-      <span>{child1}</span>
-      {child2 && <span> · </span>}
-      {child2 && <span> {child2}</span>}
+      {divider && <span> | </span>}
+      {duration && <span>2h40m &#8226; </span>}
+      {year && <span>{releaseDate} &#8226; </span>}
+      {genre && <span>{genre1}</span>}
+      {genre && genre2 && <span> &#8226; </span>}
+      {genre && genre2 && <span> {genre2}</span>}
+      {!genre && <span>Movie</span>}
     </div>
   );
 }

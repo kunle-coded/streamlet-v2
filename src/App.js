@@ -13,13 +13,23 @@ import {
 import movieData from "./data";
 import genres from "./genres";
 import useGenreFetcher from "./utils/useGenreFetcher";
+import useTrimArrays from "./utils/useTrimArrays";
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  const [slideMovies, setSlideMovies] = useState([]);
   const [newMovies, setNewMovies] = useState([]);
   const [popularMovies, setPopularMovies] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
+  const [isWatchlist, setIsWatchlist] = useState(false);
   // const [login, setLogin] = useState(false);
+
+  function watchlistMark(watchlistMov) {
+    watchlist.forEach((watched) => {
+      if (watched.title === watchlistMov.title) {
+        setIsWatchlist((prevWatchlist) => !prevWatchlist);
+      }
+    });
+  }
 
   const url = process.env.API_URL;
   const options = {
@@ -31,15 +41,15 @@ function App() {
   };
 
   // Add genres property to movie data using custom hook
-  const trimmedMovieData = movieData.slice(0, 5);
+  // const trimmedMovieData = useTrimArrays(movieData, 5);
   const trimmedNewMovieData = movieData.slice(5, 10);
   const trimmedPopularMovie = movieData.slice(10, 14);
-  const updatedMovieData = useGenreFetcher(trimmedMovieData, genres);
+  const updatedMovieData = useGenreFetcher(useTrimArrays(movieData, 5), genres);
   const updatedNewMovieData = useGenreFetcher(trimmedNewMovieData, genres);
-  const updatedPopularMovie = useGenreFetcher(trimmedPopularMovie, genres);
+  const updatedPopularMovie = useGenreFetcher(movieData.slice(10, 14), genres);
 
   useEffect(() => {
-    setMovies(updatedMovieData);
+    setSlideMovies(updatedMovieData);
     setNewMovies(updatedNewMovieData);
     setPopularMovies(updatedPopularMovie);
   }, []);
@@ -71,9 +81,11 @@ function App() {
       <Header>
         <Navbar />
         <Slider
-          slides={movies}
+          slides={slideMovies}
           onWatchlist={handleWatchlist}
           watchlist={watchlist}
+          isWatchlist={isWatchlist}
+          onWatchlistMark={watchlistMark}
         />
       </Header>
       <Main

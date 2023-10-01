@@ -52,17 +52,12 @@ function Card({
           <h4>{movie.title}</h4>
         </div>
         <div className="card-genre-label">
-          <Genre label={true}>
-            <p>{movie.genres[0]}</p>
-            <p>{movie.genres[1]}</p>
-          </Genre>
+          <Genre movie={movie} label={true} />
         </div>
         <div className="card-rating-label">
           <RatingLabel>
             <Rating>{movie.vote_average}</Rating>
-            <Genre>
-              <p>Movie</p>
-            </Genre>
+            <Genre movie={movie} divider={true} genre={false} />
           </RatingLabel>
         </div>
       </div>

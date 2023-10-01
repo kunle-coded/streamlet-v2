@@ -1,6 +1,5 @@
 .section {
   width: 100%;
-  height: auto;
   position: relative;
   overflow: hidden;
 }
@@ -23,7 +22,6 @@
   /* display: flex; */
   overflow: hidden;
   width: 100%;
-  /* width: 500px; */
   transition: transform 0.5s ease-in-out;
 }
 

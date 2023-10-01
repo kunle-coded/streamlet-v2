@@ -12,3 +12,4 @@ export { default as Section } from "./section/Section";
 export { default as Card } from "./cards/Card";
 export { default as LeftArrow } from "./left_arrow/LeftArrow";
 export { default as RightArrow } from "./right_arrow/RightArrow";
+export { default as MovieInfo } from "./movie_info/MovieInfo";

@@ -60,16 +60,19 @@ a:focus {
   justify-content: flex-end;
   align-items: center;
   position: absolute;
-  top: 0;
-  right: 0;
+  /* right: 0; */
   background-color: rgb(13, 12, 15, 0.765);
   width: 65px;
   height: 100%;
-  padding-top: 100px;
+  /* padding-top: 100px; */
+}
+
+.btn_arrow-overlay {
+  background-color: rgb(13, 12, 15, 0.765);
 }
 
 .arrow_btn .arrow {
-  top: 50%;
+  /* top: 50%; */
   transform: translateY(-50%);
   border: none;
   width: 30px;
@@ -85,8 +88,4 @@ a:focus {
 
 .no-slide {
   position: absolute;
-}
-
-.arrow_btn button:first-child {
-  left: var(--left-right-padding);
 }

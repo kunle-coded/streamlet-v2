@@ -10,6 +10,7 @@ function Slider({
   watchlist,
   onWatchlist,
   isWatchlist,
+  onWatchlistMark,
 }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const transformX = `translateX(-${currentSlide * 100}%)`;
@@ -54,6 +55,8 @@ function Slider({
             index={index}
             currentSlide={currentSlide}
             onWatchlist={onWatchlist}
+            isWatchlist={isWatchlist}
+            onWatchlistMark={onWatchlistMark}
           />
         ))}
       </div>
