@@ -10,10 +10,15 @@
   --accent-color: #00925d;
   --red-color: #eb3f5e;
   --rating-color: #ffcd19;
+  --dark-opac: rgb(13, 12, 15, 0.5);
 
   /* typography */
   --body-font: Inter, sans-serif;
   --title-font: Rubik, sans-serif;
+  --font-title-lg: 40px;
+  --font-title-bg: 32px;
+  --font-title: 27.2px;
+  --font-bg: 18px;
   --font-normal: 16px;
   --font-md: 14px;
   --font-sm: 13px;

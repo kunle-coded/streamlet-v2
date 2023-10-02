@@ -25,13 +25,56 @@
 .featured-movies-section-info {
   grid-column: 1 / 2; /* Position in the first column */
   grid-row: 1 / 2; /* Position in the first row */
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.featured-movies-section-info h3 {
+  font-size: var(--font-title-bg);
+  font-weight: 700;
+}
+.featured-movies-section-info p {
+  font-size: var(--font-bg);
+  font-weight: 500;
+}
+
+.featured-title h1 {
+  font-size: var(--font-title-lg);
+  font-weight: 800;
 }
 
 .featured-movies-details {
   grid-column: 1 / 2; /* Position in the first column */
   grid-row: 2 / 3; /* Position in the second row */
-  background-color: aquamarine;
   margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* gap: 10px; */
+}
+
+.featured-label {
+  font-weight: 500;
+  height: fit-content;
+  width: fit-content;
+  border-radius: 30px;
+  background-color: var(--dark-opac);
+  margin-bottom: 20px;
+  padding: 5px 15px;
+  z-index: 1;
+}
+
+.featured-label p {
+  font-weight: 500;
+}
+.featured-desc {
+  font-size: var(--font-sm);
+}
+
+.featured-btn {
+  display: flex;
+  gap: 20px;
 }
 
 .featured-movies-poster {

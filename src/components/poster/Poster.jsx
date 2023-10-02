@@ -10,7 +10,6 @@ function Poster({ movie, index, border = false, onActive }) {
   useEffect(() => {
     if (index === currentPoster) {
       onActive(movie);
-      console.log("index === currentPoster", movie);
     }
   }, []);
 

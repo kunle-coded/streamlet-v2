@@ -10,17 +10,14 @@ function Slider({
   watchlist,
   onWatchlist,
   isWatchlist,
-  onWatchlistMark,
 }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const transformX = `translateX(-${currentSlide * 100}%)`;
-  const totalSlides = slides.length;
+  let totalSlides = slides.length;
 
   //   Next slide
   function nextSlide() {
-    setCurrentSlide((prevSlide) =>
-      prevSlide === totalSlides - 1 ? 0 : prevSlide + 1
-    );
+    setCurrentSlide((prevSlide) => (prevSlide === 4 ? 0 : prevSlide + 1));
   }
 
   // Previuos slide
@@ -55,8 +52,6 @@ function Slider({
             index={index}
             currentSlide={currentSlide}
             onWatchlist={onWatchlist}
-            isWatchlist={isWatchlist}
-            onWatchlistMark={onWatchlistMark}
           />
         ))}
       </div>

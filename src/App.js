@@ -20,16 +20,8 @@ function App() {
   const [newMovies, setNewMovies] = useState([]);
   const [popularMovies, setPopularMovies] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
-  const [isWatchlist, setIsWatchlist] = useState(false);
+  const [watchlistMov, setWatchlistMov] = useState();
   // const [login, setLogin] = useState(false);
-
-  function watchlistMark(watchlistMov) {
-    watchlist.forEach((watched) => {
-      if (watched.title === watchlistMov.title) {
-        setIsWatchlist((prevWatchlist) => !prevWatchlist);
-      }
-    });
-  }
 
   const url = process.env.API_URL;
   const options = {
@@ -61,12 +53,14 @@ function App() {
 
     if (!isMovieInWatchlist) {
       setWatchlist((movies) => [...movies, mov]);
+      // setIsWatchlist(true);
     }
 
     if (isMovieInWatchlist) {
       setWatchlist((movies) =>
         movies.filter((movie) => movie.title !== mov.title)
       );
+      // setIsWatchlist(false);
     }
   }
 
@@ -84,14 +78,14 @@ function App() {
           slides={slideMovies}
           onWatchlist={handleWatchlist}
           watchlist={watchlist}
-          isWatchlist={isWatchlist}
-          onWatchlistMark={watchlistMark}
         />
       </Header>
       <Main
         newMovies={newMovies}
         popular={popularMovies}
         onSlide={handleSlider}
+        onWatchlist={handleWatchlist}
+        watchlist={watchlist}
       />
     </div>
   );

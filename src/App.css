@@ -19,7 +19,7 @@ h3,
 h4 {
   display: block;
   font-family: var(--title-font);
-  font-size: 1.7em;
+  font-size: var(--font-title);
   margin-block-start: 0;
   margin-block-end: 0;
   margin-inline-start: 0;
