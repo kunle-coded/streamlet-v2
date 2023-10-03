@@ -13,3 +13,5 @@ export { default as Card } from "./cards/Card";
 export { default as LeftArrow } from "./left_arrow/LeftArrow";
 export { default as RightArrow } from "./right_arrow/RightArrow";
 export { default as MovieInfo } from "./movie_info/MovieInfo";
+export { default as TextReveal } from "./text_reveal/TextReveal";
+export { default as BigCard } from "./cards/BigCard";

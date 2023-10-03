@@ -9,8 +9,10 @@ function Section({
   padding = "0",
   display = "",
   alignItems = "",
-  useBackground = false,
   backgroundImage = "",
+  arrowTop = "0",
+  arrowRight = "0",
+  useBackground = false,
   slide = false,
   sliding = false,
   onSlide,
@@ -44,14 +46,21 @@ function Section({
         <h2>{title}</h2>
       </div>
 
-      {slide && sliding && <LeftArrow slide={false} />}
       <div
         className={`section-content ${slide ? "sliding-card" : ""}`}
         style={sectionContentStyle}
       >
+        {slide && sliding && <LeftArrow slide={false} />}
         {children}
+        {slide && (
+          <RightArrow
+            top={arrowTop}
+            right={arrowRight}
+            slide={true}
+            onClick={() => onSlide}
+          />
+        )}
       </div>
-      {slide && <RightArrow top="30%" slide={true} onClick={() => onSlide} />}
     </section>
   );
 }

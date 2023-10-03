@@ -8,32 +8,21 @@ import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Buttons from "../buttons/Buttons";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
+import TextReveal from "../text_reveal/TextReveal";
+import BigCard from "../cards/BigCard";
 
 function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
   const [sectionImg, setSectionImg] = useState("");
   const [activePoster, setActivePoster] = useState({});
 
-  let loadedPopular = [];
-  function loadSectionImage() {
-    const min = 1;
-    const max = 3;
-    const randomInt = Math.floor(Math.random() * (max - min)) + min;
-
-    // setSectionImg(popular[2]);
-
-    popular.forEach((movie) => {
-      loadedPopular.push(movie);
-    });
-  }
-
   useEffect(() => {
-    loadSectionImage();
-    const img = loadedPopular[2];
+    setActivePoster(newMovies[0]);
   }, []);
-
   // set active poster
   function handleActivePoster(movie) {
-    setActivePoster(movie);
+    // if (movie) {
+    // }
+    // setActivePoster(movie);
   }
 
   let watchlisted = useWatchlistMarker(watchlist, activePoster);
@@ -52,7 +41,7 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
       {/* Popular movies of the week section */}
       <Section
         title="Popular This Week"
-        gap="40px"
+        gap="50px"
         slide={true}
         onSlide={onSlide}
       >
@@ -67,8 +56,12 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
         padding="70px"
         display="flex"
         alignItems="center"
+        arrowTop="0"
+        arrowRight="0"
+        slide={true}
         useBackground={true}
-        backgroundImage="4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg"
+        // backgroundImage="4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg"
+        backgroundImage={activePoster.poster_path}
       >
         <div className="featured-movies-container">
           <div className="featured-movies-section-info">
@@ -95,7 +88,7 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
               </RatingLabel>
             </div>
             <div className="featured-desc">
-              <p>{activePoster.overview}</p>
+              <TextReveal>{activePoster.overview}</TextReveal>
             </div>
             <div className="featured-btn">
               <Buttons
@@ -143,9 +136,15 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
         </div>
       </Section>
 
-      <Section title="New Release">
-        {newMovies.map((movie) => (
-          <Poster key={movie.id} movie={movie} />
+      <Section title="Movies" arrowTop="0%" slide={true}>
+        {popular.map((movie) => (
+          <BigCard movie={movie} />
+        ))}
+      </Section>
+
+      <Section title="Series" arrowTop="0%" slide={true}>
+        {popular.map((movie) => (
+          <BigCard movie={movie} />
         ))}
       </Section>
     </main>

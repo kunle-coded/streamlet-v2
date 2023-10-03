@@ -10,6 +10,7 @@
 
 .section-content {
   display: flex;
+  position: relative;
 }
 
 /* .content-container {

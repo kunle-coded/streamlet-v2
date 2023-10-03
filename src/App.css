@@ -61,7 +61,13 @@ a:focus {
   align-items: center;
   position: absolute;
   /* right: 0; */
-  background-color: rgb(13, 12, 15, 0.765);
+  /* background: linear-gradient(to right, rgba(13, 12, 15, 0.85)); */
+  /* background-color: rgb(13, 12, 15, 0.765); */
+  background-image: linear-gradient(
+    to right,
+    rgba(13, 12, 15, 0.85),
+    rgba(13, 12, 15, 0.85)
+  );
   width: 65px;
   height: 100%;
   /* padding-top: 100px; */
@@ -88,4 +94,15 @@ a:focus {
 
 .no-slide {
   position: absolute;
+}
+
+/* text reveal style */
+
+.text-reveal_txt {
+  /* display: flex; */
+}
+
+.read-more {
+  color: var(--accent-color);
+  cursor: pointer;
 }

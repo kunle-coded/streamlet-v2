@@ -8,8 +8,8 @@
   transition: transform 0.5s ease-in-out;
 }
 
-.card-number {
-  font-size: 30px;
+.card-number h1 {
+  font-size: var(--font-title-xlg);
 }
 
 .card-image {
@@ -41,4 +41,39 @@
 
 .card-title h4 {
   font-size: 15px;
+}
+
+/* Big card styles */
+
+.big-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  height: 400px;
+  cursor: pointer;
+}
+
+.big-card_image {
+  height: 45%;
+  width: 280px;
+  border-radius: 14px;
+}
+
+.big-card_image img {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 14px;
+}
+
+.big-card_text {
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.big-card_text h3 {
+  font-size: clamp(12px, 8vw, 14px);
 }

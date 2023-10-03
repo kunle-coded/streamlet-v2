@@ -1,6 +1,6 @@
 import React from "react";
 
-function RightArrow({ top = "50%", right = "0", slide = false, onClick }) {
+function RightArrow({ top = "0", right = "0", slide = false, onClick }) {
   const btnStyle = {
     right: right,
     top: top,
