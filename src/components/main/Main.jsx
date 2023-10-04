@@ -32,7 +32,7 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
   return (
     <main className="main-section">
       {/* New movie release section */}
-      <Section title="New Release">
+      <Section title="New Release" btnTop="50%" slide={true}>
         {newMovies.map((movie) => (
           <Poster key={movie.id} movie={movie} />
         ))}
@@ -42,6 +42,7 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
       <Section
         title="Popular This Week"
         gap="50px"
+        btnTop="50%"
         slide={true}
         onSlide={onSlide}
       >
@@ -58,6 +59,7 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
         alignItems="center"
         arrowTop="0"
         arrowRight="0"
+        btnTop="50%"
         slide={true}
         useBackground={true}
         // backgroundImage="4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg"
@@ -136,15 +138,15 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
         </div>
       </Section>
 
-      <Section title="Movies" arrowTop="0%" slide={true}>
+      <Section title="Movies" arrowTop="0px" slide={true}>
         {popular.map((movie) => (
-          <BigCard movie={movie} />
+          <BigCard movie={movie} key={movie.id} />
         ))}
       </Section>
 
       <Section title="Series" arrowTop="0%" slide={true}>
         {popular.map((movie) => (
-          <BigCard movie={movie} />
+          <BigCard movie={movie} key={movie.id} />
         ))}
       </Section>
     </main>

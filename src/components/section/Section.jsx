@@ -12,6 +12,7 @@ function Section({
   backgroundImage = "",
   arrowTop = "0",
   arrowRight = "0",
+  btnTop = "20%",
   useBackground = false,
   slide = false,
   sliding = false,
@@ -55,6 +56,7 @@ function Section({
         {slide && (
           <RightArrow
             top={arrowTop}
+            btnTop={btnTop}
             right={arrowRight}
             slide={true}
             onClick={() => onSlide}

@@ -63,13 +63,14 @@ a:focus {
   /* right: 0; */
   /* background: linear-gradient(to right, rgba(13, 12, 15, 0.85)); */
   /* background-color: rgb(13, 12, 15, 0.765); */
-  background-image: linear-gradient(
+  /* background-image: linear-gradient(
     to right,
     rgba(13, 12, 15, 0.85),
     rgba(13, 12, 15, 0.85)
-  );
-  width: 65px;
+  ); */
+  width: 150px;
   height: 100%;
+  background: linear-gradient(to left, rgba(13, 12, 15, 0.95), transparent);
   /* padding-top: 100px; */
 }
 
@@ -89,6 +90,7 @@ a:focus {
   font-size: 24px;
   color: inherit;
   cursor: pointer;
+  position: absolute;
   z-index: 2;
 }
 

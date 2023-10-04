@@ -344,6 +344,7 @@ function App() {
           watchlist={watchlist}
         />
       </Header>
+
       <Main
         newMovies={newMovies}
         popular={popularMovies}
