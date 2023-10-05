@@ -157,8 +157,18 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
             <Title title="Movies on Awards" />
           </div>
           <div className="fast-live">
-            <div className="award-fast"></div>
-            <div className="award-live"></div>
+            <div className="award-fast">
+              <Title title="Fast" />
+              {popular.map((movie, i) => (
+                <Card movie={movie} key={movie.id} showNumber={false} />
+              ))}
+            </div>
+            <div className="award-live">
+              <Title title="Live" live={true} />
+              {newMovies.map((movie, i) => (
+                <Card movie={movie} key={movie.id} showNumber={false} />
+              ))}
+            </div>
           </div>
         </div>
       </Section>

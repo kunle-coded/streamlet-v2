@@ -55,6 +55,21 @@ a:focus {
 
 /* Slider left and right arrow buttons */
 
+.arrow {
+  /* top: 50%; */
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--black-dark);
+  opacity: 1;
+  font-size: 24px;
+  color: inherit;
+  cursor: pointer;
+  /* position: absolute; */
+  z-index: 2;
+}
+
 .btn_arrow {
   display: flex;
   justify-content: flex-end;
@@ -78,7 +93,7 @@ a:focus {
   background-color: rgb(13, 12, 15, 0.765);
 }
 
-.arrow {
+.btn_arrow .arrow {
   /* top: 50%; */
   transform: translateY(-50%);
   border: none;
@@ -95,7 +110,7 @@ a:focus {
 }
 
 .no-slide {
-  position: absolute;
+  /* position: absolute; */
 }
 
 /* text reveal style */
@@ -118,14 +133,24 @@ a:focus {
 }
 
 .section-title-txt {
-  /* width: 100px; */
-  /* height: 100px; */
-  /* background-color: aliceblue; */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.live-red {
+  color: red;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dim {
+  opacity: 1;
 }
 
 .section-title-btns {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 50px;
+  gap: 20px;
+  position: relative;
 }

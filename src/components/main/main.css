@@ -89,9 +89,29 @@
 
 .movie-awards-section {
   display: flex;
+  gap: 50px;
   width: 100%;
 }
 
 .movie-on-award {
+  width: 50%;
+}
+
+.fast-live {
+  display: flex;
+  width: 50%;
+  gap: 50px;
+}
+
+.award-fast {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 50%;
+}
+.award-live {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 50%;
 }

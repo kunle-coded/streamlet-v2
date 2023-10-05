@@ -10,6 +10,7 @@ function Card({
   borderRadius = "12px",
   orientation = false,
   showLabel = true,
+  showNumber = true,
   active = false,
   movie,
   index,
@@ -36,9 +37,11 @@ function Card({
       }`}
       style={cardStyle}
     >
-      <div className="card-number">
-        <h1>{index + 1}</h1>
-      </div>
+      {showNumber && (
+        <div className="card-number">
+          <h1>{index + 1}</h1>
+        </div>
+      )}
       <div className="card-image">
         <img
           src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}

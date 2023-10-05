@@ -10,12 +10,13 @@
 
 .card-number h1 {
   font-size: var(--font-title-xlg);
+  margin-right: 18px;
 }
 
 .card-image {
-  width: 45%;
+  /* width: 45%; */
   height: 100%;
-  margin: 0 10px 0 18px;
+  margin: 0 10px 0 0px;
 }
 .card-image img {
   /* width: 100%; */
