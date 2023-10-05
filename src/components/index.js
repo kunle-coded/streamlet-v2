@@ -16,3 +16,4 @@ export { default as MovieInfo } from "./movie_info/MovieInfo";
 export { default as TextReveal } from "./text_reveal/TextReveal";
 export { default as BigCard } from "./cards/BigCard";
 export { default as Title } from "./title/Title";
+export { default as WideCard } from "./cards/WideCard";

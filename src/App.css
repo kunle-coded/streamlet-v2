@@ -140,7 +140,7 @@ a:focus {
 .live-red {
   color: red;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.9s ease-in-out;
 }
 
 .dim {

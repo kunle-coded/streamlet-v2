@@ -11,6 +11,7 @@ import useWatchlistMarker from "../../utils/useWatchlistMarker";
 import TextReveal from "../text_reveal/TextReveal";
 import BigCard from "../cards/BigCard";
 import Title from "../title/Title";
+import WideCard from "../cards/WideCard";
 
 function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
   const [sectionImg, setSectionImg] = useState("");
@@ -151,23 +152,34 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
         ))}
       </Section>
 
-      <Section title="">
+      <Section height="700px">
         <div className="movie-awards-section">
           <div className="movie-on-award">
             <Title title="Movies on Awards" />
+            <WideCard
+              movie={newMovies}
+              onWatchlist={onWatchlist}
+              watchlist={watchlist}
+            />
           </div>
           <div className="fast-live">
             <div className="award-fast">
               <Title title="Fast" />
-              {popular.map((movie, i) => (
-                <Card movie={movie} key={movie.id} showNumber={false} />
-              ))}
+              {popular.map(
+                (movie, i) =>
+                  i < 4 && (
+                    <Card movie={movie} key={movie.id} showNumber={false} />
+                  )
+              )}
             </div>
             <div className="award-live">
               <Title title="Live" live={true} />
-              {newMovies.map((movie, i) => (
-                <Card movie={movie} key={movie.id} showNumber={false} />
-              ))}
+              {newMovies.map(
+                (movie, i) =>
+                  i < 4 && (
+                    <Card movie={movie} key={movie.id} showNumber={false} />
+                  )
+              )}
             </div>
           </div>
         </div>
