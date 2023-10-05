@@ -10,6 +10,7 @@ import Buttons from "../buttons/Buttons";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
 import TextReveal from "../text_reveal/TextReveal";
 import BigCard from "../cards/BigCard";
+import Title from "../title/Title";
 
 function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
   const [sectionImg, setSectionImg] = useState("");
@@ -148,6 +149,18 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
         {popular.map((movie) => (
           <BigCard movie={movie} key={movie.id} />
         ))}
+      </Section>
+
+      <Section title="">
+        <div className="movie-awards-section">
+          <div className="movie-on-award">
+            <Title title="Movies on Awards" />
+          </div>
+          <div className="fast-live">
+            <div className="award-fast"></div>
+            <div className="award-live"></div>
+          </div>
+        </div>
       </Section>
     </main>
   );

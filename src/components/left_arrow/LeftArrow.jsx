@@ -1,8 +1,18 @@
 import React from "react";
 
-function LeftArrow({ top = "50%", left = "0", slide = false, onClick }) {
+function LeftArrow({
+  top = "0",
+  left = "0",
+  btnTop = "20%",
+  slide = false,
+  onClick,
+}) {
   const btnStyle = {
     left: left,
+  };
+
+  const arrowStyle = {
+    top: btnTop,
   };
 
   if (!slide) {
@@ -29,7 +39,7 @@ function LeftArrow({ top = "50%", left = "0", slide = false, onClick }) {
 
   return (
     <div className="btn_arrow" style={btnStyle}>
-      <button className="arrow left" onClick={onClick}>
+      <button className="arrow left" onClick={onClick} style={arrowStyle}>
         <svg
           width="10"
           height="17"

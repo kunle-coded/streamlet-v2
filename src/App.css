@@ -78,7 +78,7 @@ a:focus {
   background-color: rgb(13, 12, 15, 0.765);
 }
 
-.arrow_btn .arrow {
+.arrow {
   /* top: 50%; */
   transform: translateY(-50%);
   border: none;
@@ -107,4 +107,25 @@ a:focus {
 .read-more {
   color: var(--accent-color);
   cursor: pointer;
+}
+
+/* Section title with arrows */
+
+.section-title-container {
+  display: flex;
+  justify-content: space-between;
+  max-height: 50px;
+}
+
+.section-title-txt {
+  /* width: 100px; */
+  /* height: 100px; */
+  /* background-color: aliceblue; */
+}
+
+.section-title-btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
 }
