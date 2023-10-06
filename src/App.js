@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 
 import {
+  Footer,
   Genre,
   Header,
   Main,
@@ -351,6 +352,7 @@ function App() {
         onWatchlist={handleWatchlist}
         watchlist={watchlist}
       />
+      <Footer />
     </div>
   );
 }
