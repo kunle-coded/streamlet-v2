@@ -26,15 +26,6 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
   // const [login, setLogin] = useState(false);
 
-  // const url = https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=true&;
-  // const options = {
-  //   method: "GET",
-  //   headers: {
-  //     accept: "application/json",
-  //     Authorization: `Bearer ${process.env.ACCESS_TOKEN_AUTH}`,
-  //   },
-  // };
-
   // Add genres array to movie data
   function genreFetcher(movieData, genres) {
     if (!movieData && !genres) return;
@@ -64,7 +55,7 @@ function App() {
   // Fetch movies from API
 
   const moviesUrl =
-    "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=true";
+    "https://api.themoviedb.org/3/discover/movie?include_adult=false";
   const seriesUrl =
     "https://api.themoviedb.org/3/trending/tv/week?language=en-US";
   const newMoviesUrl =
@@ -76,8 +67,7 @@ function App() {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMDM4MWM1OWVkNzRjNjFjYWZiYWFhOTNmNGQzNWQ4YiIsInN1YiI6IjY1MTRhZmQ1OTNiZDY5MDBjNGRkNzU4OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GhwpTStMYW2hzXUGDTIpNQhgx5xtXLikDtso5HasjTc",
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMDM4MWM1OWVkNzRjNjFjYWZiYWFhOTNmNGQzNWQ4YiIsInN1YiI6IjY1MTRhZmQ1OTNiZDY5MDBjNGRkNzU4OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GhwpTStMYW2hzXUGDTIpNQhgx5xtXLikDtso5HasjTc`,
     },
   };
 

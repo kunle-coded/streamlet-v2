@@ -12,13 +12,14 @@ import TextReveal from "../text_reveal/TextReveal";
 import BigCard from "../cards/BigCard";
 import Title from "../title/Title";
 import WideCard from "../cards/WideCard";
+import VideoPlayer from "../video_player/VideoPlayer";
 
 function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
   const [activePoster, setActivePoster] = useState({});
 
   useEffect(() => {
     setActivePoster(newMovies[0]);
-  }, []);
+  }, [newMovies]);
   // set active poster
   function handleActivePoster(movie) {
     // if (movie) {
@@ -27,6 +28,9 @@ function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
   }
 
   let watchlisted = useWatchlistMarker(watchlist, activePoster);
+  const movieImg = activePoster
+    ? activePoster.poster_path
+    : "4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg";
 
   // Trim movie overview
 
@@ -64,7 +68,7 @@ function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
         slide={true}
         useBackground={true}
         // backgroundImage="4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg"
-        backgroundImage={activePoster.poster_path}
+        backgroundImage={movieImg}
       >
         <div className="featured-movies-container">
           <div className="featured-movies-section-info">
@@ -188,6 +192,10 @@ function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
             </div>
           </div>
         </div>
+      </Section>
+
+      <Section title="Videos">
+        <VideoPlayer />
       </Section>
     </main>
   );

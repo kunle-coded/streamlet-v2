@@ -18,3 +18,4 @@ export { default as BigCard } from "./cards/BigCard";
 export { default as Title } from "./title/Title";
 export { default as WideCard } from "./cards/WideCard";
 export { default as Footer } from "./footer/Footer";
+export { default as VideoPlayer } from "./video_player/VideoPlayer";

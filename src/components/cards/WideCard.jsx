@@ -8,7 +8,7 @@ import Buttons from "../buttons/Buttons";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
 
 function WideCard({ movie, watchlist, onWatchlist }) {
-  let watchlisted = useWatchlistMarker(watchlist, movie[4]);
+  let watchlisted = useWatchlistMarker(watchlist, movie);
 
   return (
     <div className="wide-card-container">
