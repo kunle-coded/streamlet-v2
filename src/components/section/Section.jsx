@@ -29,7 +29,7 @@ function Section({
     height: height,
     left: useBackground ? 0 : "",
     right: useBackground ? 0 : "",
-    padding: padding,
+    padding: `20px ${padding}`,
     marginLeft: useBackground ? "-70px" : "",
     marginRight: useBackground ? "-70px" : "",
     width: useBackground ? "calc(100% + 140px)" : "",

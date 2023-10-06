@@ -14,13 +14,23 @@ function Genre({
 
   if (genres) {
     if (genres.length > 1) {
-      genre1 = genres[0];
-      genre2 = genres[1];
+      if (genres[0].includes("&")) {
+        genre1 = genres[0];
+        genre2 = "";
+      } else if (genres[1].includes("&")) {
+        genre2 = genres[1].split("&")[0];
+        genre1 = genres[0];
+      } else {
+        genre1 = genres[0];
+        genre2 = genres[1];
+      }
     } else {
       genre1 = genres[0];
     }
 
-    releaseDate = movie.release_date.split("-")[0];
+    releaseDate = movie.release_date
+      ? movie.release_date.split("-")[0]
+      : movie.first_air_date.split("-")[0];
   }
 
   const labelStyle = {

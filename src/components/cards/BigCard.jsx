@@ -8,6 +8,8 @@ function BigCard({ movie }) {
     backgroundImage: `url(https://image.tmdb.org/t/p/w300/${movie.backdrop_path})`,
   };
 
+  const title = movie.title ? movie.title : movie.name;
+
   return (
     <div className="big-card">
       <div className="big-card_image">
@@ -18,11 +20,11 @@ function BigCard({ movie }) {
       </div>
       <div className="big-card_text">
         <div className="big-card_title">
-          <h3>{movie.title}</h3>
+          <h3>{title}</h3>
         </div>
         <div className="big-card_label">
           <RatingLabel>
-            <Rating>{movie.vote_average}</Rating>
+            <Rating>{parseFloat(movie.vote_average.toFixed(1))}</Rating>
             <Genre movie={movie} genre={true} label={false} divider={true} />
           </RatingLabel>
         </div>

@@ -14,20 +14,20 @@ function WideCard({ movie, watchlist, onWatchlist }) {
     <div className="wide-card-container">
       <div className="wide-card-img">
         <img
-          src={`https://image.tmdb.org/t/p/w780/${movie[4].backdrop_path}`}
+          src={`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`}
           alt="movie poster"
         />
       </div>
       <div className="wide-card-text">
         <div className="wide-card-tag">Movie</div>
         <div className="wide-card-title">
-          <h3>{movie[4].title}</h3>
+          <h3>{movie.title}</h3>
         </div>
         <div className="wide-card-label">
           <RatingLabel>
-            <Rating>{movie[4].vote_average}</Rating>
+            <Rating>{movie.vote_average}</Rating>
             <Genre
-              movie={movie[4]}
+              movie={movie}
               genre={true}
               label={false}
               divider={true}
@@ -37,7 +37,7 @@ function WideCard({ movie, watchlist, onWatchlist }) {
           </RatingLabel>
         </div>
         <div className="wide-card-overview">
-          <TextReveal>{movie[4].overview}</TextReveal>
+          <TextReveal>{movie.overview}</TextReveal>
         </div>
         <div className="wide-card-buttons">
           <Buttons
@@ -57,7 +57,7 @@ function WideCard({ movie, watchlist, onWatchlist }) {
             width="150px"
             height="35px"
             borderRadius="9px"
-            onClick={() => onWatchlist(movie[4])}
+            onClick={() => onWatchlist(movie)}
           >
             Add Watchlist
           </Buttons>

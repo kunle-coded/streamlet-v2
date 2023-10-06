@@ -17,7 +17,7 @@ function Slider({
 
   //   Next slide
   function nextSlide() {
-    setCurrentSlide((prevSlide) => (prevSlide === 4 ? 0 : prevSlide + 1));
+    setCurrentSlide((prevSlide) => (prevSlide === 9 ? 0 : prevSlide + 1));
   }
 
   // Previuos slide

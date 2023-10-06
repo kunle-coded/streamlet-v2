@@ -13,8 +13,7 @@ import BigCard from "../cards/BigCard";
 import Title from "../title/Title";
 import WideCard from "../cards/WideCard";
 
-function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
-  const [sectionImg, setSectionImg] = useState("");
+function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
   const [activePoster, setActivePoster] = useState({});
 
   useEffect(() => {
@@ -147,20 +146,26 @@ function Main({ newMovies, watchlist, onWatchlist, popular, onSlide }) {
       </Section>
 
       <Section title="Series" arrowTop="0%" slide={true}>
-        {popular.map((movie) => (
+        {series.map((movie) => (
           <BigCard movie={movie} key={movie.id} />
         ))}
       </Section>
 
-      <Section height="700px">
+      <Section height="720px">
         <div className="movie-awards-section">
           <div className="movie-on-award">
             <Title title="Movies on Awards" />
-            <WideCard
-              movie={newMovies}
-              onWatchlist={onWatchlist}
-              watchlist={watchlist}
-            />
+            {newMovies.map(
+              (movie, i) =>
+                i < 1 && (
+                  <WideCard
+                    key={i}
+                    movie={movie}
+                    onWatchlist={onWatchlist}
+                    watchlist={watchlist}
+                  />
+                )
+            )}
           </div>
           <div className="fast-live">
             <div className="award-fast">
