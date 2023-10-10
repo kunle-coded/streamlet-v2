@@ -17,6 +17,7 @@ import useTrimArrays from "./utils/useTrimArrays";
 
 function App() {
   const [slideMovies, setSlideMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
   const [newMovies, setNewMovies] = useState([]);
   const [popularMovies, setPopularMovies] = useState([]);
@@ -24,58 +25,12 @@ function App() {
   const [watchlistMov, setWatchlistMov] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  // const [login, setLogin] = useState(false);
-
-  // Add genres array to movie data
-  function genreFetcher(movieData, genres) {
-    if (!movieData && !genres) return;
-
-    const updatedMovieData = movieData.map((movie) => {
-      const genreArr = movie.genre_ids;
-      const movieGenres = [];
-      genres.forEach((genre) => {
-        for (let i = 0; i < genreArr.length; i++) {
-          const genreId = genreArr[i];
-
-          if (genre.id === genreId) {
-            movieGenres.push(genre.name);
-          }
-        }
-      });
-
-      return {
-        ...movie,
-        genres: movieGenres,
-      };
-    });
-
-    return updatedMovieData;
-  }
-
-  // Fetch movies from API
-
-  const moviesUrl =
-    "https://api.themoviedb.org/3/discover/movie?include_adult=false";
-  const seriesUrl =
-    "https://api.themoviedb.org/3/trending/tv/week?language=en-US";
-  const newMoviesUrl =
-    "https://api.themoviedb.org/3/trending/movie/week?language=en-US";
-  const popularMoviesUrl =
-    "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
-
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMDM4MWM1OWVkNzRjNjFjYWZiYWFhOTNmNGQzNWQ4YiIsInN1YiI6IjY1MTRhZmQ1OTNiZDY5MDBjNGRkNzU4OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.GhwpTStMYW2hzXUGDTIpNQhgx5xtXLikDtso5HasjTc`,
-    },
-  };
+  const [login, setLogin] = useState(true);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        setIsLoading(true);
-        const res = await fetch(moviesUrl, options);
+        const res = await fetch("/movies");
 
         if (!res.ok) {
           throw new Error("Failed to load movies, please retry!");
@@ -83,80 +38,53 @@ function App() {
 
         const data = await res.json();
 
-        const updatedMovieData = genreFetcher(data.results, genres);
-        setSlideMovies(updatedMovieData);
+        // setSlideMovies(data);
+        setMovies(data);
       } catch (err) {
         console.log(err.message);
-        setErrorMessage(err.message);
-      } finally {
-        setIsLoading(false);
       }
     };
 
-    fetchMovies();
-
-    // Fetch series
     const fetchSeries = async () => {
       try {
-        const res = await fetch(seriesUrl, options);
+        const res = await fetch("/series");
 
         if (!res.ok) {
           throw new Error("Failed to load movies, please retry!");
         }
 
         const data = await res.json();
-        const updatedSerieData = genreFetcher(data.results, tvGenres);
-        setSeries(updatedSerieData);
+
+        setSeries(data);
       } catch (err) {
         console.log(err.message);
-        setErrorMessage(err.message);
       }
     };
 
-    fetchSeries();
+    if (login) {
+      fetchMovies();
+      fetchSeries();
+      console.log("series>>", series);
+    }
 
-    // Fetch new movies
+    const randomInteger = Math.floor(Math.random() * (60 - 0)) + 0;
 
-    const fetchNewMovies = async () => {
-      try {
-        const res = await fetch(newMoviesUrl, options);
+    // for (let i = 0; i < 10; i++) {
+    //   const movie = movies[randomInteger];
+    //   console.log("movies slide", movie);
+    //   setSlideMovies((movies) => [...movies, movie]);
 
-        if (!res.ok) {
-          throw new Error("Failed to load movies, please retry!");
-        }
+    //   console.log(slideMovies);
+    // }
 
-        const data = await res.json();
-        const updatedData = genreFetcher(data.results, genres);
-        setNewMovies(updatedData);
-      } catch (err) {
-        console.log(err.message);
-        setErrorMessage(err.message);
-      }
-    };
-
-    fetchNewMovies();
-
-    // Fetch popular movies
-
-    const fetchPopularMovies = async () => {
-      try {
-        const res = await fetch(popularMoviesUrl, options);
-
-        if (!res.ok) {
-          throw new Error("Failed to load movies, please retry!");
-        }
-
-        const data = await res.json();
-        const updatedData = genreFetcher(data.results, genres);
-        setPopularMovies(updatedData);
-      } catch (err) {
-        console.log(err.message);
-        setErrorMessage(err.message);
-      }
-    };
-
-    fetchPopularMovies();
-  }, []);
+    // for (let j = 0; j <= series.length; j++) {
+    //   const serie = series[randomInteger];
+    //   console.log(serie);
+    //   if (j < 10) {
+    //     setSlideMovies((movies) => [...movies, serie]);
+    //   }
+    // }
+  }, [login]);
 
   function handleWatchlist(mov) {
     const isMovieInWatchlist = watchlist.some(
@@ -187,12 +115,12 @@ function App() {
       <Header>
         <Navbar />
         <Slider
-          slides={slideMovies}
+          slides={movies}
           onWatchlist={handleWatchlist}
           watchlist={watchlist}
         />
       </Header>
-      <Main
+      {/* <Main
         newMovies={newMovies}
         series={series}
         popular={popularMovies}
@@ -200,7 +128,7 @@ function App() {
         onWatchlist={handleWatchlist}
         watchlist={watchlist}
       />
-      <Footer />
+      <Footer /> */}
     </div>
   );
 }
