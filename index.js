@@ -47,8 +47,27 @@ const seriesSchema = new mongoose.Schema({
   origin_country: Array,
 });
 
+const popularSchema = new mongoose.Schema({
+  adult: Boolean,
+  backdrop_path: String,
+  genre_ids: Array,
+  genres: Array,
+  id: Number,
+  original_language: String,
+  original_title: String,
+  overview: String,
+  popularity: Number,
+  poster_path: String,
+  release_date: String,
+  title: String,
+  video: Boolean,
+  vote_average: Number,
+  vote_count: Number,
+});
+
 const Movies = mongoose.model("Movies", moviesSchema);
 const Series = mongoose.model("Series", seriesSchema);
+const Populars = mongoose.model("Populars", popularSchema);
 
 const app = express();
 
@@ -66,7 +85,7 @@ const newMoviesUrl =
   "https://api.themoviedb.org/3/trending/movie/week?language=en-US";
 
 const popularMoviesUrl =
-  "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
+  "https://api.themoviedb.org/3/movie/popular?language=en-US&page=2";
 
 const options = {
   method: "GET",
@@ -98,8 +117,16 @@ async function fetchMovies(url) {
 
 // Function to write movies data from API to database
 
-async function addMoviesToDatabase() {
-  const movieData = await fetchMovies(moviesUrl);
+async function addMoviesToDatabase(type) {
+  let movieData;
+
+  if (type === "movies") {
+    movieData = await fetchMovies(moviesUrl);
+  } else if (type === "series") {
+    movieData = await fetchMovies(seriesUrl);
+  } else if (type === "popular") {
+    movieData = await fetchMovies(popularMoviesUrl);
+  }
 
   const updatedData = movieData.map((movie) => {
     const genreArr = movie.genre_ids;
@@ -120,22 +147,67 @@ async function addMoviesToDatabase() {
     };
   });
 
-  for (let i = 0; i <= updatedData.length; i++) {
-    const movie = updatedData[i];
-    // if(movie.id)
-    const dataMovie = new Movies(movie);
+  for (const movie of updatedData) {
+    const movieTitle = movie.title;
+    const serieName = movie.name;
 
-    // await dataMovie.save();
+    // Movies - check if movie already exists
+    if (type === "movies") {
+      Movies.findOne({ title: movieTitle })
+        .then((result) => {
+          if (!result) {
+            const dataMovie = new Movies(movie);
+            dataMovie.save();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (type === "series") {
+      // Movies - check if movie already exists
+      Series.findOne({ name: serieName })
+        .then((result) => {
+          if (!result) {
+            const dataMovie = new Series(movie);
+            dataMovie.save();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (type === "popular") {
+      // Movies - check if movie already exists
+      Populars.findOne({ title: movieTitle })
+        .then((result) => {
+          if (!result) {
+            const dataMovie = new Populars(movie);
+            dataMovie.save();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 }
 
-// await addMoviesToDatabase();
+// await addMoviesToDatabase("popular");
 
 app.get("/movies", function (req, res) {
   const movies = Movies.find()
     .then((movie) => {
       // console.log(movie);
       res.send(movie);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get("/series", function (req, res) {
+  const movies = Series.find()
+    .then((serie) => {
+      res.send(serie);
     })
     .catch((err) => {
       console.log(err);
