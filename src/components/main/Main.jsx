@@ -22,6 +22,9 @@ function Main({
   watchlist,
   onWatchlist,
   onSlide,
+  onSlideRight,
+  onSlideLeft,
+  isSlide,
 }) {
   const [activePoster, setActivePoster] = useState({});
 
@@ -53,9 +56,21 @@ function Main({
   return (
     <main className="main-section">
       {/* New movie release section */}
-      <Section title="New Release" btnTop="50%" slide={true}>
-        {trending.map((movie) => (
-          <Poster key={movie.id} movie={movie} />
+      <Section
+        title="New Release"
+        btnTop="50%"
+        slide={true}
+        isSlide={isSlide}
+        onSlideRight={() => onSlideRight("trending")}
+        onSlideLeft={() => onSlideLeft(trending)}
+      >
+        {trending.map((movie, index) => (
+          <Poster
+            key={movie.id}
+            movie={movie}
+            index={index}
+            length={trending.length}
+          />
         ))}
       </Section>
 
@@ -233,9 +248,9 @@ function Main({
         </div>
       </Section>
 
-      <Section title="Videos">
+      {/* <Section title="Videos">
         <VideoPlayer />
-      </Section>
+      </Section> */}
     </main>
   );
 }

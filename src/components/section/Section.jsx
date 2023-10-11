@@ -16,8 +16,9 @@ function Section({
   btnTop = "30%",
   useBackground = false,
   slide = false,
-  sliding = true,
-  onSlide,
+  isSlide = false,
+  onSlideRight,
+  onSlideLeft,
   children,
 }) {
   const sectionContentStyle = {
@@ -52,12 +53,12 @@ function Section({
         className={`section-content ${slide ? "sliding-card" : ""}`}
         style={sectionContentStyle}
       >
-        {slide && sliding && (
+        {slide && isSlide && (
           <LeftArrow
             slide={true}
             btnTop={btnTop}
             left={arrowLeft}
-            onClick={() => onSlide}
+            onClick={onSlideLeft}
           />
         )}
         {children}
@@ -67,7 +68,7 @@ function Section({
             btnTop={btnTop}
             right={arrowRight}
             slide={true}
-            onClick={() => onSlide}
+            onClick={onSlideRight}
           />
         )}
       </div>

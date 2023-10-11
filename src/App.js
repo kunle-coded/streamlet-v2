@@ -23,6 +23,8 @@ function App() {
   const [trending, setTrending] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [activePoster, setActivePoster] = useState([]);
+  const [isSliding, setIsSliding] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
@@ -115,6 +117,42 @@ function App() {
     console.log("slider button clicked", e);
   }
 
+  //   Next slide
+  function handleNextSlide(stateName) {
+    setIsSliding(true);
+    if (stateName === "trending") {
+      let firstEl = [];
+      trending.forEach((movie, index) => {
+        if (index === 0) {
+          firstEl.push(movie);
+        }
+      });
+
+      setTrending((trending) => trending.filter((movie, index) => index >= 1));
+
+      if (firstEl.length > 0) {
+        setTrending((trending) => [...trending, ...firstEl]);
+      }
+    }
+    const totalSlides = trending.length - 1;
+
+    setCurrentSlide((slide) => slide + 1);
+
+    if (totalSlides === currentSlide) {
+      setIsSliding(false);
+      setCurrentSlide(0);
+    }
+  }
+
+  // Previuos slide
+  const handlePrevSlide = (slides) => {
+    // let totalSlides = slides.length;
+    // setCurrentSlide((prevSlide) =>
+    //   prevSlide === 0 ? totalSlides - 1 : prevSlide - 1
+    // );
+    console.log("button left clicked", slides.length);
+  };
+
   return (
     <div>
       <Header>
@@ -131,6 +169,9 @@ function App() {
         series={series}
         popular={popular}
         onSlide={handleSlider}
+        onSlideRight={handleNextSlide}
+        onSlideLeft={handlePrevSlide}
+        isSlide={isSliding}
         onWatchlist={handleWatchlist}
         watchlist={watchlist}
       />

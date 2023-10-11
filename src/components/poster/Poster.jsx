@@ -1,24 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./poster.css";
 import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";
 
-function Poster({ movie, index, border = false, onActive }) {
-  const [currentPoster, setCurrentPoster] = useState(0);
+function Poster({ movie, index, border = false, length }) {
+  const voteAverage = movie.vote_average;
+  let rating;
 
-  useEffect(() => {
-    if (index === currentPoster) {
-      onActive(movie);
-      // console.log("index === currentPoster", movie);
-    }
-  }, []);
-
-  // const rating = parseFloat(movie.vote_average.toFixed(1));
+  // Check if voteAverage is defined and is a valid number
+  if (typeof voteAverage === "number" && !isNaN(voteAverage)) {
+    rating = parseFloat(voteAverage.toFixed(1));
+    // Now, 'rating' is calculated safely
+  } else {
+    // Handle the case where 'vote_average' is not a valid number
+    // You can provide a default value or handle it as needed
+  }
 
   return (
     <div
-      className={`movie-poster ${border && index === 0 ? "active-poster" : ""}`}
+      className={`movie-poster ${
+        border && index === 0
+          ? "active-poster"
+          : index === length
+          ? "half-visible_right"
+          : index === 0
+          ? "first-element"
+          : ""
+      }`}
     >
       <div className="poster-overlay"></div>
       <div className="poster-image">
@@ -31,7 +40,7 @@ function Poster({ movie, index, border = false, onActive }) {
         <div className="poster-title">{movie.title}</div>
         <div className="poster-label">
           <RatingLabel>
-            <Rating>{movie.vote_average}</Rating>
+            <Rating>{rating}</Rating>
             <Genre movie={movie} divider={true} />
           </RatingLabel>
         </div>
