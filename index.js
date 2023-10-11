@@ -9,6 +9,8 @@ mongoose.connect("mongodb://localhost:27017/streamletDB", {
   useNewUrlParser: true,
 });
 
+// Schemas
+
 const moviesSchema = new mongoose.Schema({
   adult: Boolean,
   backdrop_path: String,
@@ -65,9 +67,28 @@ const popularSchema = new mongoose.Schema({
   vote_count: Number,
 });
 
+const trendingSchema = new mongoose.Schema({
+  adult: Boolean,
+  backdrop_path: String,
+  genre_ids: Array,
+  genres: Array,
+  id: Number,
+  original_language: String,
+  original_title: String,
+  overview: String,
+  popularity: Number,
+  poster_path: String,
+  release_date: String,
+  title: String,
+  video: Boolean,
+  vote_average: Number,
+  vote_count: Number,
+});
+
 const Movies = mongoose.model("Movies", moviesSchema);
 const Series = mongoose.model("Series", seriesSchema);
 const Populars = mongoose.model("Populars", popularSchema);
+const Trendings = mongoose.model("Trending", trendingSchema);
 
 const app = express();
 
@@ -79,9 +100,9 @@ const moviesUrl =
   "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1";
 
 const seriesUrl =
-  "https://api.themoviedb.org/3/trending/tv/week?language=en-US";
+  "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=1";
 
-const newMoviesUrl =
+const trendingMoviesUrl =
   "https://api.themoviedb.org/3/trending/movie/week?language=en-US";
 
 const popularMoviesUrl =
@@ -126,6 +147,8 @@ async function addMoviesToDatabase(type) {
     movieData = await fetchMovies(seriesUrl);
   } else if (type === "popular") {
     movieData = await fetchMovies(popularMoviesUrl);
+  } else if (type === "trending") {
+    movieData = await fetchMovies(trendingMoviesUrl);
   }
 
   const updatedData = movieData.map((movie) => {
@@ -181,6 +204,20 @@ async function addMoviesToDatabase(type) {
         .then((result) => {
           if (!result) {
             const dataMovie = new Populars(movie);
+
+            dataMovie.save();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (type === "trending") {
+      // Movies - check if movie already exists
+      Populars.findOne({ title: movieTitle })
+        .then((result) => {
+          if (!result) {
+            const dataMovie = new Trendings(movie);
+
             dataMovie.save();
           }
         })
@@ -191,7 +228,7 @@ async function addMoviesToDatabase(type) {
   }
 }
 
-// await addMoviesToDatabase("popular");
+// await addMoviesToDatabase("series");
 
 app.get("/movies", function (req, res) {
   const movies = Movies.find()
@@ -208,6 +245,26 @@ app.get("/series", function (req, res) {
   const movies = Series.find()
     .then((serie) => {
       res.send(serie);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get("/popular", function (req, res) {
+  const movies = Populars.find()
+    .then((movie) => {
+      res.send(movie);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.get("/trending", function (req, res) {
+  const movies = Trendings.find()
+    .then((movie) => {
+      res.send(movie);
     })
     .catch((err) => {
       console.log(err);
