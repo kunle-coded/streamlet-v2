@@ -1,7 +1,7 @@
 function useWatchlistMarker(watchlist, movie) {
   let watchlisted;
   watchlist.forEach((watched) => {
-    if (watched.title === movie.title) {
+    if (watched._id === movie._id) {
       watchlisted = movie;
     }
   });

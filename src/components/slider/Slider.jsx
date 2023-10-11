@@ -4,20 +4,16 @@ import Slide from "./Slide";
 import LeftArrow from "../left_arrow/LeftArrow";
 import { RightArrow } from "..";
 
-function Slider({
-  slides,
-  showButtons = false,
-  watchlist,
-  onWatchlist,
-  isWatchlist,
-}) {
+function Slider({ slides, showButtons = false, watchlist, onWatchlist }) {
   const [currentSlide, setCurrentSlide] = useState(0);
+
   const transformX = `translateX(-${currentSlide * 100}%)`;
+
   let totalSlides = slides.length;
 
   //   Next slide
   function nextSlide() {
-    setCurrentSlide((prevSlide) => (prevSlide === 14 ? 0 : prevSlide + 1));
+    setCurrentSlide((prevSlide) => (prevSlide === 19 ? 0 : prevSlide + 1));
   }
 
   // Previuos slide
@@ -49,6 +45,7 @@ function Slider({
             key={slide.id}
             watchlist={watchlist}
             movie={slide}
+            type={slide.title ? "Movie" : "Series"}
             index={index}
             currentSlide={currentSlide}
             onWatchlist={onWatchlist}

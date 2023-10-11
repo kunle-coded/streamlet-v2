@@ -14,12 +14,21 @@ import Title from "../title/Title";
 import WideCard from "../cards/WideCard";
 import VideoPlayer from "../video_player/VideoPlayer";
 
-function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
+function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
   const [activePoster, setActivePoster] = useState({});
 
   useEffect(() => {
-    setActivePoster(newMovies[0]);
-  }, [newMovies]);
+    let activePosterMovie = {};
+
+    trending.forEach((movie, index) => {
+      if (index < 1) {
+        activePosterMovie = { ...movie };
+      }
+    });
+
+    setActivePoster({ ...activePosterMovie });
+    console.log("active poster", activePoster);
+  }, [trending]);
   // set active poster
   function handleActivePoster(movie) {
     // if (movie) {
@@ -38,7 +47,7 @@ function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
     <main className="main-section">
       {/* New movie release section */}
       <Section title="New Release" btnTop="50%" slide={true}>
-        {newMovies.map((movie) => (
+        {trending.map((movie) => (
           <Poster key={movie.id} movie={movie} />
         ))}
       </Section>
@@ -57,7 +66,7 @@ function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
       </Section>
 
       {/* Featured movies section */}
-      <Section
+      {/* <Section
         height="700px"
         padding="70px"
         display="flex"
@@ -141,7 +150,7 @@ function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
             )}
           </div>
         </div>
-      </Section>
+      </Section> */}
 
       <Section title="Movies" arrowTop="0px" slide={true}>
         {popular.map((movie) => (
@@ -159,7 +168,7 @@ function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
         <div className="movie-awards-section">
           <div className="movie-on-award">
             <Title title="Movies on Awards" />
-            {newMovies.map(
+            {trending.map(
               (movie, i) =>
                 i < 1 && (
                   <WideCard
@@ -183,7 +192,7 @@ function Main({ newMovies, series, popular, watchlist, onWatchlist, onSlide }) {
             </div>
             <div className="award-live">
               <Title title="Live" live={true} />
-              {newMovies.map(
+              {trending.map(
                 (movie, i) =>
                   i < 4 && (
                     <Card movie={movie} key={movie.id} showNumber={false} />

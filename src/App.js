@@ -19,88 +19,78 @@ function App() {
   const [slideMovies, setSlideMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
-  const [newMovies, setNewMovies] = useState([]);
-  const [popularMovies, setPopularMovies] = useState([]);
+  const [popular, setPopular] = useState([]);
+  const [trending, setTrending] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [watchlistMov, setWatchlistMov] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const res = await fetch("/movies");
+  const fetchMovies = async (endpoint, setter) => {
+    try {
+      const res = await fetch(`/${endpoint}`);
 
-        if (!res.ok) {
-          throw new Error("Failed to load movies, please retry!");
-        }
-
-        const data = await res.json();
-
-        // setSlideMovies(data);
-        setMovies(data);
-      } catch (err) {
-        console.log(err.message);
+      if (!res.ok) {
+        throw new Error("Failed to load movies, please retry!");
       }
-    };
 
-    const fetchSeries = async () => {
-      try {
-        const res = await fetch("/series");
+      const data = await res.json();
 
-        if (!res.ok) {
-          throw new Error("Failed to load movies, please retry!");
-        }
-
-        const data = await res.json();
-
-        setSeries(data);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-
-    if (login) {
-      fetchMovies();
-      fetchSeries();
-      console.log("series>>", series);
+      setter(data);
+    } catch (err) {
+      console.log(err.message);
     }
+  };
 
-    const randomInteger = Math.floor(Math.random() * (60 - 0)) + 0;
-
-    // for (let i = 0; i < 10; i++) {
-    //   const movie = movies[randomInteger];
-    //   console.log("movies slide", movie);
-    //   setSlideMovies((movies) => [...movies, movie]);
-
-    //   console.log(slideMovies);
-    // }
-
-    // for (let j = 0; j <= series.length; j++) {
-    //   const serie = series[randomInteger];
-    //   console.log(serie);
-    //   if (j < 10) {
-    //     setSlideMovies((movies) => [...movies, serie]);
-    //   }
-    // }
+  useEffect(() => {
+    if (login) {
+      fetchMovies("movies", setMovies);
+      fetchMovies("series", setSeries);
+      fetchMovies("popular", setPopular);
+      fetchMovies("trending", setTrending);
+      console.log("trending", trending);
+    }
   }, [login]);
 
+  useEffect(() => {
+    const newMoviesToAdd = [];
+
+    movies.forEach((movie, ind) => {
+      if (
+        ind < 10 &&
+        !slideMovies.some((slideItem) => slideItem.title === movie.title)
+      ) {
+        newMoviesToAdd.push(movie);
+      }
+    });
+
+    setSlideMovies((slides) => [...slides, ...newMoviesToAdd]);
+
+    const newSeriesToAdd = [];
+
+    series.forEach((serie, ind) => {
+      if (
+        ind < 10 &&
+        !slideMovies.some((slideItem) => slideItem.name === serie.name)
+      ) {
+        newSeriesToAdd.push(serie);
+      }
+    });
+
+    setSlideMovies((slides) => [...slides, ...newSeriesToAdd]);
+  }, [movies, series]);
+
+  // Add movies/series to watchlist on click AddWatchlist
   function handleWatchlist(mov) {
-    const isMovieInWatchlist = watchlist.some(
-      (movie) => movie.title === mov.title
-    );
+    const isMovieInWatchlist = watchlist.some((movie) => movie._id === mov._id);
 
     if (!isMovieInWatchlist) {
       setWatchlist((movies) => [...movies, mov]);
-      // setIsWatchlist(true);
     }
 
     if (isMovieInWatchlist) {
-      setWatchlist((movies) =>
-        movies.filter((movie) => movie.title !== mov.title)
-      );
-      // setIsWatchlist(false);
+      setWatchlist((movies) => movies.filter((movie) => movie._id !== mov._id));
     }
   }
 
@@ -115,20 +105,20 @@ function App() {
       <Header>
         <Navbar />
         <Slider
-          slides={movies}
+          slides={slideMovies}
           onWatchlist={handleWatchlist}
           watchlist={watchlist}
         />
       </Header>
-      {/* <Main
-        newMovies={newMovies}
+      <Main
+        trending={trending}
         series={series}
-        popular={popularMovies}
+        popular={popular}
         onSlide={handleSlider}
         onWatchlist={handleWatchlist}
         watchlist={watchlist}
       />
-      <Footer /> */}
+      <Footer />
     </div>
   );
 }

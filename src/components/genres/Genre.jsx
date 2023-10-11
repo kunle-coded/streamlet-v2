@@ -16,7 +16,7 @@ function Genre({
     if (genres.length > 1) {
       if (genres[0].includes("&")) {
         genre1 = genres[0];
-        genre2 = "";
+        genre2 = null;
       } else if (genres[1].includes("&")) {
         genre2 = genres[1].split("&")[0];
         genre1 = genres[0];

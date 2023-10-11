@@ -41,6 +41,9 @@
   width: fit-content;
 }
 
+.card-title {
+  white-space: nowrap;
+}
 .card-title h4 {
   font-size: 15px;
 }

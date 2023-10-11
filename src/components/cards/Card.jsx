@@ -6,7 +6,7 @@ import Rating from "../rating/Rating";
 
 function Card({
   height = "140px",
-  width = "250px",
+  width = "400px",
   borderRadius = "12px",
   orientation = false,
   showLabel = true,
@@ -20,7 +20,7 @@ function Card({
     display: "flex",
     flexDirection: orientation ? "column" : "",
     height: height,
-    // width: width,
+    width: width,
   };
 
   const pg = movie.adult ? "18+" : "PG-13";

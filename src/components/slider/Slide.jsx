@@ -6,12 +6,14 @@ import useWatchlistMarker from "../../utils/useWatchlistMarker";
 function Slide({
   watchlist,
   movie,
+  type,
   index,
   currentSlide,
   onWatchlist,
   children,
 }) {
   let watchlisted = useWatchlistMarker(watchlist, movie);
+  const title = movie.title ? movie.title : movie.name;
 
   return (
     <div className={`slide ${index === currentSlide ? "active" : ""}`}>
@@ -23,9 +25,9 @@ function Slide({
         }}
       ></div>
       <div className="slide-text-area">
-        <div className="slide-movie-tag">Movie</div>
+        <div className="slide-movie-tag">{type}</div>
         <div className="slide-movie-title">
-          <h3>{movie.title}</h3>
+          <h3>{title}</h3>
         </div>
         <Genre movie={movie} duration={true} year={true} />
         <div className="slide-movie-desc">{movie.overview}</div>
