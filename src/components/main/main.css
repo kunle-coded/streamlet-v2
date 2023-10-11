@@ -111,13 +111,21 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 50%;
+  width: 46%;
+  overflow: hidden;
 }
+.award-fast .card-title {
+  word-wrap: break-word;
+  /* font-size: 13px; */
+  /* font-size: clamp(12px 4vw 15px); */
+}
+
 .award-live {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 50%;
+  width: 46%;
+  overflow: hidden;
 }
 
 .player {

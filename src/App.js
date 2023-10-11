@@ -22,7 +22,7 @@ function App() {
   const [popular, setPopular] = useState([]);
   const [trending, setTrending] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
-  const [watchlistMov, setWatchlistMov] = useState();
+  const [activePoster, setActivePoster] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
@@ -49,11 +49,11 @@ function App() {
       fetchMovies("series", setSeries);
       fetchMovies("popular", setPopular);
       fetchMovies("trending", setTrending);
-      console.log("trending", trending);
     }
   }, [login]);
 
   useEffect(() => {
+    // Add movies to state -- slideMovies
     const newMoviesToAdd = [];
 
     movies.forEach((movie, ind) => {
@@ -67,6 +67,7 @@ function App() {
 
     setSlideMovies((slides) => [...slides, ...newMoviesToAdd]);
 
+    // Add series to state -- slideMovies
     const newSeriesToAdd = [];
 
     series.forEach((serie, ind) => {
@@ -79,6 +80,20 @@ function App() {
     });
 
     setSlideMovies((slides) => [...slides, ...newSeriesToAdd]);
+
+    // Add movie to state -- activePoster
+    const newPosterToAdd = [];
+
+    popular.forEach((movie, ind) => {
+      if (
+        ind < 1 &&
+        !activePoster.some((slideItem) => slideItem.title === movie.title)
+      ) {
+        newPosterToAdd.push(movie);
+      }
+    });
+
+    setActivePoster([...newPosterToAdd]);
   }, [movies, series]);
 
   // Add movies/series to watchlist on click AddWatchlist
@@ -112,6 +127,7 @@ function App() {
       </Header>
       <Main
         trending={trending}
+        active={activePoster}
         series={series}
         popular={popular}
         onSlide={handleSlider}

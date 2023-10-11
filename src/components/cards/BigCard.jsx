@@ -9,6 +9,7 @@ function BigCard({ movie }) {
   };
 
   const title = movie.title ? movie.title : movie.name;
+  const rating = parseFloat(movie.vote_average.toFixed(1));
 
   return (
     <div className="big-card">
@@ -24,7 +25,7 @@ function BigCard({ movie }) {
         </div>
         <div className="big-card_label">
           <RatingLabel>
-            <Rating>{parseFloat(movie.vote_average.toFixed(1))}</Rating>
+            <Rating>{rating}</Rating>
             <Genre movie={movie} genre={true} label={false} divider={true} />
           </RatingLabel>
         </div>

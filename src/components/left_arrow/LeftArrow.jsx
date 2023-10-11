@@ -9,6 +9,7 @@ function LeftArrow({
 }) {
   const btnStyle = {
     left: left,
+    top: top,
   };
 
   const arrowStyle = {
@@ -38,7 +39,7 @@ function LeftArrow({
   }
 
   return (
-    <div className="btn_arrow" style={btnStyle}>
+    <div className="btn_arrow btn_left" style={btnStyle}>
       <button className="arrow left" onClick={onClick} style={arrowStyle}>
         <svg
           width="10"

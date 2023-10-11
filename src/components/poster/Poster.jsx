@@ -14,6 +14,8 @@ function Poster({ movie, index, border = false, onActive }) {
     }
   }, []);
 
+  // const rating = parseFloat(movie.vote_average.toFixed(1));
+
   return (
     <div
       className={`movie-poster ${border && index === 0 ? "active-poster" : ""}`}

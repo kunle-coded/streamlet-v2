@@ -39,7 +39,7 @@ function RightArrow({
   }
 
   return (
-    <div className="btn_arrow" style={btnStyle}>
+    <div className="btn_arrow btn_right" style={btnStyle}>
       <button className="arrow right" onClick={onClick} style={arrowStyle}>
         <svg
           width="10"

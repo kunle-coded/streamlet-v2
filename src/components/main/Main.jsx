@@ -14,7 +14,15 @@ import Title from "../title/Title";
 import WideCard from "../cards/WideCard";
 import VideoPlayer from "../video_player/VideoPlayer";
 
-function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
+function Main({
+  trending,
+  active,
+  series,
+  popular,
+  watchlist,
+  onWatchlist,
+  onSlide,
+}) {
   const [activePoster, setActivePoster] = useState({});
 
   useEffect(() => {
@@ -22,13 +30,12 @@ function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
 
     trending.forEach((movie, index) => {
       if (index < 1) {
-        activePosterMovie = { ...movie };
+        activePosterMovie = movie;
       }
     });
-
-    setActivePoster({ ...activePosterMovie });
-    console.log("active poster", activePoster);
+    setActivePoster(activePosterMovie);
   }, [trending]);
+
   // set active poster
   function handleActivePoster(movie) {
     // if (movie) {
@@ -61,12 +68,18 @@ function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
         onSlide={onSlide}
       >
         {popular.map((movie, i) => (
-          <Card key={movie.id} movie={movie} index={i} slide={true} />
+          <Card
+            key={movie.id}
+            movie={movie}
+            index={i}
+            slide={true}
+            whiteSpace="nowrap"
+          />
         ))}
       </Section>
 
       {/* Featured movies section */}
-      {/* <Section
+      <Section
         height="700px"
         padding="70px"
         display="flex"
@@ -87,48 +100,55 @@ function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
 
           <div className="featured-movies-details">
             <div className="featured-label">#1 in Nigeria</div>
-            <div className="featured-title">
-              <h1>{activePoster.title}</h1>
-            </div>
-            <div className="featured-genre">
-              <RatingLabel>
-                <Rating>{activePoster.vote_average}</Rating>
-                <Genre
-                  movie={activePoster}
-                  genre={true}
-                  label={false}
-                  divider={true}
-                  duration={true}
-                  year={true}
-                />
-              </RatingLabel>
-            </div>
-            <div className="featured-desc">
-              <TextReveal>{activePoster.overview}</TextReveal>
-            </div>
-            <div className="featured-btn">
-              <Buttons
-                play={true}
-                width="150px"
-                height="35px"
-                background="#00925d"
-                border={false}
-                borderRadius="9px"
-                color="#fff"
-              >
-                Play Now
-              </Buttons>
-              <Buttons
-                bookmark={true}
-                watchlisted={watchlisted}
-                width="150px"
-                height="35px"
-                borderRadius="9px"
-                onClick={() => onWatchlist(activePoster)}
-              >
-                Add Watchlist
-              </Buttons>
-            </div>
+            {active.map(
+              (movie, ind) =>
+                ind < 1 && (
+                  <React.Fragment key={ind}>
+                    <div className="featured-title">
+                      <h1>{movie.title}</h1>
+                    </div>
+                    <div className="featured-genre">
+                      <RatingLabel>
+                        <Rating>{movie.vote_average}</Rating>
+                        <Genre
+                          movie={movie}
+                          genre={true}
+                          label={false}
+                          divider={true}
+                          duration={true}
+                          year={true}
+                        />
+                      </RatingLabel>
+                    </div>
+                    <div className="featured-desc">
+                      <TextReveal>{movie.overview}</TextReveal>
+                    </div>
+                    <div className="featured-btn">
+                      <Buttons
+                        play={true}
+                        width="150px"
+                        height="35px"
+                        background="#00925d"
+                        border={false}
+                        borderRadius="9px"
+                        color="#fff"
+                      >
+                        Play Now
+                      </Buttons>
+                      <Buttons
+                        bookmark={true}
+                        watchlisted={watchlisted}
+                        width="150px"
+                        height="35px"
+                        borderRadius="9px"
+                        onClick={() => onWatchlist(movie)}
+                      >
+                        Add Watchlist
+                      </Buttons>
+                    </div>
+                  </React.Fragment>
+                )
+            )}
           </div>
           <div className="featured-movies-poster">
             <Poster
@@ -137,7 +157,7 @@ function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
               border={true}
               onActive={handleActivePoster}
             />
-            {newMovies.map((movie, i) =>
+            {trending.map((movie, i) =>
               i === 0 ? null : (
                 <Poster
                   key={movie.id}
@@ -150,7 +170,7 @@ function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
             )}
           </div>
         </div>
-      </Section> */}
+      </Section>
 
       <Section title="Movies" arrowTop="0px" slide={true}>
         {popular.map((movie) => (
@@ -186,7 +206,12 @@ function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
               {popular.map(
                 (movie, i) =>
                   i < 4 && (
-                    <Card movie={movie} key={movie.id} showNumber={false} />
+                    <Card
+                      movie={movie}
+                      key={movie.id}
+                      showNumber={false}
+                      width="100%"
+                    />
                   )
               )}
             </div>
@@ -195,7 +220,12 @@ function Main({ trending, series, popular, watchlist, onWatchlist, onSlide }) {
               {trending.map(
                 (movie, i) =>
                   i < 4 && (
-                    <Card movie={movie} key={movie.id} showNumber={false} />
+                    <Card
+                      movie={movie}
+                      key={movie.id}
+                      showNumber={false}
+                      width="100%"
+                    />
                   )
               )}
             </div>

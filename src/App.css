@@ -78,21 +78,19 @@ a:focus {
 
 .btn_arrow {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   position: absolute;
-  /* right: 0; */
-  /* background: linear-gradient(to right, rgba(13, 12, 15, 0.85)); */
-  /* background-color: rgb(13, 12, 15, 0.765); */
-  /* background-image: linear-gradient(
-    to right,
-    rgba(13, 12, 15, 0.85),
-    rgba(13, 12, 15, 0.85)
-  ); */
   width: 150px;
   height: 100%;
+  /* background: linear-gradient(to left, rgba(13, 12, 15, 0.95), transparent); */
+}
+.btn_arrow.btn_right {
   background: linear-gradient(to left, rgba(13, 12, 15, 0.95), transparent);
-  /* padding-top: 100px; */
+  justify-content: flex-end;
+}
+.btn_arrow.btn_left {
+  background: linear-gradient(to right, rgba(13, 12, 15, 0.95), transparent);
+  justify-content: flex-start;
 }
 
 .btn_arrow-overlay {
@@ -117,12 +115,6 @@ a:focus {
 
 .no-slide {
   /* position: absolute; */
-}
-
-/* text reveal style */
-
-.text-reveal_txt {
-  /* display: flex; */
 }
 
 .read-more {

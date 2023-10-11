@@ -42,7 +42,9 @@
 }
 
 .card-title {
-  white-space: nowrap;
+  /* word-wrap: break-word; */
+  /* white-space: nowrap; */
+  /* overflow: hidden; */
 }
 .card-title h4 {
   font-size: 15px;
