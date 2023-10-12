@@ -80,7 +80,9 @@ function Main({
         gap="50px"
         btnTop="50%"
         slide={true}
-        onSlide={onSlide}
+        isSlide={isSlide}
+        onSlideRight={() => onSlideRight("popular")}
+        onSlideLeft={() => onSlideLeft(popular)}
       >
         {popular.map((movie, i) => (
           <Card
@@ -88,7 +90,8 @@ function Main({
             movie={movie}
             index={i}
             slide={true}
-            whiteSpace="nowrap"
+            length={popular.length}
+            whiteSpace="normal"
           />
         ))}
       </Section>

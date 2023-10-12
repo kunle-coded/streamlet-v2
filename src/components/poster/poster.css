@@ -10,14 +10,6 @@
   border: 1.5px solid var(--accent-color);
 }
 
-.half-visible_right {
-  transform: translateX(0%);
-}
-
-.first-element {
-  transform: translateX(-0%);
-}
-
 .poster-image {
   width: 100%;
   height: 100%;

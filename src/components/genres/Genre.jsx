@@ -9,6 +9,7 @@ function Genre({
   year = false,
   movie,
 }) {
+  const type = movie.title ? "Movie" : "Series";
   const genres = movie.genres;
   let genre1, genre2, releaseDate;
 
@@ -65,7 +66,7 @@ function Genre({
       {genre && <span>{genre1}</span>}
       {genre && genre2 && <span> &#8226; </span>}
       {genre && genre2 && <span> {genre2}</span>}
-      {!genre && <span>Movie</span>}
+      {!genre && <span>{type}</span>}
     </div>
   );
 }

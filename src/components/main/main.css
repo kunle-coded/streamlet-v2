@@ -11,6 +11,14 @@
   margin-top: 30px;
 }
 
+.half-visible_right {
+  transform: translateX(0%);
+}
+
+.first-element {
+  transform: translateX(0%);
+}
+
 .featured-movies-container {
   display: grid;
   grid-template-columns: 38% 60%; /* Two columns, each taking 50% of container width */

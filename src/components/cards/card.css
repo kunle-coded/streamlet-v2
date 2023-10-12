@@ -1,13 +1,15 @@
 .card {
   align-items: center;
   cursor: pointer;
-}
-
-.slide-card {
-  height: 100px;
   margin-right: 10px;
   transition: transform 0.5s ease-in-out;
 }
+
+/* .slide-card {
+  height: 100px;
+  margin-right: 10px;
+  transition: transform 0.5s ease-in-out;
+} */
 
 .card-number h1 {
   font-size: var(--font-title-xlg);
@@ -29,7 +31,8 @@
   flex-direction: column;
   justify-content: center;
   gap: 8px;
-  height: 90%;
+  overflow: hidden;
+  width: max-content;
 }
 
 .card-pg-label {
@@ -42,7 +45,7 @@
 }
 
 .card-title {
-  /* word-wrap: break-word; */
+  word-wrap: break-word;
   /* white-space: nowrap; */
   /* overflow: hidden; */
 }

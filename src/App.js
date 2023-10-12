@@ -96,6 +96,18 @@ function App() {
     });
 
     setActivePoster([...newPosterToAdd]);
+
+    // Add counter prop to popular movies data
+
+    const modifiedPopular = [];
+    popular.forEach((movie, index) => {
+      const updatedPopular = { ...movie };
+      updatedPopular.counter = index;
+      modifiedPopular.push(updatedPopular);
+    });
+
+    setPopular((popular) => [...modifiedPopular]);
+    // console.log(modifiedPopular);
   }, [movies, series]);
 
   // Add movies/series to watchlist on click AddWatchlist
@@ -120,6 +132,7 @@ function App() {
   //   Next slide
   function handleNextSlide(stateName) {
     setIsSliding(true);
+
     if (stateName === "trending") {
       let firstEl = [];
       trending.forEach((movie, index) => {
@@ -132,6 +145,21 @@ function App() {
 
       if (firstEl.length > 0) {
         setTrending((trending) => [...trending, ...firstEl]);
+      }
+    }
+
+    if (stateName === "popular") {
+      let firstEl = [];
+      popular.forEach((movie, index) => {
+        if (index === 0) {
+          firstEl.push(movie);
+        }
+      });
+
+      setPopular((popular) => popular.filter((movie, index) => index >= 1));
+
+      if (firstEl.length > 0) {
+        setPopular((popular) => [...popular, ...firstEl]);
       }
     }
     const totalSlides = trending.length - 1;

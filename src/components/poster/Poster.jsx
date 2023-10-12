@@ -13,8 +13,7 @@ function Poster({ movie, index, border = false, length }) {
     rating = parseFloat(voteAverage.toFixed(1));
     // Now, 'rating' is calculated safely
   } else {
-    // Handle the case where 'vote_average' is not a valid number
-    // You can provide a default value or handle it as needed
+    rating = movie.vote_average;
   }
 
   return (

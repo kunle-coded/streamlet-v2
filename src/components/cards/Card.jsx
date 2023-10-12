@@ -15,6 +15,7 @@ function Card({
   active = false,
   movie,
   index,
+  length,
   slide = false,
 }) {
   const cardStyle = {
@@ -30,21 +31,30 @@ function Card({
   const pg = movie.adult ? "18+" : "PG-13";
   const rating = parseFloat(movie.vote_average.toFixed(1));
 
-  let count = 0;
-  for (let i = 0; i <= index; i++) {
-    count++;
+  const cardCounter = movie.counter;
+  let number;
+
+  // Check if counter is defined and is a valid number
+  if (typeof cardCounter === "number" && !isNaN(cardCounter)) {
+    number = movie.counter + 1;
+  } else {
+    number = index + 1;
   }
 
   return (
     <div
       className={`card ${
-        index === count ? "half-visible" : slide ? "slide-card" : ""
+        index === length
+          ? "half-visible_right"
+          : index === 0
+          ? "first-element"
+          : ""
       }`}
       style={cardStyle}
     >
       {showNumber && (
         <div className="card-number">
-          <h1>{index + 1}</h1>
+          <h1>{number}</h1>
         </div>
       )}
       <div className="card-image">
