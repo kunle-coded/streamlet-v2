@@ -27,8 +27,6 @@ function Main({
   isSlidePoster,
   isSlideCard,
 }) {
-  const [activePoster, setActivePoster] = useState({});
-
   useEffect(() => {
     let activePosterMovie = {};
 
@@ -37,7 +35,6 @@ function Main({
         activePosterMovie = movie;
       }
     });
-    setActivePoster(activePosterMovie);
   }, [trending]);
 
   // set active poster
@@ -47,9 +44,11 @@ function Main({
     // setActivePoster(movie);
   }
 
-  let watchlisted = useWatchlistMarker(watchlist, activePoster);
-  const movieImg = activePoster
-    ? activePoster.poster_path
+  console.log("active", active);
+
+  let watchlisted = useWatchlistMarker(watchlist, active);
+  const movieImg = active
+    ? active.poster_path
     : "4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg";
 
   // Trim movie overview
@@ -119,59 +118,53 @@ function Main({
 
           <div className="featured-movies-details">
             <div className="featured-label">#1 in Nigeria</div>
-            {active.map(
-              (movie, ind) =>
-                ind < 1 && (
-                  <React.Fragment key={ind}>
-                    <div className="featured-title">
-                      <h1>{movie.title}</h1>
-                    </div>
-                    <div className="featured-genre">
-                      <RatingLabel>
-                        <Rating>{movie.vote_average}</Rating>
-                        <Genre
-                          movie={movie}
-                          genre={true}
-                          label={false}
-                          divider={true}
-                          duration={true}
-                          year={true}
-                        />
-                      </RatingLabel>
-                    </div>
-                    <div className="featured-desc">
-                      <TextReveal>{movie.overview}</TextReveal>
-                    </div>
-                    <div className="featured-btn">
-                      <Buttons
-                        play={true}
-                        width="150px"
-                        height="35px"
-                        background="#00925d"
-                        border={false}
-                        borderRadius="9px"
-                        color="#fff"
-                      >
-                        Play Now
-                      </Buttons>
-                      <Buttons
-                        bookmark={true}
-                        watchlisted={watchlisted}
-                        width="150px"
-                        height="35px"
-                        borderRadius="9px"
-                        onClick={() => onWatchlist(movie)}
-                      >
-                        Add Watchlist
-                      </Buttons>
-                    </div>
-                  </React.Fragment>
-                )
-            )}
+
+            <div className="featured-title">
+              <h1>{active.title}</h1>
+            </div>
+            <div className="featured-genre">
+              <RatingLabel>
+                <Rating>{active.vote_average}</Rating>
+                <Genre
+                  movie={active}
+                  genre={true}
+                  label={false}
+                  divider={true}
+                  duration={true}
+                  year={true}
+                />
+              </RatingLabel>
+            </div>
+            <div className="featured-desc">
+              {active.overview && <TextReveal>{active.overview}</TextReveal>}
+            </div>
+            <div className="featured-btn">
+              <Buttons
+                play={true}
+                width="150px"
+                height="35px"
+                background="#00925d"
+                border={false}
+                borderRadius="9px"
+                color="#fff"
+              >
+                Play Now
+              </Buttons>
+              <Buttons
+                bookmark={true}
+                watchlisted={watchlisted}
+                width="150px"
+                height="35px"
+                borderRadius="9px"
+                onClick={() => onWatchlist(active)}
+              >
+                Add Watchlist
+              </Buttons>
+            </div>
           </div>
           <div className="featured-movies-poster">
             <Poster
-              movie={activePoster}
+              movie={active}
               index={0}
               border={true}
               onActive={handleActivePoster}

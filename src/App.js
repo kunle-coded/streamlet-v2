@@ -21,8 +21,9 @@ function App() {
   const [series, setSeries] = useState([]);
   const [popular, setPopular] = useState([]);
   const [trending, setTrending] = useState([]);
+  const [featured, setFeatured] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
-  const [activePoster, setActivePoster] = useState([]);
+  const [activePoster, setActivePoster] = useState({});
   const [posterIsSliding, setPosterIsSliding] = useState(false);
   const [cardIsSliding, setCardIsSliding] = useState(false);
   const [currentPoster, setCurrentPoster] = useState(0);
@@ -85,19 +86,31 @@ function App() {
 
     setSlideMovies((slides) => [...slides, ...newSeriesToAdd]);
 
-    // Add movie to state -- activePoster
-    const newPosterToAdd = [];
+    // Add featured movies
+    const featuredArr = [];
 
-    popular.forEach((movie, ind) => {
-      if (
-        ind < 1 &&
-        !activePoster.some((slideItem) => slideItem.title === movie.title)
-      ) {
-        newPosterToAdd.push(movie);
+    // Add movie to state -- activePoster
+    let newPosterToAdd = {};
+
+    popular.forEach((movie, index) => {
+      if (index < 1 && !newPosterToAdd.id) {
+        newPosterToAdd = { ...movie };
       }
     });
+    setActivePoster((prevPoster) =>
+      prevPoster.id !== newPosterToAdd.id ? newPosterToAdd : prevPoster
+    );
 
-    setActivePoster([...newPosterToAdd]);
+    // popular.forEach((movie, ind) => {
+    //   if (
+    //     ind < 1 &&
+    //     !activePoster.some((slideItem) => slideItem.title === movie.title)
+    //   ) {
+    //     newPosterToAdd.push(movie);
+    //   }
+    // });
+
+    // setActivePoster([...newPosterToAdd]);
 
     // Add counter prop to popular movies data
 

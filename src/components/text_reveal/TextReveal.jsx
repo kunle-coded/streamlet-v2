@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function TextReveal({ fontSize = "14px", children }) {
   const [isShow, setIsShow] = useState(false);
 
-  const textIsLong = children.split(" ").length > 30 ? true : false;
+  const textIsLong = children && children.split(" ").length > 30 ? true : false;
   const shortText = textIsLong ? ".." : "";
 
   const text = isShow
