@@ -17,6 +17,7 @@ function Section({
   useBackground = false,
   slide = false,
   isSlide = false,
+  isSlideCard = false,
   onSlideRight,
   onSlideLeft,
   children,
@@ -53,7 +54,7 @@ function Section({
         className={`section-content ${slide ? "sliding-card" : ""}`}
         style={sectionContentStyle}
       >
-        {slide && isSlide && (
+        {slide && (isSlide || isSlideCard) && (
           <LeftArrow
             slide={true}
             btnTop={btnTop}

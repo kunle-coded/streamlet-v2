@@ -23,8 +23,10 @@ function App() {
   const [trending, setTrending] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [activePoster, setActivePoster] = useState([]);
-  const [isSliding, setIsSliding] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [posterIsSliding, setPosterIsSliding] = useState(false);
+  const [cardIsSliding, setCardIsSliding] = useState(false);
+  const [currentPoster, setCurrentPoster] = useState(0);
+  const [currentCard, setCurrentCard] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
@@ -131,9 +133,8 @@ function App() {
 
   //   Next slide
   function handleNextSlide(stateName) {
-    setIsSliding(true);
-
     if (stateName === "trending") {
+      setPosterIsSliding(true);
       let firstEl = [];
       trending.forEach((movie, index) => {
         if (index === 0) {
@@ -149,6 +150,7 @@ function App() {
     }
 
     if (stateName === "popular") {
+      setCardIsSliding(true);
       let firstEl = [];
       popular.forEach((movie, index) => {
         if (index === 0) {
@@ -162,23 +164,66 @@ function App() {
         setPopular((popular) => [...popular, ...firstEl]);
       }
     }
+
     const totalSlides = trending.length - 1;
 
-    setCurrentSlide((slide) => slide + 1);
+    setCurrentPoster((slide) => slide + 1);
 
-    if (totalSlides === currentSlide) {
-      setIsSliding(false);
-      setCurrentSlide(0);
+    if (totalSlides === currentPoster) {
+      setPosterIsSliding(false);
+      setCurrentPoster(0);
+    }
+
+    const totalPopular = popular.length - 1;
+    setCurrentCard((slide) => slide + 1);
+
+    if (totalPopular === currentCard) {
+      setCardIsSliding(false);
+      setCurrentCard(0);
     }
   }
 
   // Previuos slide
-  const handlePrevSlide = (slides) => {
-    // let totalSlides = slides.length;
-    // setCurrentSlide((prevSlide) =>
-    //   prevSlide === 0 ? totalSlides - 1 : prevSlide - 1
-    // );
-    console.log("button left clicked", slides.length);
+  const handlePrevSlide = (stateName) => {
+    // New release section
+    if (stateName === "trending") {
+      let lastEl = [];
+      const dataLength = trending.length - 1;
+
+      trending.forEach((movie, index) => {
+        if (index === dataLength) {
+          lastEl.push(movie);
+        }
+      });
+
+      setTrending((trending) =>
+        trending.filter((movie, index) => index < dataLength)
+      );
+
+      if (lastEl.length > 0) {
+        setTrending((trending) => [...lastEl, ...trending]);
+      }
+    }
+
+    // popular section
+    if (stateName === "popular") {
+      let lastEl = [];
+      const dataLength = popular.length - 1;
+
+      popular.forEach((movie, index) => {
+        if (index === dataLength) {
+          lastEl.push(movie);
+        }
+      });
+
+      setPopular((popular) =>
+        popular.filter((movie, index) => index < dataLength)
+      );
+
+      if (lastEl.length > 0) {
+        setPopular((popular) => [...lastEl, ...popular]);
+      }
+    }
   };
 
   return (
@@ -199,7 +244,8 @@ function App() {
         onSlide={handleSlider}
         onSlideRight={handleNextSlide}
         onSlideLeft={handlePrevSlide}
-        isSlide={isSliding}
+        isSlidePoster={posterIsSliding}
+        isSlideCard={cardIsSliding}
         onWatchlist={handleWatchlist}
         watchlist={watchlist}
       />

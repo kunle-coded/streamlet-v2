@@ -24,7 +24,8 @@ function Main({
   onSlide,
   onSlideRight,
   onSlideLeft,
-  isSlide,
+  isSlidePoster,
+  isSlideCard,
 }) {
   const [activePoster, setActivePoster] = useState({});
 
@@ -60,9 +61,9 @@ function Main({
         title="New Release"
         btnTop="50%"
         slide={true}
-        isSlide={isSlide}
+        isSlide={isSlidePoster}
         onSlideRight={() => onSlideRight("trending")}
-        onSlideLeft={() => onSlideLeft(trending)}
+        onSlideLeft={() => onSlideLeft("trending")}
       >
         {trending.map((movie, index) => (
           <Poster
@@ -80,9 +81,9 @@ function Main({
         gap="50px"
         btnTop="50%"
         slide={true}
-        isSlide={isSlide}
+        isSlideCard={isSlideCard}
         onSlideRight={() => onSlideRight("popular")}
-        onSlideLeft={() => onSlideLeft(popular)}
+        onSlideLeft={() => onSlideLeft("popular")}
       >
         {popular.map((movie, i) => (
           <Card
