@@ -31,6 +31,7 @@ function App() {
   const [currentPoster, setCurrentPoster] = useState(0);
   const [currentCard, setCurrentCard] = useState(0);
   const [currentMovie, setCurrentMovie] = useState(0);
+  const [currentSerie, setCurrentSerie] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
@@ -210,6 +211,22 @@ function App() {
         setMovies((movies) => [...movies, ...firstEl]);
       }
     }
+    // next button for movies section
+    if (stateName === "series") {
+      setSeriesCardIsSliding(true);
+      let firstEl = [];
+      series.forEach((serie, index) => {
+        if (index === 0) {
+          firstEl.push(serie);
+        }
+      });
+
+      setSeries((series) => series.filter((serie, index) => index >= 1));
+
+      if (firstEl.length > 0) {
+        setSeries((series) => [...series, ...firstEl]);
+      }
+    }
 
     const totalSlides = trending.length - 1;
     setCurrentPoster((slide) => slide + 1);
@@ -219,17 +236,24 @@ function App() {
     }
 
     const totalPopular = popular.length - 1;
-    setCurrentCard((slide) => slide + 1);
+    setCurrentCard((popular) => popular + 1);
     if (totalPopular === currentCard) {
       setCardIsSliding(false);
       setCurrentCard(0);
     }
 
     const totalMovies = movies.length - 1;
-    setCurrentMovie((slide) => slide + 1);
+    setCurrentMovie((movie) => movie + 1);
     if (totalMovies === currentMovie) {
       setMovieCardIsSliding(false);
       setCurrentMovie(0);
+    }
+
+    const totalSeries = series.length - 1;
+    setCurrentSerie((serie) => serie + 1);
+    if (totalSeries === currentSerie) {
+      setSeriesCardIsSliding(false);
+      setCurrentSerie(0);
     }
   }
 
@@ -292,6 +316,26 @@ function App() {
 
       if (lastEl.length > 0) {
         setMovies((movies) => [...lastEl, ...movies]);
+      }
+    }
+
+    // series section
+    if (stateName === "series") {
+      let lastEl = [];
+      const dataLength = series.length - 1;
+
+      series.forEach((serie, index) => {
+        if (index === dataLength) {
+          lastEl.push(serie);
+        }
+      });
+
+      setSeries((series) =>
+        series.filter((serie, index) => index < dataLength)
+      );
+
+      if (lastEl.length > 0) {
+        setSeries((series) => [...lastEl, ...series]);
       }
     }
   };
