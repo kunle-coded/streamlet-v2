@@ -22,6 +22,7 @@ function App() {
   const [popular, setPopular] = useState([]);
   const [trending, setTrending] = useState([]);
   const [featured, setFeatured] = useState([]);
+  const [moviesOnAwards, setMoviesOnAwards] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [activePoster, setActivePoster] = useState({});
   const [posterIsSliding, setPosterIsSliding] = useState(false);
@@ -100,8 +101,18 @@ function App() {
         moviesFeatured.sort((a, b) => b.vote_average - a.vote_average);
       }
     });
-
     setFeatured((prevFeatured) => [...moviesFeatured]);
+
+    // Add movies to featured state
+    const moviesAward = [];
+
+    movies.forEach((movie) => {
+      if (movie.popularity >= 1500) {
+        moviesAward.push(movie);
+        moviesAward.sort((a, b) => b.popularity - a.popularity);
+      }
+    });
+    setMoviesOnAwards((prevAward) => [...prevAward, ...moviesAward]);
 
     // Add counter prop to popular movies data
 
@@ -142,7 +153,7 @@ function App() {
     }
   }
 
-  //   Next slide
+  //   Next button slider handler
   function handleNextSlide(stateName) {
     setUpdate((update) => update + 1);
     // next button for trending section
@@ -211,6 +222,7 @@ function App() {
         setMovies((movies) => [...movies, ...firstEl]);
       }
     }
+
     // next button for movies section
     if (stateName === "series") {
       setSeriesCardIsSliding(true);
@@ -225,6 +237,24 @@ function App() {
 
       if (firstEl.length > 0) {
         setSeries((series) => [...series, ...firstEl]);
+      }
+    }
+
+    // next button for movies section
+    if (stateName === "awards") {
+      let firstEl = [];
+      moviesOnAwards.forEach((movie, index) => {
+        if (index === 0) {
+          firstEl.push(movie);
+        }
+      });
+
+      setMoviesOnAwards((movies) =>
+        movies.filter((movie, index) => index >= 1)
+      );
+
+      if (firstEl.length > 0) {
+        setMoviesOnAwards((movies) => [...movies, ...firstEl]);
       }
     }
 
@@ -338,6 +368,26 @@ function App() {
         setSeries((series) => [...lastEl, ...series]);
       }
     }
+
+    // awards section
+    if (stateName === "awards") {
+      let lastEl = [];
+      const dataLength = moviesOnAwards.length - 1;
+
+      moviesOnAwards.forEach((movie, index) => {
+        if (index === dataLength) {
+          lastEl.push(movie);
+        }
+      });
+
+      setMoviesOnAwards((movies) =>
+        movies.filter((movie, index) => index < dataLength)
+      );
+
+      if (lastEl.length > 0) {
+        setMoviesOnAwards((movies) => [...lastEl, ...movies]);
+      }
+    }
   };
 
   return (
@@ -357,6 +407,7 @@ function App() {
         series={series}
         popular={popular}
         featured={featured}
+        awards={moviesOnAwards}
         onSlideRight={handleNextSlide}
         onSlideLeft={handlePrevSlide}
         isSlidePoster={posterIsSliding}

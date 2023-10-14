@@ -21,6 +21,7 @@ function Main({
   series,
   popular,
   featured,
+  awards,
   watchlist,
   onWatchlist,
   onSlide,
@@ -221,8 +222,12 @@ function Main({
       <Section height="720px">
         <div className="movie-awards-section">
           <div className="movie-on-award">
-            <Title title="Movies on Awards" />
-            {trending.map(
+            <Title
+              title="Movies on Awards"
+              onSlideRight={() => onSlideRight("awards")}
+              onSlideLeft={() => onSlideLeft("awards")}
+            />
+            {awards.map(
               (movie, i) =>
                 i < 1 && (
                   <WideCard

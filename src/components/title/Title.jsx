@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import LeftArrow from "../left_arrow/LeftArrow";
 import RightArrow from "../right_arrow/RightArrow";
 
-function Title({ title, showButton = true, live = false }) {
+function Title({
+  title,
+  showButton = true,
+  live = false,
+  onSlideRight,
+  onSlideLeft,
+}) {
   const [isDim, setIsDim] = useState(false);
 
   useEffect(() => {
@@ -26,10 +32,10 @@ function Title({ title, showButton = true, live = false }) {
       {showButton && (
         <div className="section-title-btns">
           <div className="section-btn-left">
-            <LeftArrow />
+            <LeftArrow onClick={onSlideLeft} />
           </div>
           <div className="section-btn-right">
-            <RightArrow />
+            <RightArrow onClick={onSlideRight} />
           </div>
         </div>
       )}
