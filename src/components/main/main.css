@@ -24,7 +24,7 @@
   grid-template-columns: 38% 60%; /* Two columns, each taking 50% of container width */
   grid-template-rows: 25% 75%; /* Two rows, each taking 50% of container height */
   gap: 10px; /* Adjust the gap between the divs as needed */
-  height: 50%;
+  max-height: 50%;
   width: 100%;
   overflow: hidden;
   padding-bottom: 10px;
@@ -53,14 +53,24 @@
   font-weight: 800;
 }
 
+.featured-title.smaller-title h1 {
+  font-size: var(--font-title);
+  font-weight: 600;
+}
+
 .featured-movies-details {
   grid-column: 1 / 2; /* Position in the first column */
   grid-row: 2 / 3; /* Position in the second row */
-  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   /* gap: 10px; */
+}
+
+.featured-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .featured-label {
@@ -69,7 +79,6 @@
   width: fit-content;
   border-radius: 30px;
   background-color: var(--dark-opac);
-  margin-bottom: 20px;
   padding: 5px 15px;
   z-index: 1;
 }

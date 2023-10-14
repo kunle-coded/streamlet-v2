@@ -31,6 +31,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
+  const [update, setUpdate] = useState(0);
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -86,31 +87,17 @@ function App() {
 
     setSlideMovies((slides) => [...slides, ...newSeriesToAdd]);
 
-    // Add featured movies
-    const featuredArr = [];
+    // Add movies to featured state
+    const moviesFeatured = [];
 
-    // Add movie to state -- activePoster
-    let newPosterToAdd = {};
-
-    popular.forEach((movie, index) => {
-      if (index < 1 && !newPosterToAdd.id) {
-        newPosterToAdd = { ...movie };
+    movies.forEach((movie) => {
+      if (movie.vote_average >= 7.5) {
+        moviesFeatured.push(movie);
+        moviesFeatured.sort((a, b) => b.vote_average - a.vote_average);
       }
     });
-    setActivePoster((prevPoster) =>
-      prevPoster.id !== newPosterToAdd.id ? newPosterToAdd : prevPoster
-    );
 
-    // popular.forEach((movie, ind) => {
-    //   if (
-    //     ind < 1 &&
-    //     !activePoster.some((slideItem) => slideItem.title === movie.title)
-    //   ) {
-    //     newPosterToAdd.push(movie);
-    //   }
-    // });
-
-    // setActivePoster([...newPosterToAdd]);
+    setFeatured((prevFeatured) => [...moviesFeatured]);
 
     // Add counter prop to popular movies data
 
@@ -122,8 +109,21 @@ function App() {
     });
 
     setPopular((popular) => [...modifiedPopular]);
-    // console.log(modifiedPopular);
   }, [movies, series]);
+
+  // Add movie to state -- activePoster
+  useEffect(() => {
+    let newPosterToAdd = {};
+
+    featured.forEach((movie, index) => {
+      if (index < 1 && !newPosterToAdd.id) {
+        newPosterToAdd = { ...movie };
+      }
+    });
+    setActivePoster((prevPoster) =>
+      prevPoster.id !== newPosterToAdd.id ? newPosterToAdd : prevPoster
+    );
+  }, [movies, update]);
 
   // Add movies/series to watchlist on click AddWatchlist
   function handleWatchlist(mov) {
@@ -146,6 +146,8 @@ function App() {
 
   //   Next slide
   function handleNextSlide(stateName) {
+    setUpdate((update) => update + 1);
+    // next button for trending section
     if (stateName === "trending") {
       setPosterIsSliding(true);
       let firstEl = [];
@@ -162,6 +164,7 @@ function App() {
       }
     }
 
+    // next button for popular section
     if (stateName === "popular") {
       setCardIsSliding(true);
       let firstEl = [];
@@ -175,6 +178,22 @@ function App() {
 
       if (firstEl.length > 0) {
         setPopular((popular) => [...popular, ...firstEl]);
+      }
+    }
+
+    // next button for featured section
+    if (stateName === "featured") {
+      let firstEl = [];
+      featured.forEach((movie, index) => {
+        if (index === 0) {
+          firstEl.push(movie);
+        }
+      });
+
+      setFeatured((featured) => featured.filter((movie, index) => index >= 1));
+
+      if (firstEl.length > 0) {
+        setFeatured((featured) => [...featured, ...firstEl]);
       }
     }
 
@@ -254,6 +273,7 @@ function App() {
         active={activePoster}
         series={series}
         popular={popular}
+        featured={featured}
         onSlide={handleSlider}
         onSlideRight={handleNextSlide}
         onSlideLeft={handlePrevSlide}

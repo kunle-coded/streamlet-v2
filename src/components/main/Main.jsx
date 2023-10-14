@@ -19,6 +19,7 @@ function Main({
   active,
   series,
   popular,
+  featured,
   watchlist,
   onWatchlist,
   onSlide,
@@ -27,6 +28,7 @@ function Main({
   isSlidePoster,
   isSlideCard,
 }) {
+  const [isLong, setIsLong] = useState(false);
   useEffect(() => {
     let activePosterMovie = {};
 
@@ -35,7 +37,17 @@ function Main({
         activePosterMovie = movie;
       }
     });
-  }, [trending]);
+
+    if (active.title) {
+      const titleCount = active.title.length;
+      if (titleCount > 21) {
+        setIsLong(true);
+      } else {
+        setIsLong(false);
+      }
+    }
+    console.log(isLong);
+  }, [trending, active]);
 
   // set active poster
   function handleActivePoster(movie) {
@@ -43,8 +55,6 @@ function Main({
     // }
     // setActivePoster(movie);
   }
-
-  console.log("active", active);
 
   let watchlisted = useWatchlistMarker(watchlist, active);
   const movieImg = active
@@ -107,7 +117,7 @@ function Main({
         btnTop="50%"
         slide={true}
         useBackground={true}
-        // backgroundImage="4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg"
+        onSlideRight={() => onSlideRight("featured")}
         backgroundImage={movieImg}
       >
         <div className="featured-movies-container">
@@ -119,24 +129,28 @@ function Main({
           <div className="featured-movies-details">
             <div className="featured-label">#1 in Nigeria</div>
 
-            <div className="featured-title">
-              <h1>{active.title}</h1>
-            </div>
-            <div className="featured-genre">
-              <RatingLabel>
-                <Rating>{active.vote_average}</Rating>
-                <Genre
-                  movie={active}
-                  genre={true}
-                  label={false}
-                  divider={true}
-                  duration={true}
-                  year={true}
-                />
-              </RatingLabel>
-            </div>
-            <div className="featured-desc">
-              {active.overview && <TextReveal>{active.overview}</TextReveal>}
+            <div className="featured-text">
+              <div
+                className={`featured-title ${isLong ? "smaller-title" : ""}`}
+              >
+                <h1>{active.title}</h1>
+              </div>
+              <div className="featured-genre">
+                <RatingLabel>
+                  <Rating>{active.vote_average}</Rating>
+                  <Genre
+                    movie={active}
+                    genre={true}
+                    label={false}
+                    divider={true}
+                    duration={true}
+                    year={true}
+                  />
+                </RatingLabel>
+              </div>
+              <div className="featured-desc">
+                {active.overview && <TextReveal>{active.overview}</TextReveal>}
+              </div>
             </div>
             <div className="featured-btn">
               <Buttons
@@ -169,7 +183,7 @@ function Main({
               border={true}
               onActive={handleActivePoster}
             />
-            {trending.map((movie, i) =>
+            {featured.map((movie, i) =>
               i === 0 ? null : (
                 <Poster
                   key={movie.id}
