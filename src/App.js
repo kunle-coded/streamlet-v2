@@ -43,11 +43,20 @@ function App() {
     page5: false,
     page6: false,
   });
+  const [liveCard, setLiveCard] = useState({
+    page1: true,
+    page2: false,
+    page3: false,
+    page4: false,
+    page5: false,
+    page6: false,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
   const [update, setUpdate] = useState(0);
   const [fastCounter, setFastCounter] = useState(4);
+  const [liveCounter, setLiveCounter] = useState(4);
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -263,6 +272,89 @@ function App() {
     updateFastPage();
   }, [fastCounter]);
 
+  // Live page update on button next click
+  useEffect(() => {
+    const updateLivePage = () => {
+      // page 1
+      if (liveCounter <= 4) {
+        setLiveCard((prevState) => ({
+          ...prevState,
+          page1: true,
+          page2: false,
+          page3: false,
+          page4: false,
+          page5: false,
+          page6: false,
+        }));
+      }
+
+      // page 2
+      if (liveCounter > 4 && liveCounter <= 8) {
+        setLiveCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: true,
+          page3: false,
+          page4: false,
+          page5: false,
+          page6: false,
+        }));
+      }
+
+      // page 3
+      if (liveCounter > 8 && liveCounter <= 12) {
+        setLiveCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: false,
+          page3: true,
+          page4: false,
+          page5: false,
+          page6: false,
+        }));
+      }
+
+      // page 4
+      if (liveCounter > 12 && liveCounter <= 16) {
+        setLiveCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: false,
+          page3: false,
+          page4: true,
+          page5: false,
+          page6: false,
+        }));
+      }
+      // page 5
+      if (liveCounter > 16 && liveCounter <= 20) {
+        setLiveCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: false,
+          page3: false,
+          page4: false,
+          page5: true,
+          page6: false,
+        }));
+      }
+      // page 6
+      // if (fastCounter > 20 && fastCounter <= 24) {
+      //   setFastCard((prevState) => ({
+      //     ...prevState,
+      //     page1: false,
+      //     page2: false,
+      //     page3: false,
+      //     page4: false,
+      //     page5: false,
+      //     page6: true,
+      //   }));
+      // }
+    };
+
+    updateLivePage();
+  }, [liveCounter]);
+
   //   Next button slider handler
   function handleNextSlide(stateName) {
     setUpdate((update) => update + 1);
@@ -376,6 +468,17 @@ function App() {
 
       if (fastCounter === fastLength) {
         setFastCounter(4);
+      }
+    }
+
+    // next button for live section
+    if (stateName === "live") {
+      const liveLength = live.length;
+
+      setLiveCounter((count) => count + 4);
+
+      if (liveCounter === liveLength) {
+        setLiveCounter(4);
       }
     }
 
@@ -523,22 +626,13 @@ function App() {
 
     // live section
     if (stateName === "live") {
-      let lastEl = [];
-      const dataLength = moviesOnAwards.length - 1;
+      const liveLength = live.length - 1;
 
-      // moviesOnAwards.forEach((movie, index) => {
-      //   if (index === dataLength) {
-      //     lastEl.push(movie);
-      //   }
-      // });
+      setLiveCounter((count) => count - 4);
 
-      // setMoviesOnAwards((movies) =>
-      //   movies.filter((movie, index) => index < dataLength)
-      // );
-
-      // if (lastEl.length > 0) {
-      //   setMoviesOnAwards((movies) => [...lastEl, ...movies]);
-      // }
+      if (liveCounter === 4) {
+        setLiveCounter(20);
+      }
     }
   };
 
@@ -569,6 +663,7 @@ function App() {
         isSlideMovies={movieCardIsSliding}
         isSlideSeries={seriesCardIsSliding}
         onFast={fastCard}
+        onLive={liveCard}
         onWatchlist={handleWatchlist}
         watchlist={watchlist}
       />

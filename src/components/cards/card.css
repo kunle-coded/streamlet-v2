@@ -130,6 +130,7 @@
   background: var(--black-darkest);
   border: 1px solid var(--black-dark);
   border-radius: 30px;
+  font-size: var(--font-sm);
 }
 
 .wide-card-title h3 {

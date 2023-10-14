@@ -34,6 +34,7 @@ function Main({
   isSlideMovies,
   isSlideSeries,
   onFast,
+  onLive,
 }) {
   const [isLong, setIsLong] = useState(false);
   useEffect(() => {
@@ -334,17 +335,70 @@ function Main({
                 onSlideLeft={() => onSlideLeft("live")}
                 onSlideRight={() => onSlideRight("live")}
               />
-              {liveMovies.map(
-                (movie, i) =>
-                  i < 4 && (
-                    <Card
-                      movie={movie}
-                      key={movie.id}
-                      showNumber={false}
-                      width="100%"
-                    />
-                  )
-              )}
+              {onLive.page1 &&
+                liveMovies.map(
+                  (movie, i) =>
+                    i < 4 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onLive.page2 &&
+                liveMovies.map(
+                  (movie, i) =>
+                    i > 3 &&
+                    i < 8 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onLive.page3 &&
+                liveMovies.map(
+                  (movie, i) =>
+                    i > 7 &&
+                    i < 12 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onLive.page4 &&
+                liveMovies.map(
+                  (movie, i) =>
+                    i > 11 &&
+                    i < 16 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onLive.page5 &&
+                liveMovies.map(
+                  (movie, i) =>
+                    i > 15 &&
+                    i < 20 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
             </div>
           </div>
         </div>
