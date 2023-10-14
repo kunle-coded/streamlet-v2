@@ -15,6 +15,7 @@ import WideCard from "../cards/WideCard";
 import VideoPlayer from "../video_player/VideoPlayer";
 
 function Main({
+  movies,
   trending,
   active,
   series,
@@ -27,17 +28,11 @@ function Main({
   onSlideLeft,
   isSlidePoster,
   isSlideCard,
+  isSlideMovies,
+  isSlideSeries,
 }) {
   const [isLong, setIsLong] = useState(false);
   useEffect(() => {
-    let activePosterMovie = {};
-
-    trending.forEach((movie, index) => {
-      if (index < 1) {
-        activePosterMovie = movie;
-      }
-    });
-
     if (active.title) {
       const titleCount = active.title.length;
       if (titleCount > 21) {
@@ -46,7 +41,6 @@ function Main({
         setIsLong(false);
       }
     }
-    console.log(isLong);
   }, [trending, active]);
 
   // set active poster
@@ -198,13 +192,27 @@ function Main({
         </div>
       </Section>
 
-      <Section title="Movies" arrowTop="0px" slide={true}>
-        {popular.map((movie) => (
+      <Section
+        title="Movies"
+        arrowTop="0px"
+        slide={true}
+        isSlideMovies={isSlideMovies}
+        onSlideRight={() => onSlideRight("movies")}
+        onSlideLeft={() => onSlideLeft("movies")}
+      >
+        {movies.map((movie) => (
           <BigCard movie={movie} key={movie.id} />
         ))}
       </Section>
 
-      <Section title="Series" arrowTop="0%" slide={true}>
+      <Section
+        title="Series"
+        arrowTop="0%"
+        slide={true}
+        isSlideSeries={isSlideSeries}
+        onSlideRight={() => onSlideRight("series")}
+        onSlideLeft={() => onSlideLeft("series")}
+      >
         {series.map((movie) => (
           <BigCard movie={movie} key={movie.id} />
         ))}

@@ -26,8 +26,11 @@ function App() {
   const [activePoster, setActivePoster] = useState({});
   const [posterIsSliding, setPosterIsSliding] = useState(false);
   const [cardIsSliding, setCardIsSliding] = useState(false);
+  const [movieCardIsSliding, setMovieCardIsSliding] = useState(false);
+  const [seriesCardIsSliding, setSeriesCardIsSliding] = useState(false);
   const [currentPoster, setCurrentPoster] = useState(0);
   const [currentCard, setCurrentCard] = useState(0);
+  const [currentMovie, setCurrentMovie] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
@@ -138,12 +141,6 @@ function App() {
     }
   }
 
-  function handleSlider(e) {
-    // const firstElement = e[0];
-    // firstElement.style.transform = "translateX(-110%)";
-    console.log("slider button clicked", e);
-  }
-
   //   Next slide
   function handleNextSlide(stateName) {
     setUpdate((update) => update + 1);
@@ -197,10 +194,25 @@ function App() {
       }
     }
 
+    // next button for movies section
+    if (stateName === "movies") {
+      setMovieCardIsSliding(true);
+      let firstEl = [];
+      movies.forEach((movie, index) => {
+        if (index === 0) {
+          firstEl.push(movie);
+        }
+      });
+
+      setMovies((movies) => movies.filter((movie, index) => index >= 1));
+
+      if (firstEl.length > 0) {
+        setMovies((movies) => [...movies, ...firstEl]);
+      }
+    }
+
     const totalSlides = trending.length - 1;
-
     setCurrentPoster((slide) => slide + 1);
-
     if (totalSlides === currentPoster) {
       setPosterIsSliding(false);
       setCurrentPoster(0);
@@ -208,14 +220,20 @@ function App() {
 
     const totalPopular = popular.length - 1;
     setCurrentCard((slide) => slide + 1);
-
     if (totalPopular === currentCard) {
       setCardIsSliding(false);
       setCurrentCard(0);
     }
+
+    const totalMovies = movies.length - 1;
+    setCurrentMovie((slide) => slide + 1);
+    if (totalMovies === currentMovie) {
+      setMovieCardIsSliding(false);
+      setCurrentMovie(0);
+    }
   }
 
-  // Previuos slide
+  // Previous slide handler
   const handlePrevSlide = (stateName) => {
     // New release section
     if (stateName === "trending") {
@@ -256,6 +274,26 @@ function App() {
         setPopular((popular) => [...lastEl, ...popular]);
       }
     }
+
+    // movies section
+    if (stateName === "movies") {
+      let lastEl = [];
+      const dataLength = movies.length - 1;
+
+      movies.forEach((movie, index) => {
+        if (index === dataLength) {
+          lastEl.push(movie);
+        }
+      });
+
+      setMovies((movies) =>
+        movies.filter((movie, index) => index < dataLength)
+      );
+
+      if (lastEl.length > 0) {
+        setMovies((movies) => [...lastEl, ...movies]);
+      }
+    }
   };
 
   return (
@@ -269,16 +307,18 @@ function App() {
         />
       </Header>
       <Main
+        movies={movies}
         trending={trending}
         active={activePoster}
         series={series}
         popular={popular}
         featured={featured}
-        onSlide={handleSlider}
         onSlideRight={handleNextSlide}
         onSlideLeft={handlePrevSlide}
         isSlidePoster={posterIsSliding}
         isSlideCard={cardIsSliding}
+        isSlideMovies={movieCardIsSliding}
+        isSlideSeries={seriesCardIsSliding}
         onWatchlist={handleWatchlist}
         watchlist={watchlist}
       />

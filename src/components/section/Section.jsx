@@ -18,6 +18,8 @@ function Section({
   slide = false,
   isSlide = false,
   isSlideCard = false,
+  isSlideMovies = false,
+  isSlideSeries = false,
   onSlideRight,
   onSlideLeft,
   children,
@@ -37,7 +39,7 @@ function Section({
     marginRight: useBackground ? "-70px" : "",
     width: useBackground ? "calc(100% + 140px)" : "",
     background: useBackground
-      ? `linear-gradient(to right, rgba(13, 12, 15, 0.85), transparent), linear-gradient(0deg, #0d0c0f, transparent 50%, #0d0c0f), url(https://image.tmdb.org/t/p/w1280/${backgroundImage})`
+      ? `linear-gradient(to left, rgba(13, 12, 15, 1), transparent), linear-gradient(to right, rgba(13, 12, 15, 0.85), transparent), linear-gradient(0deg, #0d0c0f, transparent 50%, #0d0c0f), url(https://image.tmdb.org/t/p/w1280/${backgroundImage})`
       : "none",
   };
 
@@ -54,14 +56,15 @@ function Section({
         className={`section-content ${slide ? "sliding-card" : ""}`}
         style={sectionContentStyle}
       >
-        {slide && (isSlide || isSlideCard) && (
-          <LeftArrow
-            slide={true}
-            btnTop={btnTop}
-            left={arrowLeft}
-            onClick={onSlideLeft}
-          />
-        )}
+        {slide &&
+          (isSlide || isSlideCard || isSlideMovies || isSlideSeries) && (
+            <LeftArrow
+              slide={true}
+              btnTop={btnTop}
+              left={arrowLeft}
+              onClick={onSlideLeft}
+            />
+          )}
         {children}
         {slide && (
           <RightArrow
