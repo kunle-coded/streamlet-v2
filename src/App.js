@@ -23,6 +23,8 @@ function App() {
   const [trending, setTrending] = useState([]);
   const [featured, setFeatured] = useState([]);
   const [moviesOnAwards, setMoviesOnAwards] = useState([]);
+  const [fast, setFast] = useState([]);
+  const [live, setLive] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [activePoster, setActivePoster] = useState({});
   const [posterIsSliding, setPosterIsSliding] = useState(false);
@@ -33,10 +35,19 @@ function App() {
   const [currentCard, setCurrentCard] = useState(0);
   const [currentMovie, setCurrentMovie] = useState(0);
   const [currentSerie, setCurrentSerie] = useState(0);
+  const [fastCard, setFastCard] = useState({
+    page1: true,
+    page2: false,
+    page3: false,
+    page4: false,
+    page5: false,
+    page6: false,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [login, setLogin] = useState(true);
   const [update, setUpdate] = useState(0);
+  const [fastCounter, setFastCounter] = useState(4);
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -60,6 +71,7 @@ function App() {
       fetchMovies("series", setSeries);
       fetchMovies("popular", setPopular);
       fetchMovies("trending", setTrending);
+      fetchMovies("live", setLive);
     }
   }, [login]);
 
@@ -103,7 +115,7 @@ function App() {
     });
     setFeatured((prevFeatured) => [...moviesFeatured]);
 
-    // Add movies to featured state
+    // Add movies to awards state
     const moviesAward = [];
 
     movies.forEach((movie) => {
@@ -114,8 +126,24 @@ function App() {
     });
     setMoviesOnAwards((prevAward) => [...prevAward, ...moviesAward]);
 
-    // Add counter prop to popular movies data
+    // Add movies to fast state
+    const fastMovies = [];
 
+    movies.forEach((movie) => {
+      if (
+        movie.genres &&
+        !fast.some((fastMovie) => fastMovie.name === movie.name)
+      ) {
+        const movieGenres = movie.genres;
+
+        if (movieGenres.includes("Thriller")) {
+          fastMovies.push(movie);
+        }
+      }
+    });
+    setFast((prevFast) => [...prevFast, ...fastMovies]);
+
+    // Add counter prop to popular movies data
     const modifiedPopular = [];
     popular.forEach((movie, index) => {
       const updatedPopular = { ...movie };
@@ -152,6 +180,88 @@ function App() {
       setWatchlist((movies) => movies.filter((movie) => movie._id !== mov._id));
     }
   }
+
+  useEffect(() => {
+    const updateFastPage = () => {
+      // page 1
+      if (fastCounter <= 4) {
+        setFastCard((prevState) => ({
+          ...prevState,
+          page1: true,
+          page2: false,
+          page3: false,
+          page4: false,
+          page5: false,
+          page6: false,
+        }));
+      }
+
+      // page 2
+      if (fastCounter > 4 && fastCounter <= 8) {
+        setFastCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: true,
+          page3: false,
+          page4: false,
+          page5: false,
+          page6: false,
+        }));
+      }
+
+      // page 3
+      if (fastCounter > 8 && fastCounter <= 12) {
+        setFastCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: false,
+          page3: true,
+          page4: false,
+          page5: false,
+          page6: false,
+        }));
+      }
+
+      // page 4
+      if (fastCounter > 12 && fastCounter <= 16) {
+        setFastCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: false,
+          page3: false,
+          page4: true,
+          page5: false,
+          page6: false,
+        }));
+      }
+      // page 5
+      if (fastCounter > 16 && fastCounter <= 20) {
+        setFastCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: false,
+          page3: false,
+          page4: false,
+          page5: true,
+          page6: false,
+        }));
+      }
+      // page 6
+      if (fastCounter > 20 && fastCounter <= 24) {
+        setFastCard((prevState) => ({
+          ...prevState,
+          page1: false,
+          page2: false,
+          page3: false,
+          page4: false,
+          page5: false,
+          page6: true,
+        }));
+      }
+    };
+
+    updateFastPage();
+  }, [fastCounter]);
 
   //   Next button slider handler
   function handleNextSlide(stateName) {
@@ -240,7 +350,7 @@ function App() {
       }
     }
 
-    // next button for movies section
+    // next button for awards section
     if (stateName === "awards") {
       let firstEl = [];
       moviesOnAwards.forEach((movie, index) => {
@@ -255,6 +365,17 @@ function App() {
 
       if (firstEl.length > 0) {
         setMoviesOnAwards((movies) => [...movies, ...firstEl]);
+      }
+    }
+
+    // next button for fast section
+    if (stateName === "fast") {
+      const fastLength = fast.length;
+
+      setFastCounter((count) => count + 4);
+
+      if (fastCounter === fastLength) {
+        setFastCounter(4);
       }
     }
 
@@ -388,6 +509,37 @@ function App() {
         setMoviesOnAwards((movies) => [...lastEl, ...movies]);
       }
     }
+
+    // fast section
+    if (stateName === "fast") {
+      const fastLength = fast.length;
+
+      setFastCounter((count) => count - 4);
+
+      if (fastCounter === 4) {
+        setFastCounter(24);
+      }
+    }
+
+    // live section
+    if (stateName === "live") {
+      let lastEl = [];
+      const dataLength = moviesOnAwards.length - 1;
+
+      // moviesOnAwards.forEach((movie, index) => {
+      //   if (index === dataLength) {
+      //     lastEl.push(movie);
+      //   }
+      // });
+
+      // setMoviesOnAwards((movies) =>
+      //   movies.filter((movie, index) => index < dataLength)
+      // );
+
+      // if (lastEl.length > 0) {
+      //   setMoviesOnAwards((movies) => [...lastEl, ...movies]);
+      // }
+    }
   };
 
   return (
@@ -408,12 +560,15 @@ function App() {
         popular={popular}
         featured={featured}
         awards={moviesOnAwards}
+        fastMovies={fast}
+        liveMovies={live}
         onSlideRight={handleNextSlide}
         onSlideLeft={handlePrevSlide}
         isSlidePoster={posterIsSliding}
         isSlideCard={cardIsSliding}
         isSlideMovies={movieCardIsSliding}
         isSlideSeries={seriesCardIsSliding}
+        onFast={fastCard}
         onWatchlist={handleWatchlist}
         watchlist={watchlist}
       />

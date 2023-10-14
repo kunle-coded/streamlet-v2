@@ -22,6 +22,8 @@ function Main({
   popular,
   featured,
   awards,
+  fastMovies,
+  liveMovies,
   watchlist,
   onWatchlist,
   onSlide,
@@ -31,6 +33,7 @@ function Main({
   isSlideCard,
   isSlideMovies,
   isSlideSeries,
+  onFast,
 }) {
   const [isLong, setIsLong] = useState(false);
   useEffect(() => {
@@ -219,7 +222,7 @@ function Main({
         ))}
       </Section>
 
-      <Section height="720px">
+      <Section height="740px">
         <div className="movie-awards-section">
           <div className="movie-on-award">
             <Title
@@ -241,22 +244,97 @@ function Main({
           </div>
           <div className="fast-live">
             <div className="award-fast">
-              <Title title="Fast" />
-              {popular.map(
-                (movie, i) =>
-                  i < 4 && (
-                    <Card
-                      movie={movie}
-                      key={movie.id}
-                      showNumber={false}
-                      width="100%"
-                    />
-                  )
-              )}
+              <Title
+                title="Fast"
+                onSlideLeft={() => onSlideLeft("fast")}
+                onSlideRight={() => onSlideRight("fast")}
+              />
+              {onFast.page1 &&
+                fastMovies.map(
+                  (movie, i) =>
+                    i < 4 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onFast.page2 &&
+                fastMovies.map(
+                  (movie, i) =>
+                    i > 3 &&
+                    i < 8 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onFast.page3 &&
+                fastMovies.map(
+                  (movie, i) =>
+                    i > 7 &&
+                    i < 12 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onFast.page4 &&
+                fastMovies.map(
+                  (movie, i) =>
+                    i > 11 &&
+                    i < 16 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onFast.page5 &&
+                fastMovies.map(
+                  (movie, i) =>
+                    i > 15 &&
+                    i < 20 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
+              {onFast.page6 &&
+                fastMovies.map(
+                  (movie, i) =>
+                    i > 19 &&
+                    i < 24 && (
+                      <Card
+                        movie={movie}
+                        key={movie.id}
+                        showNumber={false}
+                        width="100%"
+                      />
+                    )
+                )}
             </div>
             <div className="award-live">
-              <Title title="Live" live={true} />
-              {trending.map(
+              <Title
+                title="Live"
+                live={true}
+                onSlideLeft={() => onSlideLeft("live")}
+                onSlideRight={() => onSlideRight("live")}
+              />
+              {liveMovies.map(
                 (movie, i) =>
                   i < 4 && (
                     <Card
