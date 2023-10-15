@@ -19,3 +19,6 @@ export { default as Title } from "./title/Title";
 export { default as WideCard } from "./cards/WideCard";
 export { default as Footer } from "./footer/Footer";
 export { default as VideoPlayer } from "./video_player/VideoPlayer";
+export { default as Loader } from "./loader/Loader";
+export { default as Login } from "./login/Login";
+export { default as Form } from "./forms/Form";

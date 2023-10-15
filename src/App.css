@@ -153,3 +153,64 @@ a:focus {
   gap: 20px;
   position: relative;
 }
+
+/* Login page */
+.login-modal {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgb(0, 0, 0, 0.8);
+  z-index: 20;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 490px;
+  width: 500px;
+  background-color: var(--black-darker);
+  border: 1px solid var(--black-dark);
+  border-radius: 15px;
+  padding: 40px;
+  z-index: 21;
+}
+
+/* Loader */
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 100vh;
+}
+
+.preloader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--accent-color);
+  border-top: 5px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

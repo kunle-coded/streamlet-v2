@@ -5,6 +5,8 @@ import {
   Footer,
   Genre,
   Header,
+  Loader,
+  Login,
   Main,
   Navbar,
   Rating,
@@ -53,10 +55,13 @@ function App() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [login, setLogin] = useState(true);
   const [update, setUpdate] = useState(0);
   const [fastCounter, setFastCounter] = useState(4);
   const [liveCounter, setLiveCounter] = useState(4);
+  const [login, setLogin] = useState(false);
+  const [isModal, setModal] = useState(true);
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -636,37 +641,68 @@ function App() {
     }
   };
 
+  // form handler function
+  function handleEmail(input) {
+    setUserEmail(input);
+  }
+  function handlePassword(input) {
+    setUserPassword(input);
+  }
+
+  if (isModal) {
+    return (
+      <div className="login-modal">
+        <Header>
+          <Navbar />
+        </Header>
+
+        <Login
+          onEmailInput={handleEmail}
+          email={userEmail}
+          onPasswordInput={handlePassword}
+          password={userPassword}
+        />
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Header>
         <Navbar />
-        <Slider
-          slides={slideMovies}
+        {login && (
+          <Slider
+            slides={slideMovies}
+            onWatchlist={handleWatchlist}
+            watchlist={watchlist}
+          />
+        )}
+      </Header>
+
+      {login && (
+        <Main
+          movies={movies}
+          trending={trending}
+          active={activePoster}
+          series={series}
+          popular={popular}
+          featured={featured}
+          awards={moviesOnAwards}
+          fastMovies={fast}
+          liveMovies={live}
+          onSlideRight={handleNextSlide}
+          onSlideLeft={handlePrevSlide}
+          isSlidePoster={posterIsSliding}
+          isSlideCard={cardIsSliding}
+          isSlideMovies={movieCardIsSliding}
+          isSlideSeries={seriesCardIsSliding}
+          onFast={fastCard}
+          onLive={liveCard}
           onWatchlist={handleWatchlist}
           watchlist={watchlist}
         />
-      </Header>
-      <Main
-        movies={movies}
-        trending={trending}
-        active={activePoster}
-        series={series}
-        popular={popular}
-        featured={featured}
-        awards={moviesOnAwards}
-        fastMovies={fast}
-        liveMovies={live}
-        onSlideRight={handleNextSlide}
-        onSlideLeft={handlePrevSlide}
-        isSlidePoster={posterIsSliding}
-        isSlideCard={cardIsSliding}
-        isSlideMovies={movieCardIsSliding}
-        isSlideSeries={seriesCardIsSliding}
-        onFast={fastCard}
-        onLive={liveCard}
-        onWatchlist={handleWatchlist}
-        watchlist={watchlist}
-      />
+      )}
       <Footer />
     </div>
   );

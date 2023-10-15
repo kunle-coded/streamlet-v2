@@ -9,6 +9,8 @@ function Buttons({
   border = true,
   borderRadius = "8px",
   color = "#fff",
+  fontWeight = "normal",
+  padding = "0",
   onClick,
   bookmark = false,
   play = false,
@@ -21,6 +23,8 @@ function Buttons({
     border: border ? `1px solid ${color}` : "none",
     borderRadius: borderRadius,
     color: color,
+    fontWeight: fontWeight,
+    padding: padding,
   };
 
   return (
