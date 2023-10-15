@@ -1,18 +1,49 @@
 import React from "react";
 import Loader from "../loader/Loader";
-import Form from "../forms/Form";
+import LoginForm from "../forms/LoginForm";
+import SignupForm from "../forms/SignupForm";
 
-function Login({ onEmailInput, email, onPasswordInput, password }) {
+function Login({
+  formHeight = "490px",
+  onFormInput,
+  username,
+  email,
+  password,
+  confirmPassword,
+  onCloseModal,
+  login,
+  signup,
+  onFormSubmit,
+}) {
+  const formStyle = {
+    height: formHeight,
+  };
   return (
     <main className="login-page">
-      <div className="form-container">
-        <Form
-          onEmailInput={onEmailInput}
-          onPasswordInput={onPasswordInput}
-          email={email}
-          password={password}
-        />
-      </div>
+      {login && (
+        <div className="form-container" style={formStyle}>
+          <LoginForm
+            onFormInput={onFormInput}
+            email={email}
+            password={password}
+            onCloseModal={onCloseModal}
+            onFormSubmit={onFormSubmit}
+          />
+        </div>
+      )}
+      {signup && (
+        <div className="form-container" style={formStyle}>
+          <SignupForm
+            onFormInput={onFormInput}
+            username={username}
+            email={email}
+            password={password}
+            confirmPassword={confirmPassword}
+            onFormSubmit={onFormSubmit}
+            onCloseModal={onCloseModal}
+          />
+        </div>
+      )}
     </main>
   );
 }

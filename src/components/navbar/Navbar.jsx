@@ -3,15 +3,8 @@ import "./navbar.css";
 import logo from "../../assets/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
 
-function Navbar() {
+function Navbar({ onLogin, onSignup }) {
   const [isExpanded, setExpanded] = useState(false);
-
-  function handleSignup() {
-    console.log("sign up");
-  }
-  function handleLogin() {
-    console.log("login");
-  }
 
   return (
     <nav className="navbar">
@@ -70,13 +63,13 @@ function Navbar() {
           </svg>
         </div>
         <div className="login-buttons">
-          <Buttons onClick={handleSignup}>Sign up</Buttons>
+          <Buttons onClick={onSignup}>Sign up</Buttons>
           <Buttons
             background="#00925d"
             border={false}
             borderRadius="6px"
             color="#fff"
-            onClick={handleLogin}
+            onClick={onLogin}
           >
             Login
           </Buttons>

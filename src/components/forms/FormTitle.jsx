@@ -17,9 +17,10 @@ function FormTitle({ onClose, children }) {
           background="#0d0c0f"
           height="inherit"
           width="max-content"
-          border={false}
+          border={true}
+          borderColor="#28262d"
           borderRadius="6px"
-          padding="4px 6px"
+          padding="10px 15px"
           color="#fff"
           onClick={onClose}
         >

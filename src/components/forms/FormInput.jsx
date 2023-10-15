@@ -10,20 +10,26 @@ function FormInput({ onInput, formValue = "", children }) {
     setShowPassword((prevState) => !prevState);
   }
 
-  const password = children === "Password" ? true : false;
+  const password =
+    children === "Password"
+      ? true
+      : children === "Confirm password"
+      ? true
+      : false;
+
   return (
     <div className="form-input">
       <label>{children}</label>
       <div className={`input-field ${isFocused ? "focus" : ""}`}>
         <input
-          type={!showPassword ? "password" : "text"}
+          type={!password ? "text" : !showPassword ? "password" : "text"}
           name={children}
           value={formValue}
           className="form-input-field"
           placeholder={`${children}`}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          onChange={(e) => onInput(e.target.value)}
+          onChange={(e) => onInput(e.target)}
         />
         {password && (
           <div

@@ -3,16 +3,23 @@ import Buttons from "../buttons/Buttons";
 import FormTitle from "./FormTitle";
 import FormInput from "./FormInput";
 
-function Form({ onLogin, onEmailInput, email, onPasswordInput, password }) {
+function LoginForm({
+  onLogin,
+  onFormInput,
+  email,
+  password,
+  onCloseModal,
+  onFormSubmit,
+}) {
   return (
-    <form className="form-user">
-      <FormTitle>Login to your account</FormTitle>
+    <form className="form-user" name="login" onSubmit={onFormSubmit}>
+      <FormTitle onClose={onCloseModal}>Login to your account</FormTitle>
 
       <div className="form-inputs-area">
-        <FormInput onInput={onEmailInput} formValue={email}>
+        <FormInput onInput={onFormInput} formValue={email}>
           Email
         </FormInput>
-        <FormInput onInput={onPasswordInput} formValue={password}>
+        <FormInput onInput={onFormInput} formValue={password}>
           Password
         </FormInput>
       </div>
@@ -26,7 +33,6 @@ function Form({ onLogin, onEmailInput, email, onPasswordInput, password }) {
           borderRadius="10px"
           color="#9ca4ab"
           fontWeight="800"
-          onClick={onLogin}
         >
           Login
         </Buttons>
@@ -38,4 +44,4 @@ function Form({ onLogin, onEmailInput, email, onPasswordInput, password }) {
   );
 }
 
-export default Form;
+export default LoginForm;

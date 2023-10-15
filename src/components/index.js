@@ -21,4 +21,4 @@ export { default as Footer } from "./footer/Footer";
 export { default as VideoPlayer } from "./video_player/VideoPlayer";
 export { default as Loader } from "./loader/Loader";
 export { default as Login } from "./login/Login";
-export { default as Form } from "./forms/Form";
+export { default as LoginForm } from "./forms/LoginForm";

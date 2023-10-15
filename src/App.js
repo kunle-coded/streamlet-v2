@@ -58,10 +58,14 @@ function App() {
   const [update, setUpdate] = useState(0);
   const [fastCounter, setFastCounter] = useState(4);
   const [liveCounter, setLiveCounter] = useState(4);
-  const [login, setLogin] = useState(false);
-  const [isModal, setModal] = useState(true);
+  const [login, setLogin] = useState(true);
+  const [isModal, setIsModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
+  const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -641,12 +645,67 @@ function App() {
     }
   };
 
-  // form handler function
-  function handleEmail(input) {
-    setUserEmail(input);
+  // form handler functions
+  function handleForm(input) {
+    if (input.name === "Username") {
+      setUsername(input.value);
+    }
+    if (input.name === "Email") {
+      setUserEmail(input.value);
+    }
+    if (input.name === "Password") {
+      setUserPassword(input.value);
+    }
+    if (input.name === "Confirm password") {
+      setConfirmPassword(input.value);
+    }
   }
-  function handlePassword(input) {
-    setUserPassword(input);
+
+  function closeModal(e) {
+    e.preventDefault();
+    setIsLogin(false);
+    setIsSignup(false);
+    setIsModal(false);
+  }
+
+  function openLoginModal(e) {
+    e.preventDefault();
+    setIsModal(true);
+    setIsLogin(true);
+  }
+  function openSignupModal(e) {
+    e.preventDefault();
+    setIsModal(true);
+    setIsSignup(true);
+  }
+
+  const formData = {
+    username: username,
+    email: userEmail,
+    password: userPassword,
+    confirmPassword: confirmPassword,
+  };
+
+  const postOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  };
+
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const formName = e.target.name;
+
+    if (formName === "signup") {
+      const res = await fetch("/signup", postOptions);
+      const data = await res.json();
+
+      console.log("signup form submitted!", data);
+    } else if (formName === "login") {
+      console.log("login form submitted!", e.target.name);
+    }
   }
 
   if (isModal) {
@@ -656,12 +715,29 @@ function App() {
           <Navbar />
         </Header>
 
-        <Login
-          onEmailInput={handleEmail}
-          email={userEmail}
-          onPasswordInput={handlePassword}
-          password={userPassword}
-        />
+        {isLogin && (
+          <Login
+            onFormInput={handleForm}
+            email={userEmail}
+            password={userPassword}
+            onCloseModal={closeModal}
+            login={isLogin}
+            onFormSubmit={handleFormSubmit}
+          />
+        )}
+        {isSignup && (
+          <Login
+            onFormInput={handleForm}
+            username={username}
+            email={userEmail}
+            password={userPassword}
+            confirmPassword={confirmPassword}
+            onCloseModal={closeModal}
+            signup={isSignup}
+            formHeight="690px"
+            onFormSubmit={handleFormSubmit}
+          />
+        )}
         <Footer />
       </div>
     );
@@ -670,39 +746,35 @@ function App() {
   return (
     <div>
       <Header>
-        <Navbar />
-        {login && (
-          <Slider
-            slides={slideMovies}
-            onWatchlist={handleWatchlist}
-            watchlist={watchlist}
-          />
-        )}
-      </Header>
-
-      {login && (
-        <Main
-          movies={movies}
-          trending={trending}
-          active={activePoster}
-          series={series}
-          popular={popular}
-          featured={featured}
-          awards={moviesOnAwards}
-          fastMovies={fast}
-          liveMovies={live}
-          onSlideRight={handleNextSlide}
-          onSlideLeft={handlePrevSlide}
-          isSlidePoster={posterIsSliding}
-          isSlideCard={cardIsSliding}
-          isSlideMovies={movieCardIsSliding}
-          isSlideSeries={seriesCardIsSliding}
-          onFast={fastCard}
-          onLive={liveCard}
+        <Navbar onLogin={openLoginModal} onSignup={openSignupModal} />
+        <Slider
+          slides={slideMovies}
           onWatchlist={handleWatchlist}
           watchlist={watchlist}
         />
-      )}
+      </Header>
+
+      <Main
+        movies={movies}
+        trending={trending}
+        active={activePoster}
+        series={series}
+        popular={popular}
+        featured={featured}
+        awards={moviesOnAwards}
+        fastMovies={fast}
+        liveMovies={live}
+        onSlideRight={handleNextSlide}
+        onSlideLeft={handlePrevSlide}
+        isSlidePoster={posterIsSliding}
+        isSlideCard={cardIsSliding}
+        isSlideMovies={movieCardIsSliding}
+        isSlideSeries={seriesCardIsSliding}
+        onFast={fastCard}
+        onLive={liveCard}
+        onWatchlist={handleWatchlist}
+        watchlist={watchlist}
+      />
       <Footer />
     </div>
   );

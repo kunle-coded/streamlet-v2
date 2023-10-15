@@ -9,18 +9,20 @@ function Buttons({
   border = true,
   borderRadius = "8px",
   color = "#fff",
+  borderColor = "",
   fontWeight = "normal",
   padding = "0",
   onClick,
   bookmark = false,
   play = false,
+  disabled = false,
   children,
 }) {
   const buttonStyle = {
     width: width,
     height: height,
     background: background,
-    border: border ? `1px solid ${color}` : "none",
+    border: border ? `1px solid ${borderColor ? borderColor : color}` : "none",
     borderRadius: borderRadius,
     color: color,
     fontWeight: fontWeight,
@@ -28,7 +30,12 @@ function Buttons({
   };
 
   return (
-    <button className="global-btn" style={buttonStyle} onClick={onClick}>
+    <button
+      className="global-btn"
+      disabled={disabled}
+      style={buttonStyle}
+      onClick={onClick}
+    >
       {play && (
         <span>
           <svg
