@@ -6,6 +6,7 @@ dotenv.config();
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import genres from "./genres.js";
+import auth from "./middleware/auth.js";
 
 mongoose.connect("mongodb://localhost:27017/streamletDB", {
   useNewUrlParser: true,
@@ -109,6 +110,7 @@ const userSchema = {
   username: String,
   email: String,
   password: String,
+  token: String,
 };
 
 const Movies = mongoose.model("Movies", moviesSchema);
@@ -333,38 +335,29 @@ app.post("/signup", async function (req, res) {
     const { username, email, password } = req.body;
 
     if (!(username && email && password)) {
-      res.status(400);
+      // If any required data is missing, send a 400 Bad Request response.
+      return res.status(400).send({
+        message: "Incomplete data. Please provide all required information.",
+      });
     }
 
-    let oldUser;
+    const existingUser = await Users.findOne({ email });
 
-    Users.findOne({ email })
-      .then((user) => {
-        oldUser = user;
-        res.status(409).send({ message: "User Already Exist. Please Login" });
-        console.log("user exists", user);
-      })
-      .catch((err) => {
-        console.log(err);
+    if (existingUser) {
+      // If a user with the same email exists, send a 409 Conflict response.
+      return res.status(409).send({
+        message: "User Already Exist. Please Login",
+        userEmail: existingUser.email,
       });
-
-    if (oldUser) {
-      res.send("User Already Exist. Please Login");
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
 
-    const user = {
+    const newUser = new Users({
       username,
       email: email.toLowerCase(),
       password: encryptedPassword,
-    };
-
-    const newUser = new Users(user);
-    if (!oldUser) {
-      newUser.save();
-      console.log(newUser);
-    }
+    });
 
     const token = jwt.sign(
       { user_id: newUser._id, email },
@@ -373,10 +366,50 @@ app.post("/signup", async function (req, res) {
         expiresIn: "2h",
       }
     );
-    user.token = token;
+
+    newUser.token = token;
+
+    await newUser.save();
+
+    return res.status(201).json(newUser);
   } catch (err) {
     console.log(err);
   }
+});
+
+app.post("/login", async function (req, res) {
+  try {
+    const { email, password } = req.body;
+
+    // Validate user input
+    if (!(email && password)) {
+      res.status(400).send("All input is required");
+    }
+
+    const user = await Users.findOne({ email });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const token = jwt.sign(
+        { user_id: user._id, email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "1h",
+        }
+      );
+
+      user.token = token;
+
+      return res.status(201).send("login successfull");
+      console.log("user credentials correct", user);
+    }
+    res.status(400).send("Invalid email or password");
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get("/home", auth, (req, res) => {
+  res.status(200).send("You are signed in");
 });
 
 const portNum = process.env.PORT;
