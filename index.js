@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import genres from "./genres.js";
 
 mongoose.connect("mongodb://localhost:27017/streamletDB", {
@@ -85,14 +87,41 @@ const trendingSchema = new mongoose.Schema({
   vote_count: Number,
 });
 
+const liveSchema = new mongoose.Schema({
+  adult: Boolean,
+  backdrop_path: String,
+  genre_ids: Array,
+  genres: Array,
+  id: Number,
+  original_language: String,
+  original_title: String,
+  overview: String,
+  popularity: Number,
+  poster_path: String,
+  release_date: String,
+  title: String,
+  video: Boolean,
+  vote_average: Number,
+  vote_count: Number,
+});
+
+const userSchema = {
+  username: String,
+  email: String,
+  password: String,
+};
+
 const Movies = mongoose.model("Movies", moviesSchema);
 const Series = mongoose.model("Series", seriesSchema);
 const Populars = mongoose.model("Populars", popularSchema);
 const Trendings = mongoose.model("Trending", trendingSchema);
+const Lives = mongoose.model("Lives", liveSchema);
+const Users = mongoose.model("Users", userSchema);
 
 const app = express();
 
 app.use(express.static("public"));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Fetch movies from API
@@ -107,6 +136,9 @@ const trendingMoviesUrl =
 
 const popularMoviesUrl =
   "https://api.themoviedb.org/3/movie/popular?language=en-US&page=2";
+
+const liveMoviesUrl =
+  "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1 ";
 
 const options = {
   method: "GET",
@@ -149,6 +181,8 @@ async function addMoviesToDatabase(type) {
     movieData = await fetchMovies(popularMoviesUrl);
   } else if (type === "trending") {
     movieData = await fetchMovies(trendingMoviesUrl);
+  } else if (type === "live") {
+    movieData = await fetchMovies(liveMoviesUrl);
   }
 
   const updatedData = movieData.map((movie) => {
@@ -180,7 +214,7 @@ async function addMoviesToDatabase(type) {
         .then((result) => {
           if (!result) {
             const dataMovie = new Movies(movie);
-            dataMovie.save();
+            // dataMovie.save();
           }
         })
         .catch((err) => {
@@ -192,7 +226,7 @@ async function addMoviesToDatabase(type) {
         .then((result) => {
           if (!result) {
             const dataMovie = new Series(movie);
-            dataMovie.save();
+            // dataMovie.save();
           }
         })
         .catch((err) => {
@@ -205,7 +239,7 @@ async function addMoviesToDatabase(type) {
           if (!result) {
             const dataMovie = new Populars(movie);
 
-            dataMovie.save();
+            // dataMovie.save();
           }
         })
         .catch((err) => {
@@ -218,6 +252,19 @@ async function addMoviesToDatabase(type) {
           if (!result) {
             const dataMovie = new Trendings(movie);
 
+            // dataMovie.save();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (type === "live") {
+      // Movies - check if movie already exists
+      Lives.findOne({ title: movieTitle })
+        .then((result) => {
+          if (!result) {
+            const dataMovie = new Lives(movie);
+
             dataMovie.save();
           }
         })
@@ -228,7 +275,7 @@ async function addMoviesToDatabase(type) {
   }
 }
 
-// await addMoviesToDatabase("series");
+// await addMoviesToDatabase("live");
 
 app.get("/movies", function (req, res) {
   const movies = Movies.find()
@@ -271,6 +318,69 @@ app.get("/trending", function (req, res) {
     });
 });
 
-app.listen("5000", () => {
-  console.log("Server started on port 5000");
+app.get("/live", function (req, res) {
+  const movies = Lives.find()
+    .then((movie) => {
+      res.send(movie);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/signup", async function (req, res) {
+  try {
+    const { username, email, password } = req.body;
+
+    if (!(username && email && password)) {
+      res.status(400);
+    }
+
+    let oldUser;
+
+    Users.findOne({ email })
+      .then((user) => {
+        oldUser = user;
+        res.status(409).send({ message: "User Already Exist. Please Login" });
+        console.log("user exists", user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (oldUser) {
+      res.send("User Already Exist. Please Login");
+    }
+
+    const encryptedPassword = await bcrypt.hash(password, 10);
+
+    const user = {
+      username,
+      email: email.toLowerCase(),
+      password: encryptedPassword,
+    };
+
+    const newUser = new Users(user);
+    if (!oldUser) {
+      newUser.save();
+      console.log(newUser);
+    }
+
+    const token = jwt.sign(
+      { user_id: newUser._id, email },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: "2h",
+      }
+    );
+    user.token = token;
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+const portNum = process.env.PORT;
+
+app.listen(portNum, () => {
+  console.log("Server started on port " + portNum);
 });
