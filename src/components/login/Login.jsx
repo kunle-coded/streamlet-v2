@@ -14,6 +14,7 @@ function Login({
   login,
   signup,
   onFormSubmit,
+  isUserExist,
 }) {
   const formStyle = {
     height: formHeight,
@@ -40,6 +41,7 @@ function Login({
             password={password}
             confirmPassword={confirmPassword}
             onFormSubmit={onFormSubmit}
+            isUserExist={isUserExist}
             onCloseModal={onCloseModal}
           />
         </div>

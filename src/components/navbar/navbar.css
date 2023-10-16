@@ -76,3 +76,25 @@
   align-items: center;
   gap: 10px;
 }
+.profile-buttons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-profile span {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

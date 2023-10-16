@@ -11,6 +11,7 @@ function SignupForm({
   username,
   confirmPassword,
   onFormSubmit,
+  isUserExist,
   onCloseModal,
 }) {
   const [checked, setChecked] = useState(false);
@@ -21,6 +22,7 @@ function SignupForm({
   useEffect(() => {
     if (!(username && email && password && confirmPassword)) {
       setIsDisabled(true);
+      setChecked(false);
     } else if (password !== confirmPassword) {
       // setIsDisabled(true);
       setMismatch(true);
@@ -41,6 +43,8 @@ function SignupForm({
       setChecked(false);
       setIsDisabledCheck(true);
     }
+
+    console.log("form submit", onFormSubmit);
   }
 
   return (
@@ -62,9 +66,19 @@ function SignupForm({
         <FormInput onInput={onFormInput} formValue={confirmPassword}>
           Confirm password
         </FormInput>
-        {misMatch && (
-          <span className="password-mismatch">Passwords do not match</span>
-        )}
+        <div className="signup-error-message">
+          <span className={`password-mismatch ${misMatch ? "mismatch" : ""}`}>
+            Passwords do not match
+          </span>
+
+          <span
+            className={`password-mismatch ${
+              isUserExist && !misMatch ? "mismatch" : ""
+            }`}
+          >
+            User Already Exist. Please Login
+          </span>
+        </div>
       </div>
       <div className="form-btn-area">
         <div className="form-terms-conditions">

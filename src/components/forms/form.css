@@ -87,11 +87,28 @@
   cursor: pointer;
 }
 
+.signup-error-message {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  background-color: aliceblue;
+  margin-top: 3px;
+  position: relative;
+}
+
 .password-mismatch {
   font-family: "Courier New", Courier, monospace;
   font-size: var(--font-xsm);
   color: var(--red-color);
-  margin-top: -5px;
+
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mismatch {
+  opacity: 1;
 }
 
 .form-btn-area {

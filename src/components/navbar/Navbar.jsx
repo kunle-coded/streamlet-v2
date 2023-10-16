@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import "./navbar.css";
 import logo from "../../assets/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
+import { ReactComponent as Bell } from "../../assets/icons/bell.svg";
+import { ReactComponent as UserProfile } from "../../assets/icons/user-icon.svg";
+import { ReactComponent as ArrowDown } from "../../assets/icons/arrow_down.svg";
 
-function Navbar({ onLogin, onSignup }) {
+function Navbar({ isLogin, onLogin, onSignup }) {
   const [isExpanded, setExpanded] = useState(false);
 
   return (
@@ -62,19 +65,35 @@ function Navbar({ onLogin, onSignup }) {
             />
           </svg>
         </div>
-        <div className="login-buttons">
-          <Buttons onClick={onSignup}>Sign up</Buttons>
-          <Buttons
-            background="#00925d"
-            border={false}
-            borderRadius="6px"
-            color="#fff"
-            onClick={onLogin}
-          >
-            Login
-          </Buttons>
-        </div>
-        <div className="profile-buttons"></div>
+        {!isLogin && (
+          <div className="login-buttons">
+            <Buttons onClick={onSignup}>Sign up</Buttons>
+            <Buttons
+              background="#00925d"
+              border={false}
+              borderRadius="6px"
+              color="#fff"
+              onClick={onLogin}
+            >
+              Login
+            </Buttons>
+          </div>
+        )}
+        {isLogin && (
+          <div className="profile-buttons">
+            <div className="notification">
+              <Bell />
+            </div>
+            <div className="user-profile">
+              <span>
+                <UserProfile />
+              </span>
+              <span>
+                <ArrowDown />
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

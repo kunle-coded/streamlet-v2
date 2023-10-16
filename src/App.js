@@ -58,7 +58,7 @@ function App() {
   const [update, setUpdate] = useState(0);
   const [fastCounter, setFastCounter] = useState(4);
   const [liveCounter, setLiveCounter] = useState(4);
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
@@ -66,7 +66,8 @@ function App() {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordMismatch, setPasswordMismatch] = useState(false);
+  const [userExist, setUserExist] = useState(false);
+  const [existingEmail, setExistingEmail] = useState("");
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -85,14 +86,12 @@ function App() {
   };
 
   useEffect(() => {
-    if (login) {
-      fetchMovies("movies", setMovies);
-      fetchMovies("series", setSeries);
-      fetchMovies("popular", setPopular);
-      fetchMovies("trending", setTrending);
-      fetchMovies("live", setLive);
-    }
-  }, [login]);
+    fetchMovies("movies", setMovies);
+    fetchMovies("series", setSeries);
+    fetchMovies("popular", setPopular);
+    fetchMovies("trending", setTrending);
+    fetchMovies("live", setLive);
+  }, []);
 
   useEffect(() => {
     // Add movies to state -- slideMovies
@@ -653,6 +652,9 @@ function App() {
     }
     if (input.name === "Email") {
       setUserEmail(input.value);
+      if (existingEmail !== userEmail) {
+        setUserExist(false);
+      }
     }
     if (input.name === "Password") {
       setUserPassword(input.value);
@@ -662,11 +664,11 @@ function App() {
     }
   }
 
-  function closeModal(e) {
-    e.preventDefault();
+  function closeModal() {
     setIsLogin(false);
     setIsSignup(false);
     setIsModal(false);
+    resetUserData();
   }
 
   function openLoginModal(e) {
@@ -700,6 +702,7 @@ function App() {
     setUsername("");
     setUserPassword("");
     setConfirmPassword("");
+    setUserExist(false);
   }
 
   async function handleFormSubmit(e) {
@@ -707,22 +710,60 @@ function App() {
     const formName = e.target.name;
 
     if (formName === "signup") {
+      if (!(username && userEmail && userPassword)) return;
+
       try {
         const res = await fetch("/signup", postOptions);
-        // if (!res.ok) {
-        //   throw new Error("Error submitting form");
-        // }
+
         const data = await res.json();
-        console.log(data.message);
-        if (res.status !== 409) {
+        console.log(data);
+        if (res.status === 409) {
+          setUserExist(true);
+          setExistingEmail(data.userEmail);
+        } else {
+          setUserExist(false);
           resetUserData();
         }
       } catch (err) {
         console.log(err);
       }
     } else if (formName === "login") {
-      console.log("login form submitted!", e.target.name);
+      try {
+        const res = await fetch("/login", postOptions);
+
+        if (res.status === 201) {
+          setLogin(true);
+          closeModal();
+          console.log("Scuccessfully logged in", login);
+        } else {
+          const error = await res.text();
+          setErrorMessage(error);
+          setLogin(false);
+          console.log("error", error);
+        }
+
+        const data = await res.text();
+        // console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
     }
+
+    // if (login) {
+    //   try {
+    //     const res = await fetch("/home");
+    //     // const data = await res.json();
+    //     console.log(res);
+    //     if (res.status === 409) {
+    //       setUserExist(true);
+    //     } else {
+    //       setUserExist(false);
+    //       resetUserData();
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
   }
 
   if (isModal) {
@@ -753,6 +794,7 @@ function App() {
             signup={isSignup}
             formHeight="690px"
             onFormSubmit={handleFormSubmit}
+            isUserExist={userExist}
           />
         )}
         <Footer />
@@ -763,7 +805,11 @@ function App() {
   return (
     <div>
       <Header>
-        <Navbar onLogin={openLoginModal} onSignup={openSignupModal} />
+        <Navbar
+          onLogin={openLoginModal}
+          onSignup={openSignupModal}
+          isLogin={login}
+        />
         <Slider
           slides={slideMovies}
           onWatchlist={handleWatchlist}
