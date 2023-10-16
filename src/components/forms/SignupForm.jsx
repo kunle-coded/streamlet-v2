@@ -15,20 +15,31 @@ function SignupForm({
 }) {
   const [checked, setChecked] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabledCheck, setIsDisabledCheck] = useState(true);
+  const [misMatch, setMismatch] = useState(false);
 
   useEffect(() => {
     if (!(username && email && password && confirmPassword)) {
       setIsDisabled(true);
+    } else if (password !== confirmPassword) {
+      // setIsDisabled(true);
+      setMismatch(true);
     } else {
+      setMismatch(false);
       setIsDisabled(false);
     }
   }, [onFormInput]);
 
   function handleChecked(e) {
+    if (e.target.disabled) {
+      console.log("disabled");
+    }
     if (e.target.checked) {
       setChecked(true);
+      setIsDisabledCheck(false);
     } else {
       setChecked(false);
+      setIsDisabledCheck(true);
     }
   }
 
@@ -51,6 +62,9 @@ function SignupForm({
         <FormInput onInput={onFormInput} formValue={confirmPassword}>
           Confirm password
         </FormInput>
+        {misMatch && (
+          <span className="password-mismatch">Passwords do not match</span>
+        )}
       </div>
       <div className="form-btn-area">
         <div className="form-terms-conditions">
@@ -77,7 +91,7 @@ function SignupForm({
           borderRadius="10px"
           color={checked ? "#fff" : "#9ca4ab"}
           fontWeight="800"
-          disabled={isDisabled}
+          disabled={isDisabledCheck}
         >
           Continue
         </Buttons>

@@ -66,6 +66,7 @@ function App() {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -679,7 +680,7 @@ function App() {
     setIsSignup(true);
   }
 
-  const formData = {
+  const signupFormData = {
     username: username,
     email: userEmail,
     password: userPassword,
@@ -691,18 +692,34 @@ function App() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(formData),
+    body: JSON.stringify(signupFormData),
   };
+
+  function resetUserData() {
+    setUserEmail("");
+    setUsername("");
+    setUserPassword("");
+    setConfirmPassword("");
+  }
 
   async function handleFormSubmit(e) {
     e.preventDefault();
     const formName = e.target.name;
 
     if (formName === "signup") {
-      const res = await fetch("/signup", postOptions);
-      const data = await res.json();
-
-      console.log("signup form submitted!", data);
+      try {
+        const res = await fetch("/signup", postOptions);
+        // if (!res.ok) {
+        //   throw new Error("Error submitting form");
+        // }
+        const data = await res.json();
+        console.log(data.message);
+        if (res.status !== 409) {
+          resetUserData();
+        }
+      } catch (err) {
+        console.log(err);
+      }
     } else if (formName === "login") {
       console.log("login form submitted!", e.target.name);
     }

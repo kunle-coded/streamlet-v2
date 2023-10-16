@@ -87,6 +87,13 @@
   cursor: pointer;
 }
 
+.password-mismatch {
+  font-family: "Courier New", Courier, monospace;
+  font-size: var(--font-xsm);
+  color: var(--red-color);
+  margin-top: -5px;
+}
+
 .form-btn-area {
   display: flex;
   flex-direction: column;
