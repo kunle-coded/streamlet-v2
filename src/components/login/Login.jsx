@@ -2,6 +2,7 @@ import React from "react";
 import Loader from "../loader/Loader";
 import LoginForm from "../forms/LoginForm";
 import SignupForm from "../forms/SignupForm";
+import Success from "./Success";
 
 function Login({
   formHeight = "490px",
@@ -10,15 +11,21 @@ function Login({
   email,
   password,
   confirmPassword,
+  passwordError,
   onCloseModal,
   login,
   signup,
+  onSignup,
+  signupSuccess,
+  isSuccess,
+  onLogin,
   onFormSubmit,
   isUserExist,
 }) {
   const formStyle = {
     height: formHeight,
   };
+
   return (
     <main className="login-page">
       {login && (
@@ -27,8 +34,10 @@ function Login({
             onFormInput={onFormInput}
             email={email}
             password={password}
+            passwordError={passwordError}
             onCloseModal={onCloseModal}
             onFormSubmit={onFormSubmit}
+            onSignup={onSignup}
           />
         </div>
       )}
@@ -40,8 +49,19 @@ function Login({
             email={email}
             password={password}
             confirmPassword={confirmPassword}
+            onLogin={onLogin}
             onFormSubmit={onFormSubmit}
             isUserExist={isUserExist}
+            onCloseModal={onCloseModal}
+          />
+        </div>
+      )}
+      {isSuccess && (
+        <div className="form-container" style={formStyle}>
+          <Success
+            signupSuccess={signupSuccess}
+            username={username}
+            onLogin={onLogin}
             onCloseModal={onCloseModal}
           />
         </div>

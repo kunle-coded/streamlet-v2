@@ -33,9 +33,6 @@ function SignupForm({
   }, [onFormInput]);
 
   function handleChecked(e) {
-    if (e.target.disabled) {
-      console.log("disabled");
-    }
     if (e.target.checked) {
       setChecked(true);
       setIsDisabledCheck(false);
@@ -43,8 +40,6 @@ function SignupForm({
       setChecked(false);
       setIsDisabledCheck(true);
     }
-
-    console.log("form submit", onFormSubmit);
   }
 
   return (
@@ -110,7 +105,7 @@ function SignupForm({
           Continue
         </Buttons>
         <p className="form-account">
-          Already have an account? <span>Login</span>
+          Already have an account? <span onClick={onLogin}>Login</span>
         </p>
       </div>
     </form>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./navbar.css";
 import logo from "../../assets/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
@@ -6,8 +6,17 @@ import { ReactComponent as Bell } from "../../assets/icons/bell.svg";
 import { ReactComponent as UserProfile } from "../../assets/icons/user-icon.svg";
 import { ReactComponent as ArrowDown } from "../../assets/icons/arrow_down.svg";
 
-function Navbar({ isLogin, onLogin, onSignup }) {
+function Navbar({ watchlist, isLogin, onLogin, onSignup }) {
   const [isExpanded, setExpanded] = useState(false);
+  const [isNotify, setNotify] = useState(false);
+
+  useEffect(() => {
+    if (watchlist.length >= 1) {
+      setNotify(true);
+    } else {
+      setNotify(false);
+    }
+  }, [watchlist]);
 
   return (
     <nav className="navbar">
@@ -83,6 +92,7 @@ function Navbar({ isLogin, onLogin, onSignup }) {
           <div className="profile-buttons">
             <div className="notification">
               <Bell />
+              {isNotify ? <div className="notification-icon"></div> : null}
             </div>
             <div className="user-profile">
               <span>

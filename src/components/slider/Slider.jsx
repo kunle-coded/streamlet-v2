@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./slider.css";
 import Slide from "./Slide";
 import LeftArrow from "../left_arrow/LeftArrow";
@@ -7,13 +7,15 @@ import { RightArrow } from "..";
 function Slider({ slides, showButtons = false, watchlist, onWatchlist }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  const ref = useRef();
+
   const transformX = `translateX(-${currentSlide * 100}%)`;
 
   let totalSlides = slides.length;
 
   //   Next slide
   function nextSlide() {
-    setCurrentSlide((prevSlide) => (prevSlide === 19 ? 0 : prevSlide + 1));
+    setCurrentSlide((prevSlide) => (prevSlide === 9 ? 0 : prevSlide + 1));
   }
 
   // Previuos slide
@@ -22,6 +24,30 @@ function Slider({ slides, showButtons = false, watchlist, onWatchlist }) {
       prevSlide === 0 ? totalSlides - 1 : prevSlide - 1
     );
   };
+
+  // Loop through the bullets to set style
+
+  useEffect(() => {
+    const listNodes = ref.current.childNodes;
+
+    listNodes.forEach((node, index) => {
+      if (currentSlide === index) {
+        node.classList.add("active-bullet");
+      } else {
+        node.classList.remove("active-bullet");
+      }
+    });
+  });
+
+  function slideTo(e) {
+    const listNodes = ref.current.childNodes;
+
+    listNodes.forEach((node, index) => {
+      if (node === e.target) {
+        setCurrentSlide(index);
+      }
+    });
+  }
 
   //Automatically advance to next slide
   function autoAdvance() {
@@ -53,6 +79,20 @@ function Slider({ slides, showButtons = false, watchlist, onWatchlist }) {
         ))}
       </div>
       {showButtons && <RightArrow />}
+      <div className="slide-progress-bullets">
+        <ul ref={ref} onClick={slideTo}>
+          <li className="slide-bullet"></li>
+          <li className="slide-bullet "></li>
+          <li className="slide-bullet "></li>
+          <li className="slide-bullet "></li>
+          <li className="slide-bullet "></li>
+          <li className="slide-bullet "></li>
+          <li className="slide-bullet "></li>
+          <li className="slide-bullet "></li>
+          <li className="slide-bullet "></li>
+          <li className="slide-bullet "></li>
+        </ul>
+      </div>
     </div>
   );
 }

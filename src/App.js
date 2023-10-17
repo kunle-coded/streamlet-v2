@@ -55,6 +55,8 @@ function App() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const [update, setUpdate] = useState(0);
   const [fastCounter, setFastCounter] = useState(4);
   const [liveCounter, setLiveCounter] = useState(4);
@@ -99,7 +101,7 @@ function App() {
 
     movies.forEach((movie, ind) => {
       if (
-        ind < 10 &&
+        ind < 5 &&
         !slideMovies.some((slideItem) => slideItem.title === movie.title)
       ) {
         newMoviesToAdd.push(movie);
@@ -113,7 +115,7 @@ function App() {
 
     series.forEach((serie, ind) => {
       if (
-        ind < 10 &&
+        ind < 5 &&
         !slideMovies.some((slideItem) => slideItem.name === serie.name)
       ) {
         newSeriesToAdd.push(serie);
@@ -188,6 +190,10 @@ function App() {
 
   // Add movies/series to watchlist on click AddWatchlist
   function handleWatchlist(mov) {
+    if (!login) {
+      openLoginModal();
+      return;
+    }
     const isMovieInWatchlist = watchlist.some((movie) => movie._id === mov._id);
 
     if (!isMovieInWatchlist) {
@@ -347,18 +353,6 @@ function App() {
           page6: false,
         }));
       }
-      // page 6
-      // if (fastCounter > 20 && fastCounter <= 24) {
-      //   setFastCard((prevState) => ({
-      //     ...prevState,
-      //     page1: false,
-      //     page2: false,
-      //     page3: false,
-      //     page4: false,
-      //     page5: false,
-      //     page6: true,
-      //   }));
-      // }
     };
 
     updateLivePage();
@@ -662,22 +656,28 @@ function App() {
     if (input.name === "Confirm password") {
       setConfirmPassword(input.value);
     }
+
+    setErrorMessage("");
   }
 
   function closeModal() {
     setIsLogin(false);
     setIsSignup(false);
+    setIsSuccess(false);
     setIsModal(false);
     resetUserData();
   }
 
   function openLoginModal(e) {
-    e.preventDefault();
+    //e.preventDefault();
+    setIsSignup(false);
+    setIsSuccess(false);
     setIsModal(true);
     setIsLogin(true);
   }
   function openSignupModal(e) {
     e.preventDefault();
+    setIsLogin(false);
     setIsModal(true);
     setIsSignup(true);
   }
@@ -702,6 +702,7 @@ function App() {
     setUsername("");
     setUserPassword("");
     setConfirmPassword("");
+    setSuccessMessage("");
     setUserExist(false);
   }
 
@@ -715,14 +716,18 @@ function App() {
       try {
         const res = await fetch("/signup", postOptions);
 
-        const data = await res.json();
-        console.log(data);
+        const data = await res.text();
+
         if (res.status === 409) {
           setUserExist(true);
           setExistingEmail(data.userEmail);
+          setSuccessMessage("");
         } else {
           setUserExist(false);
-          resetUserData();
+          // resetUserData();
+          setSuccessMessage(data);
+          setIsSuccess(true);
+          setIsSignup(false);
         }
       } catch (err) {
         console.log(err);
@@ -733,13 +738,12 @@ function App() {
 
         if (res.status === 201) {
           setLogin(true);
+          setErrorMessage("");
           closeModal();
-          console.log("Scuccessfully logged in", login);
         } else {
           const error = await res.text();
           setErrorMessage(error);
           setLogin(false);
-          console.log("error", error);
         }
 
         const data = await res.text();
@@ -780,6 +784,8 @@ function App() {
             password={userPassword}
             onCloseModal={closeModal}
             login={isLogin}
+            passwordError={errorMessage}
+            onSignup={openSignupModal}
             onFormSubmit={handleFormSubmit}
           />
         )}
@@ -792,9 +798,21 @@ function App() {
             confirmPassword={confirmPassword}
             onCloseModal={closeModal}
             signup={isSignup}
+            signupSuccess={successMessage}
+            onLogin={openLoginModal}
             formHeight="690px"
             onFormSubmit={handleFormSubmit}
             isUserExist={userExist}
+          />
+        )}
+        {isSuccess && (
+          <Login
+            username={username}
+            onCloseModal={closeModal}
+            isSuccess={isSuccess}
+            signupSuccess={successMessage}
+            formHeight="290px"
+            onLogin={openLoginModal}
           />
         )}
         <Footer />
@@ -806,6 +824,7 @@ function App() {
     <div>
       <Header>
         <Navbar
+          watchlist={watchlist}
           onLogin={openLoginModal}
           onSignup={openSignupModal}
           isLogin={login}

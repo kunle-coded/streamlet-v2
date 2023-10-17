@@ -17,12 +17,22 @@ function FormInput({ onInput, formValue = "", children }) {
       ? true
       : false;
 
+  const isEmail = children === "Email" ? true : false;
+
   return (
     <div className="form-input">
       <label>{children}</label>
       <div className={`input-field ${isFocused ? "focus" : ""}`}>
         <input
-          type={!password ? "text" : !showPassword ? "password" : "text"}
+          type={
+            !password
+              ? isEmail
+                ? "email"
+                : "text"
+              : !showPassword
+              ? "password"
+              : "text"
+          }
           name={children}
           value={formValue}
           className="form-input-field"

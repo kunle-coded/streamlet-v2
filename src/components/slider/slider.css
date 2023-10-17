@@ -6,7 +6,7 @@
 
 .slide-container {
   display: flex;
-  transition: transform 0.5s ease;
+  transition: transform 0.8s ease;
 }
 
 .slide {
@@ -102,4 +102,32 @@
 
 .watchlist-icon {
   fill: #fff;
+}
+
+.slide-progress-bullets {
+  display: flex;
+  position: absolute;
+  bottom: 10%;
+  right: 70px;
+}
+
+.slide-progress-bullets ul {
+  display: flex;
+  list-style: none;
+  z-index: 10;
+  gap: 10px;
+}
+
+.slide-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--black-dark);
+  cursor: pointer;
+  transition: scale 3s ease;
+}
+
+.active-bullet {
+  scale: 1.2;
+  background-color: var(--gray);
 }
