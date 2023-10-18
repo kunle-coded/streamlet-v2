@@ -4,7 +4,7 @@ import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";
 
-function Poster({ movie, index, border = false, length }) {
+function Poster({ movie, index, border = false, length, onMovieClick }) {
   const voteAverage = movie.vote_average;
   let rating;
 
@@ -27,6 +27,7 @@ function Poster({ movie, index, border = false, length }) {
           ? "first-element"
           : ""
       }`}
+      onClick={() => onMovieClick(movie)}
     >
       <div className="poster-overlay"></div>
       <div className="poster-image">

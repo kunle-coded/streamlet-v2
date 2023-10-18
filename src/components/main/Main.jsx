@@ -35,6 +35,7 @@ function Main({
   isSlideSeries,
   onFast,
   onLive,
+  onMovieClick,
 }) {
   const [isLong, setIsLong] = useState(false);
   useEffect(() => {
@@ -75,6 +76,7 @@ function Main({
       >
         {trending.map((movie, index) => (
           <Poster
+            onMovieClick={onMovieClick}
             key={movie.id}
             movie={movie}
             index={index}
@@ -95,6 +97,7 @@ function Main({
       >
         {popular.map((movie, i) => (
           <Card
+            onMovieClick={onMovieClick}
             key={movie.id}
             movie={movie}
             index={i}
@@ -177,6 +180,7 @@ function Main({
           </div>
           <div className="featured-movies-poster">
             <Poster
+              onMovieClick={onMovieClick}
               movie={active}
               index={0}
               border={true}
@@ -185,6 +189,7 @@ function Main({
             {featured.map((movie, i) =>
               i === 0 ? null : (
                 <Poster
+                  onMovieClick={onMovieClick}
                   key={movie.id}
                   movie={movie}
                   index={i}
@@ -206,7 +211,7 @@ function Main({
         onSlideLeft={() => onSlideLeft("movies")}
       >
         {movies.map((movie) => (
-          <BigCard movie={movie} key={movie.id} />
+          <BigCard movie={movie} key={movie.id} onMovieClick={onMovieClick} />
         ))}
       </Section>
 
@@ -219,7 +224,7 @@ function Main({
         onSlideLeft={() => onSlideLeft("series")}
       >
         {series.map((movie) => (
-          <BigCard movie={movie} key={movie.id} />
+          <BigCard movie={movie} key={movie.id} onMovieClick={onMovieClick} />
         ))}
       </Section>
 
@@ -239,6 +244,7 @@ function Main({
                     movie={movie}
                     onWatchlist={onWatchlist}
                     watchlist={watchlist}
+                    onMovieClick={onMovieClick}
                   />
                 )
             )}
@@ -259,6 +265,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -272,6 +279,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -285,6 +293,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -298,6 +307,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -311,6 +321,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -324,6 +335,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -344,6 +356,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -357,6 +370,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -370,6 +384,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -383,6 +398,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}
@@ -396,6 +412,7 @@ function Main({
                         key={movie.id}
                         showNumber={false}
                         width="100%"
+                        onMovieClick={onMovieClick}
                       />
                     )
                 )}

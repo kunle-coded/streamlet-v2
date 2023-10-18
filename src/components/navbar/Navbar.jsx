@@ -6,11 +6,21 @@ import { ReactComponent as Bell } from "../../assets/icons/bell.svg";
 import { ReactComponent as UserProfile } from "../../assets/icons/user-icon.svg";
 import { ReactComponent as ArrowDown } from "../../assets/icons/arrow_down.svg";
 import { ReactComponent as ArrowUp } from "../../assets/icons/arrow-up.svg";
+import { ReactComponent as LikeFill } from "../../assets/icons/like-icon.svg";
+import { ReactComponent as BookmarkSmall } from "../../assets/icons/bookmark-small.svg";
 
-function Navbar({ watchlist, isLogin, onLogin, onSignup, onLogout }) {
+function Navbar({
+  watchlist,
+  isLogin,
+  onLogin,
+  onSignup,
+  onLogout,
+  isDropdown,
+  onDropdown,
+  onBack,
+}) {
   const [isExpanded, setExpanded] = useState(false);
   const [isNotify, setNotify] = useState(false);
-  const [isDropdown, setIsDropdown] = useState(false);
 
   useEffect(() => {
     if (watchlist) {
@@ -22,11 +32,6 @@ function Navbar({ watchlist, isLogin, onLogin, onSignup, onLogout }) {
     }
   }, [watchlist]);
 
-  function handleLogout() {
-    setIsDropdown(false);
-    onLogout();
-  }
-
   return (
     <nav className="navbar">
       <div className="logo">
@@ -34,7 +39,7 @@ function Navbar({ watchlist, isLogin, onLogin, onSignup, onLogout }) {
       </div>
       <div className="nav-links">
         <ul className="nav-links_items">
-          <li>
+          <li onClick={onBack}>
             <a href="#home">Home</a>
           </li>
           <li>
@@ -107,7 +112,7 @@ function Navbar({ watchlist, isLogin, onLogin, onSignup, onLogout }) {
               <span>
                 <UserProfile />
               </span>
-              <span onClick={() => setIsDropdown((prevState) => !prevState)}>
+              <span onClick={onDropdown}>
                 {isDropdown ? <ArrowUp /> : <ArrowDown />}
               </span>
             </div>
@@ -124,11 +129,21 @@ function Navbar({ watchlist, isLogin, onLogin, onSignup, onLogout }) {
             isDropdown ? "reveal-dropdown" : "hide-dropdown"
           }`}
         >
-          <li className="dropdown-item">Profile</li>
-          <li className="dropdown-item">My Watchlist</li>
-          <li className="dropdown-item">Likes</li>
+          <li className="dropdown-item">Profile </li>
+          <li className="dropdown-item">
+            My Watchlist{" "}
+            <span>
+              <BookmarkSmall />
+            </span>
+          </li>
+          <li className="dropdown-item">
+            Likes{" "}
+            <span>
+              <LikeFill />
+            </span>
+          </li>
           <li className="dropdown-item">Settings</li>
-          <li className="dropdown-item" onClick={handleLogout}>
+          <li className="dropdown-item" onClick={onLogout}>
             Logout
           </li>
         </ul>

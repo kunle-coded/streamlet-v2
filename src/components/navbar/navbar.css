@@ -137,6 +137,7 @@
   padding: 30px 30px;
   gap: 20px;
   opacity: 0;
+  width: 100%;
   /* visibility: hidden; */
   transition: opacity 0.3s ease;
 }
@@ -173,8 +174,20 @@
   font-size: var(--font-sm);
   color: var(--gray);
   cursor: pointer;
+  width: 100%;
 }
 
 .dropdown-item:hover {
+  color: var(--white);
+}
+
+.dropdown-item {
+  display: flex;
+  justify-content: space-between;
+}
+.dropdown-item span {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-xxsm);
   color: var(--white);
 }

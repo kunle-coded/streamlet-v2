@@ -6,6 +6,7 @@
   font-size: var(--font-sm);
   cursor: pointer;
   white-space: nowrap;
+  z-index: 30;
 }
 
 .global-btn:hover {

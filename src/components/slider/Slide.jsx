@@ -9,14 +9,24 @@ function Slide({
   type,
   index,
   currentSlide,
-  silder = true,
+  slider = true,
   onWatchlist,
+  onClick,
 }) {
   let watchlisted = useWatchlistMarker(watchlist, movie);
   const title = movie.title ? movie.title : movie.name;
 
+  function handleClick(slide) {
+    if (!slider) return;
+
+    onClick(slide);
+  }
+
   return (
-    <div className={`slide ${index === currentSlide ? "active" : ""}`}>
+    <div
+      className={`slide ${index === currentSlide ? "active" : ""}`}
+      onClick={() => handleClick(movie)}
+    >
       <div className="slide-overlay"></div>
       <div
         className="slide-image"
@@ -30,7 +40,7 @@ function Slide({
           <h3>{title}</h3>
         </div>
         <Genre movie={movie} duration={true} year={true} />
-        {silder ? (
+        {slider ? (
           <div className="slide-movie-desc">{movie.overview}</div>
         ) : null}
         <div className="slide-movie-buttons">

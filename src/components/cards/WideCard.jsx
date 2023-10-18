@@ -7,11 +7,11 @@ import TextReveal from "../text_reveal/TextReveal";
 import Buttons from "../buttons/Buttons";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
 
-function WideCard({ movie, watchlist, onWatchlist }) {
+function WideCard({ movie, watchlist, onWatchlist, onMovieClick }) {
   let watchlisted = useWatchlistMarker(watchlist, movie);
 
   return (
-    <div className="wide-card-container">
+    <div className="wide-card-container" onClick={() => onMovieClick(movie)}>
       <div className="wide-card-img">
         <img
           src={`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`}

@@ -17,6 +17,7 @@ function Card({
   index,
   length,
   slide = false,
+  onMovieClick,
 }) {
   const cardStyle = {
     display: "flex",
@@ -51,6 +52,7 @@ function Card({
           : ""
       }`}
       style={cardStyle}
+      onClick={() => onMovieClick(movie)}
     >
       {showNumber && (
         <div className="card-number">

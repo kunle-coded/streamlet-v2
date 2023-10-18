@@ -3,7 +3,7 @@ import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";
 
-function BigCard({ movie }) {
+function BigCard({ movie, onMovieClick }) {
   const imgStyle = {
     backgroundImage: `url(https://image.tmdb.org/t/p/w300/${movie.backdrop_path})`,
   };
@@ -12,7 +12,7 @@ function BigCard({ movie }) {
   const rating = parseFloat(movie.vote_average.toFixed(1));
 
   return (
-    <div className="big-card">
+    <div className="big-card" onClick={() => onMovieClick(movie)}>
       <div className="big-card_image">
         <img
           src={`https://image.tmdb.org/t/p/w342/${movie.backdrop_path}`}

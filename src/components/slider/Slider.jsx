@@ -4,7 +4,13 @@ import Slide from "./Slide";
 import LeftArrow from "../left_arrow/LeftArrow";
 import { RightArrow } from "..";
 
-function Slider({ slides, showButtons = false, watchlist, onWatchlist }) {
+function Slider({
+  slides,
+  showButtons = false,
+  watchlist,
+  onWatchlist,
+  onMovieClick,
+}) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const ref = useRef();
@@ -75,6 +81,7 @@ function Slider({ slides, showButtons = false, watchlist, onWatchlist }) {
             index={index}
             currentSlide={currentSlide}
             onWatchlist={onWatchlist}
+            onClick={onMovieClick}
           />
         ))}
       </div>

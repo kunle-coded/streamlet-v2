@@ -14,10 +14,6 @@ import {
   RatingLabel,
   Slider,
 } from "./components";
-import genres from "./genres";
-import tvGenres from "./tvGenres";
-import useTrimArrays from "./utils/useTrimArrays";
-import Slide from "./components/slider/Slide";
 
 function App() {
   const [slideMovies, setSlideMovies] = useState([]);
@@ -73,7 +69,11 @@ function App() {
   const [userExist, setUserExist] = useState(false);
   const [existingEmail, setExistingEmail] = useState("");
   const [isMoviePage, setIsMoviePage] = useState(false);
+  const [isPageTop, setIsPageTop] = useState(false);
   const [singleMovie, setSingleMovie] = useState({});
+  const [likedMovies, setLikedMovies] = useState([]);
+  const [isLike, setIsLike] = useState(false);
+  const [isDropdown, setIsDropdown] = useState(false);
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -776,6 +776,7 @@ function App() {
   }
 
   function handleLogout() {
+    setIsDropdown(false);
     setLogin(false);
   }
 
@@ -786,13 +787,67 @@ function App() {
 
     if (!newPosterToAdd.id) {
       newPosterToAdd = { ...movie };
-      console.log("movie clicked", newPosterToAdd);
     }
 
     setSingleMovie((single) =>
       single.id !== newPosterToAdd.id ? newPosterToAdd : single
     );
+
+    setIsMoviePage(true);
+
+    if (isMoviePage) {
+      setIsPageTop((prevState) => !prevState);
+    }
+    console.log(movie);
   }
+
+  function handleMovieLike(movie) {
+    if (!login) {
+      return openLoginModal();
+    }
+    const isAlreadyLiked = likedMovies.some(
+      (likedItem) => likedItem.title === movie.title
+    );
+
+    if (isAlreadyLiked) {
+      // Remove the movie from likedMovies and update the isLike state
+      const updatedLikedMovies = likedMovies.filter(
+        (likedItem) => likedItem.title !== movie.title
+      );
+      setLikedMovies(updatedLikedMovies);
+      setIsLike(false);
+    } else {
+      // Add the movie to likedMovies and update the isLike state
+      setLikedMovies((prevLikedMovies) => [...prevLikedMovies, movie]);
+      setIsLike(true);
+    }
+  }
+
+  function handleCloseDropdown(e) {
+    setIsDropdown((prevState) => !prevState);
+    console.log("dropdown clicked", isDropdown, e.target);
+  }
+
+  function handleGoBack() {
+    setIsMoviePage(false);
+    console.log("back button clicked");
+  }
+
+  // Cast object
+  // {
+  //   adult: false,
+  //   gender: 2,
+  //   id: 500,
+  //   known_for_department: 'Acting',
+  //   name: 'Tom Cruise',
+  //   original_name: 'Tom Cruise',
+  //   popularity: 55.944,
+  //   profile_path: '/8qBylBsQf4llkGrWR3qAsOtOU8O.jpg',
+  //   cast_id: 4,
+  //   character: 'Ethan Hunt',
+  //   credit_id: '5c3d2ae892514156e5ac7c11',
+  //   order: 0
+  // }
 
   if (isModal) {
     return (
@@ -855,12 +910,15 @@ function App() {
               onSignup={openSignupModal}
               isLogin={login}
               onLogout={handleLogout}
+              onDropdown={handleCloseDropdown}
+              isDropdown={isDropdown}
             />
 
             <Slider
               slides={slideMovies}
               onWatchlist={handleWatchlist}
               watchlist={watchlist}
+              onMovieClick={handleMovieClick}
             />
           </Header>
 
@@ -884,6 +942,7 @@ function App() {
             onLive={liveCard}
             onWatchlist={handleWatchlist}
             watchlist={watchlist}
+            onMovieClick={handleMovieClick}
           />
         </>
       )}
@@ -891,7 +950,16 @@ function App() {
       {isMoviePage && (
         <>
           <Header slider={false}>
-            <Navbar />
+            <Navbar
+              watchlist={watchlist}
+              onLogin={openLoginModal}
+              onSignup={openSignupModal}
+              isLogin={login}
+              onLogout={handleLogout}
+              onDropdown={handleCloseDropdown}
+              isDropdown={isDropdown}
+              onBack={handleGoBack}
+            />
           </Header>
 
           <MoviePage
@@ -905,6 +973,9 @@ function App() {
             onSlideRight={handleNextSlide}
             onSlideLeft={handlePrevSlide}
             onMovieClick={handleMovieClick}
+            isPageTop={isPageTop}
+            onLike={handleMovieLike}
+            likes={likedMovies}
           />
         </>
       )}

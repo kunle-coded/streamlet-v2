@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./movie_page.css";
 import Slide from "../slider/Slide";
 import Buttons from "../buttons/Buttons";
@@ -15,15 +15,28 @@ function MoviePage({
   popular,
   movies,
   onWatchlist,
+  likes,
+  onLike,
   isSlideCard,
   isSlideMovies,
   onSlideRight,
   onSlideLeft,
   onMovieClick,
+  isPageTop,
 }) {
-  const [isLike, setIsLike] = useState(false);
-
+  const [liked, setLiked] = useState(false);
   const ref = useRef();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [isPageTop]);
+
+  useEffect(() => {
+    const isLiked = likes.some(
+      (likedMovie) => likedMovie.title === movie.title
+    );
+    setLiked(isLiked);
+  }, [likes, movie]);
 
   function handleTabClick(e) {
     const lists = ref.current.childNodes;
@@ -45,7 +58,7 @@ function MoviePage({
           watchlist={watchlist}
           movie={movie}
           type="Movie"
-          silder={false}
+          slider={false}
         />
         <div className="movie-engagement-btns">
           <Buttons
@@ -72,15 +85,14 @@ function MoviePage({
           </Buttons>
           <Buttons
             width="70px"
-            background={isLike ? "#eb3f5e" : "#0d0c0f"}
-            border={isLike ? false : true}
-            borderColor={isLike ? "" : "#28262d"}
+            background={liked ? "#eb3f5e" : "#0d0c0f"}
+            border={liked ? false : true}
+            borderColor={liked ? "" : "#28262d"}
             fontSize="11px"
             fontWeight="400"
-            onClick={() => setIsLike((like) => !like)}
+            onClick={() => onLike(movie)}
           >
-            <span className="like">{isLike ? <LikeFill /> : <Like />}</span>{" "}
-            Like
+            <span className="like">{liked ? <LikeFill /> : <Like />}</span> Like
           </Buttons>
         </div>
       </div>
@@ -94,24 +106,15 @@ function MoviePage({
           <h4>Top Cast</h4>
           <div className="top-casts">
             <ul>
-              <li>
-                <Cast name="Tom Cruise" castName="Newton Purcel" />
-              </li>
-              <li>
-                <Cast name="Pedro Pascal" castName="Joel Müller" />
-              </li>
-              <li>
-                <Cast name="Bella Ramsey" castName="Ellie" />
-              </li>
-              <li>
-                <Cast name="Anna Tory" castName="Tessa" />
-              </li>
-              <li>
-                <Cast name="Ashley Johnson" castName="Ellie Mother" />
-              </li>
-              <li>
-                <Cast name="Nick Offermann" castName="Bill" />
-              </li>
+              {movie.cast.map((castItem, index) => (
+                <li>
+                  <Cast
+                    name={castItem.name}
+                    imgUrl={castItem.profile_path}
+                    character={castItem.character}
+                  />
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -138,8 +141,8 @@ function MoviePage({
             <div className="tab-cards">
               <ul>
                 {popular.map((movie, ind) => (
-                  <li key={movie.id} onClick={() => onMovieClick(movie)}>
-                    <BigCard movie={movie} />
+                  <li key={movie.id}>
+                    <BigCard movie={movie} onMovieClick={onMovieClick} />
                   </li>
                 ))}
               </ul>
@@ -164,8 +167,8 @@ function MoviePage({
             <div className="tab-cards">
               <ul>
                 {movies.map((movie, ind) => (
-                  <li key={movie.id} onClick={() => onMovieClick(movie)}>
-                    <BigCard movie={movie} />
+                  <li key={movie.id}>
+                    <BigCard movie={movie} onMovieClick={onMovieClick} />
                   </li>
                 ))}
               </ul>
