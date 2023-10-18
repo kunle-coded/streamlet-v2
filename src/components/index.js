@@ -23,3 +23,5 @@ export { default as Loader } from "./loader/Loader";
 export { default as Login } from "./login/Login";
 export { default as LoginForm } from "./forms/LoginForm";
 export { default as Success } from "./login/Success";
+export { default as MoviePage } from "./movie_page/MoviePage";
+export { default as Cast } from "./movie_page/Cast";

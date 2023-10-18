@@ -11,6 +11,7 @@ function Buttons({
   color = "#fff",
   borderColor = "",
   fontWeight = "normal",
+  fontSize = "",
   padding = "0",
   onClick,
   bookmark = false,
@@ -26,6 +27,7 @@ function Buttons({
     borderRadius: borderRadius,
     color: color,
     fontWeight: fontWeight,
+    fontSize: fontSize,
     padding: padding,
   };
 

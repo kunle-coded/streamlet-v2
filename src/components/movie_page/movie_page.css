@@ -1,0 +1,88 @@
+.movie-page {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* background-color: antiquewhite; */
+}
+
+.movie-info-section {
+  padding: 10px 70px;
+}
+
+.movie-page-section {
+  width: 100%;
+  padding: var(--global-padding);
+  position: relative;
+}
+.movie-engagement-btns {
+  display: flex;
+  position: absolute;
+  gap: 20px;
+  top: 520px;
+  right: 70px;
+  z-index: 1;
+}
+
+.movie-engagement-btns span {
+  padding-top: 0;
+}
+
+.movie-engagement-btns .like svg:last-child {
+  fill: #fff;
+}
+
+.movie-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.story-line {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.movie-info-section h4 {
+  font-family: var(--title-font);
+  font-size: var(--font-normal);
+  font-weight: 500;
+}
+
+.story-line p {
+  font-size: var(--font-sm);
+  font-weight: 400;
+  color: var(--gray);
+}
+
+.top-casts ul {
+  display: flex;
+  gap: 20px;
+}
+
+.movie-cast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  margin-top: 15px;
+}
+
+.cast-image {
+  display: flex;
+}
+.cast-image img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.cast-realname {
+  font-family: var(--title-font);
+  font-size: var(--font-xsm);
+  font-weight: 400;
+}
+.cast-alias {
+  font-size: var(--font-xxsm);
+  color: var(--gray);
+}

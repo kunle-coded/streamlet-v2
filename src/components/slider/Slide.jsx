@@ -9,8 +9,8 @@ function Slide({
   type,
   index,
   currentSlide,
+  silder = true,
   onWatchlist,
-  children,
 }) {
   let watchlisted = useWatchlistMarker(watchlist, movie);
   const title = movie.title ? movie.title : movie.name;
@@ -30,7 +30,9 @@ function Slide({
           <h3>{title}</h3>
         </div>
         <Genre movie={movie} duration={true} year={true} />
-        <div className="slide-movie-desc">{movie.overview}</div>
+        {silder ? (
+          <div className="slide-movie-desc">{movie.overview}</div>
+        ) : null}
         <div className="slide-movie-buttons">
           <Buttons
             play={true}

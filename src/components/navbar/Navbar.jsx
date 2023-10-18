@@ -5,18 +5,27 @@ import Buttons from "../buttons/Buttons";
 import { ReactComponent as Bell } from "../../assets/icons/bell.svg";
 import { ReactComponent as UserProfile } from "../../assets/icons/user-icon.svg";
 import { ReactComponent as ArrowDown } from "../../assets/icons/arrow_down.svg";
+import { ReactComponent as ArrowUp } from "../../assets/icons/arrow-up.svg";
 
-function Navbar({ watchlist, isLogin, onLogin, onSignup }) {
+function Navbar({ watchlist, isLogin, onLogin, onSignup, onLogout }) {
   const [isExpanded, setExpanded] = useState(false);
   const [isNotify, setNotify] = useState(false);
+  const [isDropdown, setIsDropdown] = useState(false);
 
   useEffect(() => {
-    if (watchlist.length >= 1) {
-      setNotify(true);
+    if (watchlist) {
+      if (watchlist.length >= 1) {
+        setNotify(true);
+      }
     } else {
       setNotify(false);
     }
   }, [watchlist]);
+
+  function handleLogout() {
+    setIsDropdown(false);
+    onLogout();
+  }
 
   return (
     <nav className="navbar">
@@ -98,12 +107,31 @@ function Navbar({ watchlist, isLogin, onLogin, onSignup }) {
               <span>
                 <UserProfile />
               </span>
-              <span>
-                <ArrowDown />
+              <span onClick={() => setIsDropdown((prevState) => !prevState)}>
+                {isDropdown ? <ArrowUp /> : <ArrowDown />}
               </span>
             </div>
           </div>
         )}
+      </div>
+      <div
+        className={`drop-down ${
+          isDropdown ? "open-dropdown" : "close-dropdown"
+        }`}
+      >
+        <ul
+          className={`dropdown-items ${
+            isDropdown ? "reveal-dropdown" : "hide-dropdown"
+          }`}
+        >
+          <li className="dropdown-item">Profile</li>
+          <li className="dropdown-item">My Watchlist</li>
+          <li className="dropdown-item">Likes</li>
+          <li className="dropdown-item">Settings</li>
+          <li className="dropdown-item" onClick={handleLogout}>
+            Logout
+          </li>
+        </ul>
       </div>
     </nav>
   );
