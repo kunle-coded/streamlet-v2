@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./movie_page.css";
 import Slide from "../slider/Slide";
 import Buttons from "../buttons/Buttons";
@@ -7,9 +7,35 @@ import { ReactComponent as Like } from "../../assets/icons/like.svg";
 import { ReactComponent as LikeFill } from "../../assets/icons/like-fill.svg";
 import { ReactComponent as Download } from "../../assets/icons/download.svg";
 import Cast from "./Cast";
+import { BigCard, Section } from "..";
 
-function MoviePage({ watchlist, movie, onWatchlist }) {
+function MoviePage({
+  watchlist,
+  movie,
+  popular,
+  movies,
+  onWatchlist,
+  isSlideCard,
+  isSlideMovies,
+  onSlideRight,
+  onSlideLeft,
+  onMovieClick,
+}) {
   const [isLike, setIsLike] = useState(false);
+
+  const ref = useRef();
+
+  function handleTabClick(e) {
+    const lists = ref.current.childNodes;
+    const selected = e.target;
+    lists.forEach((list) => {
+      if (list === selected) {
+        list.classList.add("active-tab");
+      } else {
+        list.classList.remove("active-tab");
+      }
+    });
+  }
 
   return (
     <main className="movie-page">
@@ -90,7 +116,63 @@ function MoviePage({ watchlist, movie, onWatchlist }) {
           </div>
         </div>
       </section>
-      <section className="movie-page-section">Movie Page</section>
+      <section className="movie-page-section">
+        <Section
+          showBorder={true}
+          border={true}
+          padding="70px"
+          btnTop="50%"
+          slide={true}
+          isSlideCard={isSlideCard}
+          onSlideRight={() => onSlideRight("popular")}
+          onSlideLeft={() => onSlideLeft("popular")}
+        >
+          <div className="movies-card-tabs">
+            <div className="tab-items">
+              <ul ref={ref} onClick={handleTabClick}>
+                <li className="tab active-tab">Universe</li>
+                <li className="tab">News</li>
+                <li className="tab">Reviews</li>
+              </ul>
+            </div>
+            <div className="tab-cards">
+              <ul>
+                {popular.map((movie, ind) => (
+                  <li key={movie.id} onClick={() => onMovieClick(movie)}>
+                    <BigCard movie={movie} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
+
+        <Section
+          title="Similar Movies for you"
+          border={true}
+          padding="70px"
+          marginTop="30px"
+          marginBottomTitle="0"
+          btnTop="50%"
+          slide={true}
+          isSlideMovies={isSlideMovies}
+          onSlideRight={() => onSlideRight("movies")}
+          onSlideLeft={() => onSlideLeft("movies")}
+        >
+          <div className="movies-card-tabs">
+            <div className="tab-items"></div>
+            <div className="tab-cards">
+              <ul>
+                {movies.map((movie, ind) => (
+                  <li key={movie.id} onClick={() => onMovieClick(movie)}>
+                    <BigCard movie={movie} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
+      </section>
     </main>
   );
 }

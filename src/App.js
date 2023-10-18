@@ -779,6 +779,21 @@ function App() {
     setLogin(false);
   }
 
+  // Function to open single page on movie click
+
+  function handleMovieClick(movie) {
+    let newPosterToAdd = {};
+
+    if (!newPosterToAdd.id) {
+      newPosterToAdd = { ...movie };
+      console.log("movie clicked", newPosterToAdd);
+    }
+
+    setSingleMovie((single) =>
+      single.id !== newPosterToAdd.id ? newPosterToAdd : single
+    );
+  }
+
   if (isModal) {
     return (
       <div className="login-modal">
@@ -831,60 +846,69 @@ function App() {
 
   return (
     <div>
-      {isMoviePage && (
-        <Header>
-          <Navbar
-            watchlist={watchlist}
-            onLogin={openLoginModal}
-            onSignup={openSignupModal}
-            isLogin={login}
-            onLogout={handleLogout}
-          />
+      {!isMoviePage && (
+        <>
+          <Header>
+            <Navbar
+              watchlist={watchlist}
+              onLogin={openLoginModal}
+              onSignup={openSignupModal}
+              isLogin={login}
+              onLogout={handleLogout}
+            />
 
-          <Slider
-            slides={slideMovies}
+            <Slider
+              slides={slideMovies}
+              onWatchlist={handleWatchlist}
+              watchlist={watchlist}
+            />
+          </Header>
+
+          <Main
+            movies={movies}
+            trending={trending}
+            active={activePoster}
+            series={series}
+            popular={popular}
+            featured={featured}
+            awards={moviesOnAwards}
+            fastMovies={fast}
+            liveMovies={live}
+            onSlideRight={handleNextSlide}
+            onSlideLeft={handlePrevSlide}
+            isSlidePoster={posterIsSliding}
+            isSlideCard={cardIsSliding}
+            isSlideMovies={movieCardIsSliding}
+            isSlideSeries={seriesCardIsSliding}
+            onFast={fastCard}
+            onLive={liveCard}
             onWatchlist={handleWatchlist}
             watchlist={watchlist}
           />
-        </Header>
+        </>
       )}
 
       {isMoviePage && (
-        <Main
-          movies={movies}
-          trending={trending}
-          active={activePoster}
-          series={series}
-          popular={popular}
-          featured={featured}
-          awards={moviesOnAwards}
-          fastMovies={fast}
-          liveMovies={live}
-          onSlideRight={handleNextSlide}
-          onSlideLeft={handlePrevSlide}
-          isSlidePoster={posterIsSliding}
-          isSlideCard={cardIsSliding}
-          isSlideMovies={movieCardIsSliding}
-          isSlideSeries={seriesCardIsSliding}
-          onFast={fastCard}
-          onLive={liveCard}
-          onWatchlist={handleWatchlist}
-          watchlist={watchlist}
-        />
+        <>
+          <Header slider={false}>
+            <Navbar />
+          </Header>
+
+          <MoviePage
+            onWatchlist={handleWatchlist}
+            watchlist={watchlist}
+            movie={singleMovie}
+            popular={popular}
+            movies={movies}
+            isSlideCard={cardIsSliding}
+            isSlideMovies={movieCardIsSliding}
+            onSlideRight={handleNextSlide}
+            onSlideLeft={handlePrevSlide}
+            onMovieClick={handleMovieClick}
+          />
+        </>
       )}
 
-      {!isMoviePage && (
-        <Header slider={false}>
-          <Navbar />
-        </Header>
-      )}
-      {!isMoviePage && (
-        <MoviePage
-          onWatchlist={handleWatchlist}
-          watchlist={watchlist}
-          movie={activePoster}
-        />
-      )}
       <Footer />
     </div>
   );

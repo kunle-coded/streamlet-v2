@@ -7,7 +7,12 @@ function Section({
   gap = "15px",
   height = "auto",
   padding = "0",
+  marginTop = "0",
   display = "",
+  border = false,
+  showBorder = false,
+  borderBottom = "1px solid #28262d",
+  marginBottomTitle = "30px",
   alignItems = "",
   backgroundImage = "",
   arrowTop = "0",
@@ -35,9 +40,11 @@ function Section({
     left: useBackground ? 0 : "",
     right: useBackground ? 0 : "",
     padding: `20px ${padding}`,
-    marginLeft: useBackground ? "-70px" : "",
-    marginRight: useBackground ? "-70px" : "",
-    width: useBackground ? "calc(100% + 140px)" : "",
+    borderBottom: showBorder ? borderBottom : "",
+    marginTop: marginTop,
+    marginLeft: useBackground || border ? "-70px" : "",
+    marginRight: useBackground || border ? "-70px" : "",
+    width: useBackground || border ? "calc(100% + 140px)" : "",
     background: useBackground
       ? `linear-gradient(to left, rgba(13, 12, 15, 1), transparent), linear-gradient(to right, rgba(13, 12, 15, 0.85), transparent), linear-gradient(0deg, #0d0c0f, transparent 50%, #0d0c0f), url(https://image.tmdb.org/t/p/w1280/${backgroundImage})`
       : "none",
@@ -48,7 +55,10 @@ function Section({
       className={`section ${slide ? " arrow_btn" : ""}`}
       style={sectionStyle}
     >
-      <div className="section-title">
+      <div
+        className="section-title"
+        style={{ marginBottom: marginBottomTitle }}
+      >
         <h2>{title}</h2>
       </div>
 
