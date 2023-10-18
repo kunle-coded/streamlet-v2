@@ -8,6 +8,12 @@ import bcrypt from "bcryptjs";
 import genres from "./genres.js";
 import auth from "./middleware/auth.js";
 
+// const dbUrl = process.env.MONGODB_CONNSTRING;
+
+// mongoose.connect(`mongodb+srv:${dbUrl}/streamletDB`, {
+//   useNewUrlParser: true,
+// });
+
 mongoose.connect("mongodb://localhost:27017/streamletDB", {
   useNewUrlParser: true,
 });
@@ -17,8 +23,24 @@ mongoose.connect("mongodb://localhost:27017/streamletDB", {
 const moviesSchema = new mongoose.Schema({
   adult: Boolean,
   backdrop_path: String,
-  genre_ids: Array,
-  genres: Array,
+  cast: [
+    {
+      adult: Boolean,
+      gender: Number,
+      id: Number,
+      known_for_department: String,
+      name: String,
+      original_name: String,
+      popularity: Number,
+      profile_path: String,
+      cast_id: Number,
+      character: String,
+      credit_id: String,
+      order: Number,
+    },
+  ],
+  genre_ids: [Number],
+  genres: [String],
   id: Number,
   original_language: String,
   original_title: String,
@@ -35,6 +57,22 @@ const moviesSchema = new mongoose.Schema({
 const seriesSchema = new mongoose.Schema({
   adult: Boolean,
   backdrop_path: String,
+  cast: [
+    {
+      adult: Boolean,
+      gender: Number,
+      id: Number,
+      known_for_department: String,
+      name: String,
+      original_name: String,
+      popularity: Number,
+      profile_path: String,
+      cast_id: Number,
+      character: String,
+      credit_id: String,
+      order: Number,
+    },
+  ],
   id: Number,
   name: String,
   original_language: String,
@@ -55,6 +93,22 @@ const seriesSchema = new mongoose.Schema({
 const popularSchema = new mongoose.Schema({
   adult: Boolean,
   backdrop_path: String,
+  cast: [
+    {
+      adult: Boolean,
+      gender: Number,
+      id: Number,
+      known_for_department: String,
+      name: String,
+      original_name: String,
+      popularity: Number,
+      profile_path: String,
+      cast_id: Number,
+      character: String,
+      credit_id: String,
+      order: Number,
+    },
+  ],
   genre_ids: Array,
   genres: Array,
   id: Number,
@@ -73,6 +127,22 @@ const popularSchema = new mongoose.Schema({
 const trendingSchema = new mongoose.Schema({
   adult: Boolean,
   backdrop_path: String,
+  cast: [
+    {
+      adult: Boolean,
+      gender: Number,
+      id: Number,
+      known_for_department: String,
+      name: String,
+      original_name: String,
+      popularity: Number,
+      profile_path: String,
+      cast_id: Number,
+      character: String,
+      credit_id: String,
+      order: Number,
+    },
+  ],
   genre_ids: Array,
   genres: Array,
   id: Number,
@@ -91,6 +161,22 @@ const trendingSchema = new mongoose.Schema({
 const liveSchema = new mongoose.Schema({
   adult: Boolean,
   backdrop_path: String,
+  cast: [
+    {
+      adult: Boolean,
+      gender: Number,
+      id: Number,
+      known_for_department: String,
+      name: String,
+      original_name: String,
+      popularity: Number,
+      profile_path: String,
+      cast_id: Number,
+      character: String,
+      credit_id: String,
+      order: Number,
+    },
+  ],
   genre_ids: Array,
   genres: Array,
   id: Number,
@@ -126,12 +212,14 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+let movieIdDetails;
+
 // Fetch movies from API
 const moviesUrl =
   "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1";
 
 const seriesUrl =
-  "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=1";
+  "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=2";
 
 const trendingMoviesUrl =
   "https://api.themoviedb.org/3/trending/movie/week?language=en-US";
@@ -141,6 +229,8 @@ const popularMoviesUrl =
 
 const liveMoviesUrl =
   "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1 ";
+
+const videoUrl = `https://api.themoviedb.org/3/movie/${movieIdDetails}/videos?language=en-US`;
 
 const options = {
   method: "GET",
@@ -168,9 +258,30 @@ async function fetchMovies(url) {
   }
 }
 
-// fetchMovies(seriesUrl);
+// Function to fetch more movie details from API
+// function fetchMovieDetails(movieId) {
+//   return `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
+// }
 
-// Function to write movies data from API to database
+async function fetchMovieDetails(idMovie) {
+  const castUrl = `https://api.themoviedb.org/3/movie/${idMovie}/credits?language=en-US`;
+  try {
+    const response = await fetch(castUrl, options);
+
+    if (!response.ok) {
+      throw new Error(
+        "Movies cannot be loaded at the moment 😢, please try again"
+      );
+    }
+
+    const data = await response.json();
+    const casts = await data.cast;
+
+    return casts;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 
 async function addMoviesToDatabase(type) {
   let movieData;
@@ -187,24 +298,43 @@ async function addMoviesToDatabase(type) {
     movieData = await fetchMovies(liveMoviesUrl);
   }
 
-  const updatedData = movieData.map((movie) => {
-    const genreArr = movie.genre_ids;
-    const movieGenres = [];
-    genres.forEach((genre) => {
-      for (let i = 0; i < genreArr.length; i++) {
-        const genreId = genreArr[i];
+  async function processMoviesData(movieData) {
+    const updatedData = await Promise.all(
+      movieData.map(async (movie) => {
+        const genreArr = movie.genre_ids;
+        const movieId = movie.id;
+        const movieGenres = [];
+        genres.forEach((genre) => {
+          for (let i = 0; i < genreArr.length; i++) {
+            const genreId = genreArr[i];
+            if (genre.id === genreId) {
+              movieGenres.push(genre.name);
+            }
+          }
+        });
 
-        if (genre.id === genreId) {
-          movieGenres.push(genre.name);
-        }
-      }
-    });
+        const casts = await fetchMovieDetails(movieId);
+        const castArray = [];
+        casts.forEach((cast, index) => {
+          if (index <= 15) {
+            castArray.push(cast);
+          }
+        });
 
-    return {
-      ...movie,
-      genres: movieGenres,
-    };
-  });
+        const movieWithDetails = {
+          ...movie,
+          genres: movieGenres,
+          cast: castArray,
+        };
+
+        return movieWithDetails;
+      })
+    );
+
+    return updatedData;
+  }
+
+  const updatedData = await processMoviesData(movieData);
 
   for (const movie of updatedData) {
     const movieTitle = movie.title;
@@ -216,7 +346,7 @@ async function addMoviesToDatabase(type) {
         .then((result) => {
           if (!result) {
             const dataMovie = new Movies(movie);
-            // dataMovie.save();
+            dataMovie.save();
           }
         })
         .catch((err) => {
@@ -228,7 +358,7 @@ async function addMoviesToDatabase(type) {
         .then((result) => {
           if (!result) {
             const dataMovie = new Series(movie);
-            // dataMovie.save();
+            dataMovie.save();
           }
         })
         .catch((err) => {
@@ -240,8 +370,7 @@ async function addMoviesToDatabase(type) {
         .then((result) => {
           if (!result) {
             const dataMovie = new Populars(movie);
-
-            // dataMovie.save();
+            dataMovie.save();
           }
         })
         .catch((err) => {
@@ -253,8 +382,7 @@ async function addMoviesToDatabase(type) {
         .then((result) => {
           if (!result) {
             const dataMovie = new Trendings(movie);
-
-            // dataMovie.save();
+            dataMovie.save();
           }
         })
         .catch((err) => {
@@ -266,7 +394,6 @@ async function addMoviesToDatabase(type) {
         .then((result) => {
           if (!result) {
             const dataMovie = new Lives(movie);
-
             dataMovie.save();
           }
         })
@@ -277,7 +404,7 @@ async function addMoviesToDatabase(type) {
   }
 }
 
-// await addMoviesToDatabase("live");
+// await addMoviesToDatabase("movies");
 
 app.get("/movies", function (req, res) {
   const movies = Movies.find()
@@ -371,7 +498,7 @@ app.post("/signup", async function (req, res) {
 
     await newUser.save();
 
-    return res.status(201).json(newUser);
+    return res.status(201).send("Signup Successful");
   } catch (err) {
     console.log(err);
   }
@@ -383,7 +510,7 @@ app.post("/login", async function (req, res) {
 
     // Validate user input
     if (!(email && password)) {
-      res.status(400).send("All input is required");
+      return res.status(400).send("All input is required");
     }
 
     const user = await Users.findOne({ email });
@@ -400,9 +527,9 @@ app.post("/login", async function (req, res) {
       user.token = token;
 
       return res.status(201).send("login successfull");
-      console.log("user credentials correct", user);
+    } else {
+      res.status(400).send("Invalid email or password");
     }
-    res.status(400).send("Invalid email or password");
   } catch (err) {
     console.log(err);
   }
