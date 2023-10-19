@@ -50,6 +50,7 @@ const moviesSchema = new mongoose.Schema({
   release_date: String,
   title: String,
   video: Boolean,
+  video_url: [String],
   vote_average: Number,
   vote_count: Number,
 });
@@ -120,6 +121,7 @@ const popularSchema = new mongoose.Schema({
   release_date: String,
   title: String,
   video: Boolean,
+  video_url: [String],
   vote_average: Number,
   vote_count: Number,
 });
@@ -154,6 +156,7 @@ const trendingSchema = new mongoose.Schema({
   release_date: String,
   title: String,
   video: Boolean,
+  video_url: [String],
   vote_average: Number,
   vote_count: Number,
 });
@@ -188,6 +191,7 @@ const liveSchema = new mongoose.Schema({
   release_date: String,
   title: String,
   video: Boolean,
+  video_url: [String],
   vote_average: Number,
   vote_count: Number,
 });
@@ -212,11 +216,9 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let movieIdDetails;
-
 // Fetch movies from API
 const moviesUrl =
-  "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1";
+  "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=2";
 
 const seriesUrl =
   "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=2";
@@ -225,12 +227,10 @@ const trendingMoviesUrl =
   "https://api.themoviedb.org/3/trending/movie/week?language=en-US";
 
 const popularMoviesUrl =
-  "https://api.themoviedb.org/3/movie/popular?language=en-US&page=2";
+  "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
 
 const liveMoviesUrl =
   "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1 ";
-
-const videoUrl = `https://api.themoviedb.org/3/movie/${movieIdDetails}/videos?language=en-US`;
 
 const options = {
   method: "GET",
@@ -263,10 +263,14 @@ async function fetchMovies(url) {
 //   return `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
 // }
 
-async function fetchMovieDetails(idMovie) {
+async function fetchMovieDetails(idMovie, type) {
   const castUrl = `https://api.themoviedb.org/3/movie/${idMovie}/credits?language=en-US`;
+  const videoUrl = `https://api.themoviedb.org/3/movie/${idMovie}/videos?language=en-US`;
+
+  const url = type === "cast" ? castUrl : type === "video" ? videoUrl : "";
+
   try {
-    const response = await fetch(castUrl, options);
+    const response = await fetch(url, options);
 
     if (!response.ok) {
       throw new Error(
@@ -275,7 +279,13 @@ async function fetchMovieDetails(idMovie) {
     }
 
     const data = await response.json();
-    const casts = await data.cast;
+
+    const casts =
+      type === "cast"
+        ? await data.cast
+        : type === "video"
+        ? await data.results
+        : null;
 
     return casts;
   } catch (error) {
@@ -313,7 +323,7 @@ async function addMoviesToDatabase(type) {
           }
         });
 
-        const casts = await fetchMovieDetails(movieId);
+        const casts = await fetchMovieDetails(movieId, "cast");
         const castArray = [];
         casts.forEach((cast, index) => {
           if (index <= 15) {
@@ -321,10 +331,23 @@ async function addMoviesToDatabase(type) {
           }
         });
 
+        const videos = await fetchMovieDetails(movieId, "video");
+        const videoArray = [];
+
+        videos.forEach((video, index) => {
+          const trailer = video.name;
+          if (trailer.includes("Official Trailer")) {
+            videoArray.push(video.key);
+          } else if (trailer.includes("Teaser")) {
+            videoArray.push(video.key);
+          }
+        });
+
         const movieWithDetails = {
           ...movie,
           genres: movieGenres,
           cast: castArray,
+          video_url: videoArray,
         };
 
         return movieWithDetails;
