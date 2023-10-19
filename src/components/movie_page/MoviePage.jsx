@@ -29,6 +29,7 @@ function MoviePage({
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(movie);
   }, [isPageTop]);
 
   useEffect(() => {
@@ -104,19 +105,21 @@ function MoviePage({
         </div>
         <div className="top-cast">
           <h4>Top Cast</h4>
-          <div className="top-casts">
-            <ul>
-              {movie.cast.map((castItem, index) => (
-                <li>
-                  <Cast
-                    name={castItem.name}
-                    imgUrl={castItem.profile_path}
-                    character={castItem.character}
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Section slide={true} btnTop="50%" marginBottomTitle="0">
+            <div className="top-casts">
+              <ul>
+                {movie.cast.map((castItem, index) => (
+                  <li key={castItem.id}>
+                    <Cast
+                      name={castItem.name}
+                      imgUrl={castItem.profile_path}
+                      character={castItem.character}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Section>
         </div>
       </section>
       <section className="movie-page-section">

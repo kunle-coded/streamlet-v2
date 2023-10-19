@@ -146,20 +146,3 @@
   overflow: hidden;
   margin-bottom: 9px;
 }
-
-.player {
-  width: 100%;
-}
-
-/* video::-webkit-progress-bar {
-  color: var(--accent-color);
-} */
-
-video::-webkit-media-controls-progress-bar {
-  background-color: red; /* Example background color */
-}
-
-video::-webkit-media-controls-current-time-display,
-video::-webkit-media-controls-time-remaining-display {
-  color: var(--accent-color); /* Example text color */
-}

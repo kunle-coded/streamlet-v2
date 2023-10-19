@@ -10,6 +10,7 @@ function Slider({
   watchlist,
   onWatchlist,
   onMovieClick,
+  onVideo,
 }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -82,6 +83,7 @@ function Slider({
             currentSlide={currentSlide}
             onWatchlist={onWatchlist}
             onClick={onMovieClick}
+            onVideo={onVideo}
           />
         ))}
       </div>

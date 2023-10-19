@@ -13,6 +13,7 @@ import {
   Rating,
   RatingLabel,
   Slider,
+  VideoPlayer,
 } from "./components";
 
 function App() {
@@ -74,6 +75,8 @@ function App() {
   const [likedMovies, setLikedMovies] = useState([]);
   const [isLike, setIsLike] = useState(false);
   const [isDropdown, setIsDropdown] = useState(false);
+  const [isVideo, setIsVideo] = useState(false);
+  const [singleVideo, setSingleVideo] = useState({});
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -823,31 +826,33 @@ function App() {
     }
   }
 
+  function handleVideoPlayer(movie) {
+    let newVideoToAdd = {};
+
+    if (!newVideoToAdd.id) {
+      newVideoToAdd = { ...movie };
+    }
+
+    setSingleVideo((video) =>
+      video.id !== newVideoToAdd.id ? newVideoToAdd : video
+    );
+
+    setIsModal(true);
+    setIsVideo(true);
+  }
+
+  function handleCloseVideo() {
+    setIsVideo(false);
+    setIsModal(false);
+  }
+
   function handleCloseDropdown(e) {
     setIsDropdown((prevState) => !prevState);
-    console.log("dropdown clicked", isDropdown, e.target);
   }
 
   function handleGoBack() {
     setIsMoviePage(false);
-    console.log("back button clicked");
   }
-
-  // Cast object
-  // {
-  //   adult: false,
-  //   gender: 2,
-  //   id: 500,
-  //   known_for_department: 'Acting',
-  //   name: 'Tom Cruise',
-  //   original_name: 'Tom Cruise',
-  //   popularity: 55.944,
-  //   profile_path: '/8qBylBsQf4llkGrWR3qAsOtOU8O.jpg',
-  //   cast_id: 4,
-  //   character: 'Ethan Hunt',
-  //   credit_id: '5c3d2ae892514156e5ac7c11',
-  //   order: 0
-  // }
 
   if (isModal) {
     return (
@@ -894,7 +899,10 @@ function App() {
             onLogin={openLoginModal}
           />
         )}
-        <Footer />
+        {isVideo && (
+          <VideoPlayer movie={singleVideo} onClose={handleCloseVideo} />
+        )}
+        {!isVideo && <Footer />}
       </div>
     );
   }
@@ -919,6 +927,7 @@ function App() {
               onWatchlist={handleWatchlist}
               watchlist={watchlist}
               onMovieClick={handleMovieClick}
+              onVideo={handleVideoPlayer}
             />
           </Header>
 

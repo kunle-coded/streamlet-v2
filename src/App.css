@@ -187,6 +187,49 @@ a:focus {
   z-index: 21;
 }
 
+/* Video player page */
+.video-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgb(0, 0, 0, 0.8);
+  z-index: 20;
+}
+
+.video-player-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  /* width: 500px;
+  background-color: var(--black-darker);
+  border: 1px solid var(--black-dark);
+  border-radius: 15px;*/
+  padding: 70px;
+  z-index: 21;
+}
+
+.player {
+  width: 100%;
+  z-index: 22;
+}
+
+video::-webkit-media-controls-progress-bar {
+  background-color: red; /* Example background color */
+}
+
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display {
+  color: var(--accent-color); /* Example text color */
+}
+
 /* Loader */
 .loader {
   display: flex;

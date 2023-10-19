@@ -12,6 +12,7 @@ function Slide({
   slider = true,
   onWatchlist,
   onClick,
+  onVideo,
 }) {
   let watchlisted = useWatchlistMarker(watchlist, movie);
   const title = movie.title ? movie.title : movie.name;
@@ -52,6 +53,7 @@ function Slide({
             border={false}
             borderRadius="9px"
             color="#fff"
+            onClick={() => onVideo(movie)}
           >
             Watch Trailer
           </Buttons>

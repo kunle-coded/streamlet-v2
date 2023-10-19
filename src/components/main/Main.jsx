@@ -420,10 +420,6 @@ function Main({
           </div>
         </div>
       </Section>
-
-      {/* <Section title="Videos">
-        <VideoPlayer />
-      </Section> */}
     </main>
   );
 }
