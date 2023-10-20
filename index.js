@@ -86,6 +86,7 @@ const seriesSchema = new mongoose.Schema({
   popularity: Number,
   first_air_date: String,
   title: String,
+  video_url: [String],
   vote_average: Number,
   vote_count: Number,
   origin_country: Array,
@@ -221,7 +222,7 @@ const moviesUrl =
   "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=2";
 
 const seriesUrl =
-  "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=2";
+  "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=5";
 
 const trendingMoviesUrl =
   "https://api.themoviedb.org/3/trending/movie/week?language=en-US";
@@ -263,9 +264,13 @@ async function fetchMovies(url) {
 //   return `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
 // }
 
-async function fetchMovieDetails(idMovie, type) {
-  const castUrl = `https://api.themoviedb.org/3/movie/${idMovie}/credits?language=en-US`;
-  const videoUrl = `https://api.themoviedb.org/3/movie/${idMovie}/videos?language=en-US`;
+async function fetchMovieDetails(idMovie, type, option) {
+  const urlPartCast =
+    option === "movies" ? "movie" : option === "series" ? "tv" : "movie";
+  const urlPartVideo =
+    option === "movies" ? "movie" : option === "series" ? "tv" : "movie";
+  const castUrl = `https://api.themoviedb.org/3/${urlPartCast}/${idMovie}/credits?language=en-US`;
+  const videoUrl = `https://api.themoviedb.org/3/${urlPartVideo}/${idMovie}/videos?language=en-US`;
 
   const url = type === "cast" ? castUrl : type === "video" ? videoUrl : "";
 
@@ -285,9 +290,31 @@ async function fetchMovieDetails(idMovie, type) {
         ? await data.cast
         : type === "video"
         ? await data.results
-        : null;
+        : await data.results;
 
     return casts;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+async function fetchSeriesVideo(serieId) {
+  const videoUrl = `https://api.themoviedb.org/3/tv/${serieId}/videos?language=en-US`;
+
+  try {
+    const response = await fetch(videoUrl, options);
+
+    if (!response.ok) {
+      throw new Error(
+        "Movies cannot be loaded at the moment 😢, please try again"
+      );
+    }
+
+    const data = await response.json();
+
+    const video = await data.results;
+
+    return video;
   } catch (error) {
     console.error(error.message);
   }
@@ -323,7 +350,7 @@ async function addMoviesToDatabase(type) {
           }
         });
 
-        const casts = await fetchMovieDetails(movieId, "cast");
+        const casts = await fetchMovieDetails(movieId, "cast", type);
         const castArray = [];
         casts.forEach((cast, index) => {
           if (index <= 15) {
@@ -331,7 +358,7 @@ async function addMoviesToDatabase(type) {
           }
         });
 
-        const videos = await fetchMovieDetails(movieId, "video");
+        const videos = await fetchMovieDetails(movieId, "video", type);
         const videoArray = [];
 
         videos.forEach((video, index) => {
@@ -343,11 +370,19 @@ async function addMoviesToDatabase(type) {
           }
         });
 
+        const seriesVideo = await fetchSeriesVideo(movieId);
+        const videoUrl = [];
+        seriesVideo.forEach((serie, index) => {
+          videoUrl.push(serie.key);
+        });
+
+        const videoToAdd = type === "series" ? videoUrl : videoArray;
+
         const movieWithDetails = {
           ...movie,
           genres: movieGenres,
           cast: castArray,
-          video_url: videoArray,
+          video_url: videoToAdd,
         };
 
         return movieWithDetails;
@@ -380,8 +415,10 @@ async function addMoviesToDatabase(type) {
       Series.findOne({ name: serieName })
         .then((result) => {
           if (!result) {
-            const dataMovie = new Series(movie);
-            dataMovie.save();
+            if (!(movie.video_url.length < 1)) {
+              const dataMovie = new Series(movie);
+              dataMovie.save();
+            }
           }
         })
         .catch((err) => {
@@ -427,7 +464,7 @@ async function addMoviesToDatabase(type) {
   }
 }
 
-// await addMoviesToDatabase("movies");
+// await addMoviesToDatabase("series");
 
 app.get("/movies", function (req, res) {
   const movies = Movies.find()
