@@ -18,6 +18,7 @@ function Navbar({
   isDropdown,
   onDropdown,
   onBack,
+  onDropdownGlobal,
 }) {
   const [isExpanded, setExpanded] = useState(false);
   const [isNotify, setNotify] = useState(false);
@@ -33,7 +34,7 @@ function Navbar({
   }, [watchlist]);
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" onClick={onDropdownGlobal}>
       <div className="logo">
         <img src={logo} alt="" />
       </div>

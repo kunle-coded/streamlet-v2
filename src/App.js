@@ -827,6 +827,10 @@ function App() {
   }
 
   function handleVideoPlayer(movie) {
+    if (!login) {
+      return openLoginModal();
+    }
+
     let newVideoToAdd = {};
 
     if (!newVideoToAdd.id) {
@@ -846,8 +850,22 @@ function App() {
     setIsModal(false);
   }
 
-  function handleCloseDropdown(e) {
+  function handleCloseDropdown() {
     setIsDropdown((prevState) => !prevState);
+  }
+  function handleCloseDropdownGlobal(e) {
+    if (
+      e.target.classList.contains("dropdown-items") ||
+      e.target.classList.contains("drop-down")
+    ) {
+      return;
+    }
+
+    if (isDropdown) {
+      setIsDropdown(false);
+    } else {
+      return;
+    }
   }
 
   function handleGoBack() {
@@ -920,6 +938,7 @@ function App() {
               onLogout={handleLogout}
               onDropdown={handleCloseDropdown}
               isDropdown={isDropdown}
+              onDropdownGlobal={handleCloseDropdownGlobal}
             />
 
             <Slider
@@ -928,6 +947,7 @@ function App() {
               watchlist={watchlist}
               onMovieClick={handleMovieClick}
               onVideo={handleVideoPlayer}
+              onDropdownGlobal={handleCloseDropdownGlobal}
             />
           </Header>
 
@@ -952,6 +972,8 @@ function App() {
             onWatchlist={handleWatchlist}
             watchlist={watchlist}
             onMovieClick={handleMovieClick}
+            onVideo={handleVideoPlayer}
+            onDropdownGlobal={handleCloseDropdownGlobal}
           />
         </>
       )}
@@ -968,6 +990,7 @@ function App() {
               onDropdown={handleCloseDropdown}
               isDropdown={isDropdown}
               onBack={handleGoBack}
+              onDropdownGlobal={handleCloseDropdownGlobal}
             />
           </Header>
 
@@ -985,6 +1008,8 @@ function App() {
             isPageTop={isPageTop}
             onLike={handleMovieLike}
             likes={likedMovies}
+            onVideo={handleVideoPlayer}
+            onDropdownGlobal={handleCloseDropdownGlobal}
           />
         </>
       )}

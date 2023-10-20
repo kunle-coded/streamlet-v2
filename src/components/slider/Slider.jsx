@@ -11,6 +11,7 @@ function Slider({
   onWatchlist,
   onMovieClick,
   onVideo,
+  onDropdownGlobal,
 }) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -70,7 +71,7 @@ function Slider({
   }, []);
 
   return (
-    <div className="slider">
+    <div className="slider" onClick={onDropdownGlobal}>
       {showButtons && <LeftArrow />}
       <div className="slide-container" style={{ transform: transformX }}>
         {slides.map((slide, index) => (

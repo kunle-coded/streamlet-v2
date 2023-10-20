@@ -123,3 +123,7 @@
 .footer-links ul li:hover {
   color: var(--white);
 }
+
+.footer-copyright span a {
+  color: var(--white);
+}

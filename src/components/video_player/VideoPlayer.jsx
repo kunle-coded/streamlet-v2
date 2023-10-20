@@ -4,7 +4,7 @@ import Buttons from "../buttons/Buttons";
 function VideoPlayer({ movie, onClose }) {
   const title = movie ? movie.title : null;
   // console.log(movie ? movie : null);
-  const url = movie ? movie.video_url[1] : null;
+  const url = movie ? movie.video_url[0] : null;
   return (
     <main className="video-page">
       <div className="video-player-container">

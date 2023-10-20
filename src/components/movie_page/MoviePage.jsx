@@ -23,6 +23,8 @@ function MoviePage({
   onSlideLeft,
   onMovieClick,
   isPageTop,
+  onVideo,
+  onDropdownGlobal,
 }) {
   const [liked, setLiked] = useState(false);
   const ref = useRef();
@@ -52,7 +54,7 @@ function MoviePage({
   }
 
   return (
-    <main className="movie-page">
+    <main className="movie-page" onClick={onDropdownGlobal}>
       <div className="slide-container">
         <Slide
           onWatchlist={onWatchlist}
@@ -60,6 +62,7 @@ function MoviePage({
           movie={movie}
           type="Movie"
           slider={false}
+          onVideo={onVideo}
         />
         <div className="movie-engagement-btns">
           <Buttons

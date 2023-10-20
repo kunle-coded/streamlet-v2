@@ -134,7 +134,15 @@ function Footer() {
           </ul>
         </div>
 
-        <div className="footer-copyright">© 2023</div>
+        <div className="footer-copyright">
+          Developed by{" "}
+          <span>
+            <a href="https://github.com/kunle-coded" target="_blank">
+              Kunle Adesokan
+            </a>
+          </span>{" "}
+          © 2023
+        </div>
       </div>
     </div>
   );

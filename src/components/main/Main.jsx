@@ -36,6 +36,7 @@ function Main({
   onFast,
   onLive,
   onMovieClick,
+  onDropdownGlobal,
 }) {
   const [isLong, setIsLong] = useState(false);
   useEffect(() => {
@@ -64,7 +65,7 @@ function Main({
   // Trim movie overview
 
   return (
-    <main className="main-section">
+    <main className="main-section" onClick={onDropdownGlobal}>
       {/* New movie release section */}
       <Section
         title="New Release"
