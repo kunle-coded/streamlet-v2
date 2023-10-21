@@ -59,6 +59,7 @@
 .search-input.reveal {
   opacity: 1;
   width: 200px;
+  color: var(--gray);
 }
 .search-input:focus {
   outline: none;

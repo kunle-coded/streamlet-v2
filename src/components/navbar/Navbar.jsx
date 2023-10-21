@@ -11,6 +11,7 @@ import { ReactComponent as BookmarkSmall } from "../../assets/icons/bookmark-sma
 
 function Navbar({
   watchlist,
+  likes,
   isLogin,
   onLogin,
   onSignup,
@@ -19,9 +20,14 @@ function Navbar({
   onDropdown,
   onBack,
   onDropdownGlobal,
+  searchQuery,
+  onSearch,
+  onMovieSearch,
 }) {
   const [isExpanded, setExpanded] = useState(false);
   const [isNotify, setNotify] = useState(false);
+  const [watchlistCounter, setWatchlistCounter] = useState(0);
+  const [likesCounter, setLikesCounter] = useState(0);
 
   useEffect(() => {
     if (watchlist) {
@@ -31,7 +37,25 @@ function Navbar({
     } else {
       setNotify(false);
     }
-  }, [watchlist]);
+
+    if (watchlist) {
+      const watchlistCount = watchlist.length;
+      setWatchlistCounter(watchlistCount);
+    }
+
+    if (likes) {
+      const likesCount = likes.length;
+      setLikesCounter(likesCount);
+    }
+  }, [watchlist, likes]);
+
+  function handleSearch() {
+    setExpanded((exp) => !exp);
+
+    if (searchQuery) {
+      onMovieSearch();
+    }
+  }
 
   return (
     <nav className="navbar" onClick={onDropdownGlobal}>
@@ -61,8 +85,10 @@ function Navbar({
         <div className="search-area ">
           <input
             type="text"
+            value={searchQuery}
             placeholder="Search movies..."
             className={`search-input ${isExpanded ? "reveal" : ""}`}
+            onChange={(e) => onSearch(e.target)}
           />
           <svg
             className="search-icon"
@@ -71,7 +97,7 @@ function Navbar({
             viewBox="0 0 21 21"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={() => setExpanded((exp) => !exp)}
+            onClick={handleSearch}
           >
             <path
               d="M15.11 15.11L19.48 19.48"
@@ -132,16 +158,10 @@ function Navbar({
         >
           <li className="dropdown-item">Profile </li>
           <li className="dropdown-item">
-            My Watchlist{" "}
-            <span>
-              <BookmarkSmall />
-            </span>
+            My Watchlist <span>{watchlistCounter}</span>
           </li>
           <li className="dropdown-item">
-            Likes{" "}
-            <span>
-              <LikeFill />
-            </span>
+            Likes <span>{likesCounter}</span>
           </li>
           <li className="dropdown-item">Settings</li>
           <li className="dropdown-item" onClick={onLogout}>

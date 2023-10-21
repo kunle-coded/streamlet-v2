@@ -73,10 +73,12 @@ function App() {
   const [isPageTop, setIsPageTop] = useState(false);
   const [singleMovie, setSingleMovie] = useState({});
   const [likedMovies, setLikedMovies] = useState([]);
-  const [isLike, setIsLike] = useState(false);
+  // const [isLike, setIsLike] = useState(false);
   const [isDropdown, setIsDropdown] = useState(false);
   const [isVideo, setIsVideo] = useState(false);
   const [singleVideo, setSingleVideo] = useState({});
+  const [query, setQuery] = useState("");
+  const [searched, setSearched] = useState([]);
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -146,7 +148,7 @@ function App() {
     const moviesAward = [];
 
     movies.forEach((movie) => {
-      if (movie.popularity >= 1500) {
+      if (movie.popularity >= 1200) {
         moviesAward.push(movie);
         moviesAward.sort((a, b) => b.popularity - a.popularity);
       }
@@ -193,7 +195,7 @@ function App() {
     setActivePoster((prevPoster) =>
       prevPoster.id !== newPosterToAdd.id ? newPosterToAdd : prevPoster
     );
-  }, [movies, update]);
+  }, [movies, update, featured]);
 
   // Add movies/series to watchlist on click AddWatchlist
   function handleWatchlist(mov) {
@@ -760,22 +762,6 @@ function App() {
         console.log(err);
       }
     }
-
-    // if (login) {
-    //   try {
-    //     const res = await fetch("/home");
-    //     // const data = await res.json();
-    //     console.log(res);
-    //     if (res.status === 409) {
-    //       setUserExist(true);
-    //     } else {
-    //       setUserExist(false);
-    //       resetUserData();
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
   }
 
   function handleLogout() {
@@ -818,11 +804,11 @@ function App() {
         (likedItem) => likedItem.title !== movie.title
       );
       setLikedMovies(updatedLikedMovies);
-      setIsLike(false);
+      // setIsLike(false);
     } else {
       // Add the movie to likedMovies and update the isLike state
       setLikedMovies((prevLikedMovies) => [...prevLikedMovies, movie]);
-      setIsLike(true);
+      // setIsLike(true);
     }
   }
 
@@ -866,6 +852,47 @@ function App() {
     } else {
       return;
     }
+  }
+
+  // Handling movie search
+  function handleSearchQuery(input) {
+    setQuery(input.value);
+    console.log("searching", input.value);
+  }
+
+  const searchData = {
+    query,
+  };
+
+  const searchPostOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(searchData),
+  };
+
+  const searchMovies = async () => {
+    try {
+      const res = await fetch("/search", searchPostOptions);
+
+      if (!res.ok) {
+        throw new Error("Failed to load movies, please retry!");
+      }
+
+      const data = await res.json();
+      const results = data.results;
+      console.log(results);
+
+      // setSearched(data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  function handleSearch() {
+    searchMovies();
+    setQuery("");
   }
 
   function handleGoBack() {
@@ -932,6 +959,7 @@ function App() {
           <Header>
             <Navbar
               watchlist={watchlist}
+              likes={likedMovies}
               onLogin={openLoginModal}
               onSignup={openSignupModal}
               isLogin={login}
@@ -939,6 +967,9 @@ function App() {
               onDropdown={handleCloseDropdown}
               isDropdown={isDropdown}
               onDropdownGlobal={handleCloseDropdownGlobal}
+              searchQuery={query}
+              onSearch={handleSearchQuery}
+              onMovieSearch={handleSearch}
             />
 
             <Slider
@@ -983,6 +1014,7 @@ function App() {
           <Header slider={false}>
             <Navbar
               watchlist={watchlist}
+              likes={likedMovies}
               onLogin={openLoginModal}
               onSignup={openSignupModal}
               isLogin={login}

@@ -60,12 +60,12 @@ function Slide({
           <Buttons
             bookmark={true}
             watchlisted={watchlisted}
-            width="150px"
+            width={watchlisted ? "170px" : "150px"}
             height="35px"
             borderRadius="9px"
             onClick={() => onWatchlist(movie)}
           >
-            Add Watchlist
+            {watchlisted ? "Remove Watchlist" : "Add Watchlist"}
           </Buttons>
         </div>
       </div>

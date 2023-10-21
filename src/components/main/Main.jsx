@@ -36,6 +36,7 @@ function Main({
   onFast,
   onLive,
   onMovieClick,
+  onVideo,
   onDropdownGlobal,
 }) {
   const [isLong, setIsLong] = useState(false);
@@ -164,6 +165,7 @@ function Main({
                 border={false}
                 borderRadius="9px"
                 color="#fff"
+                onClick={() => onVideo(active)}
               >
                 Play Now
               </Buttons>
@@ -246,6 +248,7 @@ function Main({
                     onWatchlist={onWatchlist}
                     watchlist={watchlist}
                     onMovieClick={onMovieClick}
+                    onVideo={onVideo}
                   />
                 )
             )}

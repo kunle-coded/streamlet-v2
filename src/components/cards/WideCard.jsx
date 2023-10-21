@@ -7,7 +7,7 @@ import TextReveal from "../text_reveal/TextReveal";
 import Buttons from "../buttons/Buttons";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
 
-function WideCard({ movie, watchlist, onWatchlist, onMovieClick }) {
+function WideCard({ movie, watchlist, onWatchlist, onMovieClick, onVideo }) {
   let watchlisted = useWatchlistMarker(watchlist, movie);
 
   return (
@@ -48,6 +48,7 @@ function WideCard({ movie, watchlist, onWatchlist, onMovieClick }) {
             border={false}
             borderRadius="9px"
             color="#fff"
+            onClick={() => onVideo(movie)}
           >
             Play Now
           </Buttons>

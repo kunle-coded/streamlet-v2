@@ -96,7 +96,8 @@ function MoviePage({
             fontWeight="400"
             onClick={() => onLike(movie)}
           >
-            <span className="like">{liked ? <LikeFill /> : <Like />}</span> Like
+            <span className="like">{liked ? <LikeFill /> : <Like />}</span>{" "}
+            {liked ? "Liked" : "Like"}
           </Buttons>
         </div>
       </div>
