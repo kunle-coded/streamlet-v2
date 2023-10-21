@@ -595,6 +595,42 @@ app.post("/login", async function (req, res) {
   }
 });
 
+async function fetchSearchMovies(query) {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/search/multi?query=${query}&page=1`,
+      options
+    );
+
+    if (!response.ok) {
+      throw new Error("No result for this query 😢, please try something else");
+    }
+
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+app.post("/search", async (req, res) => {
+  try {
+    const searchQuery = req.body.query;
+    const results = await fetchSearchMovies(searchQuery);
+    const resultToSend = [];
+
+    results.forEach((movie) => {
+      if (movie.media_type === "movie" || movie.media_type === "tv") {
+        resultToSend.push(movie);
+      }
+    });
+
+    res.send({ results: resultToSend });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.get("/home", auth, (req, res) => {
   res.status(200).send("You are signed in");
 });
