@@ -31,7 +31,6 @@ function MoviePage({
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(movie);
   }, [isPageTop]);
 
   useEffect(() => {

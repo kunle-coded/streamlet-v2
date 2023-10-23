@@ -151,23 +151,25 @@ function Navbar({
           isDropdown ? "open-dropdown" : "close-dropdown"
         }`}
       >
-        <ul
-          className={`dropdown-items ${
-            isDropdown ? "reveal-dropdown" : "hide-dropdown"
-          }`}
-        >
-          <li className="dropdown-item">Profile </li>
-          <li className="dropdown-item">
-            My Watchlist <span>{watchlistCounter}</span>
-          </li>
-          <li className="dropdown-item">
-            Likes <span>{likesCounter}</span>
-          </li>
-          <li className="dropdown-item">Settings</li>
-          <li className="dropdown-item" onClick={onLogout}>
-            Logout
-          </li>
-        </ul>
+        {isDropdown && (
+          <ul
+            className={`dropdown-items ${
+              isDropdown ? "reveal-dropdown" : "hide-dropdown"
+            }`}
+          >
+            <li className="dropdown-item">Profile </li>
+            <li className="dropdown-item">
+              My Watchlist <span>{watchlistCounter}</span>
+            </li>
+            <li className="dropdown-item">
+              Likes <span>{likesCounter}</span>
+            </li>
+            <li className="dropdown-item">Settings</li>
+            <li className="dropdown-item" onClick={onLogout}>
+              Logout
+            </li>
+          </ul>
+        )}
       </div>
     </nav>
   );

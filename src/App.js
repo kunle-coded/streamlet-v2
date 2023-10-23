@@ -12,6 +12,7 @@ import {
   Navbar,
   Rating,
   RatingLabel,
+  Search,
   Slider,
   VideoPlayer,
 } from "./components";
@@ -78,7 +79,9 @@ function App() {
   const [isVideo, setIsVideo] = useState(false);
   const [singleVideo, setSingleVideo] = useState({});
   const [query, setQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [searched, setSearched] = useState([]);
+  const [isSearch, setIsSearch] = useState(false);
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -787,7 +790,6 @@ function App() {
     if (isMoviePage) {
       setIsPageTop((prevState) => !prevState);
     }
-    console.log(movie);
   }
 
   function handleMovieLike(movie) {
@@ -857,7 +859,6 @@ function App() {
   // Handling movie search
   function handleSearchQuery(input) {
     setQuery(input.value);
-    console.log("searching", input.value);
   }
 
   const searchData = {
@@ -882,9 +883,7 @@ function App() {
 
       const data = await res.json();
       const results = data.results;
-      console.log(results);
-
-      // setSearched(data);
+      setSearched(results);
     } catch (err) {
       console.log(err.message);
     }
@@ -892,18 +891,25 @@ function App() {
 
   function handleSearch() {
     searchMovies();
+    setSearchQuery(query);
     setQuery("");
+    setIsSearch(true);
   }
 
   function handleGoBack() {
     setIsMoviePage(false);
+    setIsSearch(false);
   }
 
   if (isModal) {
     return (
       <div className="login-modal">
         <Header>
-          <Navbar />
+          <Navbar
+            searchQuery={query}
+            onSearch={handleSearchQuery}
+            onMovieSearch={handleSearch}
+          />
         </Header>
 
         {isLogin && (
@@ -953,8 +959,8 @@ function App() {
   }
 
   return (
-    <div>
-      {!isMoviePage && (
+    <div className="app">
+      {!isMoviePage && !isSearch && (
         <>
           <Header>
             <Navbar
@@ -1009,7 +1015,7 @@ function App() {
         </>
       )}
 
-      {isMoviePage && (
+      {isMoviePage && !isSearch && (
         <>
           <Header slider={false}>
             <Navbar
@@ -1023,6 +1029,9 @@ function App() {
               isDropdown={isDropdown}
               onBack={handleGoBack}
               onDropdownGlobal={handleCloseDropdownGlobal}
+              searchQuery={query}
+              onSearch={handleSearchQuery}
+              onMovieSearch={handleSearch}
             />
           </Header>
 
@@ -1043,6 +1052,30 @@ function App() {
             onVideo={handleVideoPlayer}
             onDropdownGlobal={handleCloseDropdownGlobal}
           />
+        </>
+      )}
+
+      {isSearch && (
+        <>
+          <Header slider={false}>
+            <Navbar
+              watchlist={watchlist}
+              likes={likedMovies}
+              onLogin={openLoginModal}
+              onSignup={openSignupModal}
+              isLogin={login}
+              onLogout={handleLogout}
+              onDropdown={handleCloseDropdown}
+              isDropdown={isDropdown}
+              onBack={handleGoBack}
+              onDropdownGlobal={handleCloseDropdownGlobal}
+              searchQuery={query}
+              onSearch={handleSearchQuery}
+              onMovieSearch={handleSearch}
+            />
+          </Header>
+
+          <Search movies={searched} query={searchQuery} isSearch={isSearch} />
         </>
       )}
 

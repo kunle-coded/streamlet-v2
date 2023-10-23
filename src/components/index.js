@@ -25,3 +25,8 @@ export { default as LoginForm } from "./forms/LoginForm";
 export { default as Success } from "./login/Success";
 export { default as MoviePage } from "./movie_page/MoviePage";
 export { default as Cast } from "./movie_page/Cast";
+export { default as Search } from "./search_page/Search";
+export { default as ResultItem } from "./search_page/ResultItem";
+export { default as ResultDetail } from "./search_page/ResultDetail";
+export { default as StarRating } from "./rating/StarRating";
+export { default as Star } from "./rating/Star";
