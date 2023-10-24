@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./search.css";
 import ResultItem from "./ResultItem";
 import Buttons from "../buttons/Buttons";
@@ -7,14 +7,24 @@ import genres from "../../genres";
 import ResultDetail from "./ResultDetail";
 import StarRating from "../rating/StarRating";
 
-function Search({ movies, query }) {
+function Search({ movies, query, userRating, onRate }) {
   const [resultCount, setResultCount] = useState(3);
   const [movie, setMovie] = useState({});
+  const [rating, setRating] = useState(0);
+  const [firstQuery, setFirstQuery] = useState("");
   const length = movies.length;
   const ref = useRef();
 
   const updatedMovie = useGenreFetcher(movies, genres);
   const selectedMovieLength = movie.id;
+
+  useEffect(() => {
+    setFirstQuery(query);
+
+    if (firstQuery !== query) {
+      setMovie({});
+    }
+  }, [firstQuery, query]);
 
   function handleLoadMore() {
     setResultCount((count) => count + 3);
@@ -23,6 +33,22 @@ function Search({ movies, query }) {
   function handleResultClick(movie) {
     window.scrollTo(0, ref);
     setMovie(movie);
+  }
+
+  useEffect(() => {
+    let rate = 0;
+    userRating.forEach((user) => {
+      console.log("rated movie id x movie id", user.movieId, movie.id);
+      if (user.movieId === movie.id) {
+        rate = user.rating;
+      }
+    });
+
+    setRating(rate);
+  }, [userRating, movie]);
+
+  function handleRating(rating) {
+    onRate(movie.id, rating);
   }
 
   return (
@@ -63,7 +89,7 @@ function Search({ movies, query }) {
             </div>
 
             <div className="results-movie-details-rate">
-              <StarRating />
+              <StarRating rating={rating} onRate={handleRating} />
             </div>
 
             <div className="results-movie-details-overview">movie mid</div>

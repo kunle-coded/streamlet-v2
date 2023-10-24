@@ -8,8 +8,13 @@ StarRating.prototype = {
   color: PropTypes.string,
 };
 
-function StarRating({ maxRating = 10, color = "#fcc419", size = 28 }) {
-  const [rating, setRating] = useState(0);
+function StarRating({
+  maxRating = 10,
+  color = "#fcc419",
+  size = 28,
+  rating,
+  onRate,
+}) {
   const [temprating, setTempRating] = useState(0);
 
   return (
@@ -22,7 +27,7 @@ function StarRating({ maxRating = 10, color = "#fcc419", size = 28 }) {
           full={temprating ? temprating >= i + 1 : rating >= i + 1}
           onHoverIn={() => setTempRating(i + 1)}
           onHoverOut={() => setTempRating(0)}
-          onRate={() => setRating(i + 1)}
+          onRate={() => onRate(i + 1)}
         />
       ))}
     </div>

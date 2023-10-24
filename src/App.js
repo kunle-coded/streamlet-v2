@@ -61,6 +61,7 @@ function App() {
   const [fastCounter, setFastCounter] = useState(4);
   const [liveCounter, setLiveCounter] = useState(4);
   const [login, setLogin] = useState(false);
+  const [token, setToken] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
@@ -82,6 +83,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searched, setSearched] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
+  const [userRating, setUserRating] = useState([]);
 
   const fetchMovies = async (endpoint, setter) => {
     try {
@@ -760,7 +762,7 @@ function App() {
         }
 
         const data = await res.text();
-        // console.log(data);
+        setToken(data);
       } catch (err) {
         console.log(err);
       }
@@ -869,6 +871,7 @@ function App() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(searchData),
   };
@@ -889,11 +892,48 @@ function App() {
     }
   };
 
+  const rateMovies = async (id, rating) => {
+    if (!login) {
+      return openLoginModal();
+    }
+
+    const ratingData = {
+      movieId: id,
+      rating: rating,
+    };
+
+    const ratingPostOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(ratingData),
+    };
+
+    try {
+      const res = await fetch("/rating", ratingPostOptions);
+
+      if (!res.ok) {
+        throw new Error("Failed to load movies, please retry!");
+      }
+
+      const data = await res.json();
+      setUserRating(data.userRating);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   function handleSearch() {
     searchMovies();
     setSearchQuery(query);
     setQuery("");
     setIsSearch(true);
+  }
+
+  function handleRating(id, rating) {
+    rateMovies(id, rating);
   }
 
   function handleGoBack() {
@@ -1075,7 +1115,13 @@ function App() {
             />
           </Header>
 
-          <Search movies={searched} query={searchQuery} isSearch={isSearch} />
+          <Search
+            movies={searched}
+            query={searchQuery}
+            isSearch={isSearch}
+            userRating={userRating}
+            onRate={handleRating}
+          />
         </>
       )}
 
