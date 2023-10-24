@@ -202,6 +202,7 @@ const userSchema = {
   email: String,
   password: String,
   token: String,
+  userRating: [Object],
 };
 
 const Movies = mongoose.model("Movies", moviesSchema);
@@ -544,6 +545,7 @@ app.post("/signup", async function (req, res) {
       username,
       email: email.toLowerCase(),
       password: encryptedPassword,
+      userRating: [],
     });
 
     const token = jwt.sign(
@@ -586,7 +588,7 @@ app.post("/login", async function (req, res) {
 
       user.token = token;
 
-      return res.status(201).send("login successfull");
+      return res.status(201).send(user.token);
     } else {
       res.status(400).send("Invalid email or password");
     }
@@ -621,11 +623,58 @@ app.post("/search", async (req, res) => {
 
     results.forEach((movie) => {
       if (movie.media_type === "movie" || movie.media_type === "tv") {
-        resultToSend.push(movie);
+        if (!movie.poster_path) return;
+        const movieWithUserRating = {
+          ...movie,
+        };
+        resultToSend.push(movieWithUserRating);
       }
     });
 
     res.send({ results: resultToSend });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/rating", async (req, res) => {
+  try {
+    const { movieId, rating } = req.body;
+
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    jwt.verify(token, process.env.TOKEN_KEY, (err, decoded) => {
+      if (err) {
+        return res.status(403).send("Invalid token");
+      }
+
+      Users.findOne({ _id: decoded.user_id })
+        .then((user) => {
+          if (user) {
+            const ratingToAdd = { movieId, rating };
+
+            const existingRatingIndex = user.userRating.findIndex(
+              (ratingItem) => ratingItem.movieId === movieId
+            );
+
+            if (existingRatingIndex !== -1) {
+              // If the user already rated the movie, update their rating
+              user.userRating[existingRatingIndex].rating = rating;
+            } else {
+              // If the user hasn't rated the movie, add the new rating to the array
+              user.userRating.push(ratingToAdd);
+            }
+
+            user.save().then(() => {
+              res.send({ userRating: user.userRating });
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   } catch (err) {
     console.log(err);
   }
