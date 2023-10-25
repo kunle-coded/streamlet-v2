@@ -39,17 +39,17 @@ const moviesSchema = new mongoose.Schema({
       order: Number,
     },
   ],
-  genre_ids: [Number],
-  genres: [String],
+  genres: [],
   id: Number,
   original_language: String,
   original_title: String,
   overview: String,
   popularity: Number,
   poster_path: String,
+  production_companies: Array,
   release_date: String,
+  runtime: Number,
   title: String,
-  video: Boolean,
   video_url: [String],
   vote_average: Number,
   vote_count: Number,
@@ -111,7 +111,6 @@ const popularSchema = new mongoose.Schema({
       order: Number,
     },
   ],
-  genre_ids: Array,
   genres: Array,
   id: Number,
   original_language: String,
@@ -119,9 +118,10 @@ const popularSchema = new mongoose.Schema({
   overview: String,
   popularity: Number,
   poster_path: String,
+  production_companies: Array,
   release_date: String,
+  runtime: Number,
   title: String,
-  video: Boolean,
   video_url: [String],
   vote_average: Number,
   vote_count: Number,
@@ -146,7 +146,6 @@ const trendingSchema = new mongoose.Schema({
       order: Number,
     },
   ],
-  genre_ids: Array,
   genres: Array,
   id: Number,
   original_language: String,
@@ -154,9 +153,10 @@ const trendingSchema = new mongoose.Schema({
   overview: String,
   popularity: Number,
   poster_path: String,
+  production_companies: Array,
   release_date: String,
+  runtime: Number,
   title: String,
-  video: Boolean,
   video_url: [String],
   vote_average: Number,
   vote_count: Number,
@@ -181,7 +181,6 @@ const liveSchema = new mongoose.Schema({
       order: Number,
     },
   ],
-  genre_ids: Array,
   genres: Array,
   id: Number,
   original_language: String,
@@ -189,9 +188,10 @@ const liveSchema = new mongoose.Schema({
   overview: String,
   popularity: Number,
   poster_path: String,
+  production_companies: Array,
   release_date: String,
+  runtime: Number,
   title: String,
-  video: Boolean,
   video_url: [String],
   vote_average: Number,
   vote_count: Number,
@@ -220,16 +220,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Fetch movies from API
 const moviesUrl =
-  "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=2";
+  "https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1";
 
 const seriesUrl =
-  "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=5";
+  "https://api.themoviedb.org/3/discover/tv?include_adult=false&language=en-US&page=1";
 
 const trendingMoviesUrl =
   "https://api.themoviedb.org/3/trending/movie/week?language=en-US";
 
 const popularMoviesUrl =
-  "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
+  "https://api.themoviedb.org/3/movie/popular?language=en-US&page=2";
 
 const liveMoviesUrl =
   "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1 ";
@@ -339,17 +339,61 @@ async function addMoviesToDatabase(type) {
   async function processMoviesData(movieData) {
     const updatedData = await Promise.all(
       movieData.map(async (movie) => {
-        const genreArr = movie.genre_ids;
         const movieId = movie.id;
-        const movieGenres = [];
-        genres.forEach((genre) => {
-          for (let i = 0; i < genreArr.length; i++) {
-            const genreId = genreArr[i];
-            if (genre.id === genreId) {
-              movieGenres.push(genre.name);
+        let movieDetails;
+
+        if (type !== "series") {
+          const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
+
+          try {
+            const response = await fetch(url, options);
+
+            if (!response.ok) {
+              throw new Error(
+                "Movies cannot be loaded at the moment 😢, please try again"
+              );
             }
+
+            const data = await response.json();
+            movieDetails = data;
+            // return data.results;
+          } catch (error) {
+            console.error(error.message);
           }
-        });
+        }
+
+        if (type === "series") {
+          const url = `https://api.themoviedb.org/3/tv/${movieId}?language=en-US`;
+
+          try {
+            const response = await fetch(url, options);
+
+            if (!response.ok) {
+              throw new Error(
+                "Movies cannot be loaded at the moment 😢, please try again"
+              );
+            }
+
+            const data = await response.json();
+            movieDetails = data;
+            // return data.results;
+          } catch (error) {
+            console.error(error.message);
+          }
+        }
+
+        // console.log(movieDetails);
+
+        // const genreArr = movie.genre_ids;
+        // const movieGenres = [];
+        // genres.forEach((genre) => {
+        //   for (let i = 0; i < genreArr.length; i++) {
+        //     const genreId = genreArr[i];
+        //     if (genre.id === genreId) {
+        //       movieGenres.push(genre.name);
+        //     }
+        //   }
+        // });
 
         const casts = await fetchMovieDetails(movieId, "cast", type);
         const castArray = [];
@@ -371,20 +415,24 @@ async function addMoviesToDatabase(type) {
           }
         });
 
-        const seriesVideo = await fetchSeriesVideo(movieId);
         const videoUrl = [];
-        seriesVideo.forEach((serie, index) => {
-          videoUrl.push(serie.key);
-        });
+        if (type === "series") {
+          const seriesVideo = await fetchSeriesVideo(movieId);
+          seriesVideo.forEach((serie, index) => {
+            videoUrl.push(serie.key);
+          });
+        }
 
         const videoToAdd = type === "series" ? videoUrl : videoArray;
 
         const movieWithDetails = {
-          ...movie,
-          genres: movieGenres,
+          ...movieDetails,
+          // genres: movieGenres,
           cast: castArray,
           video_url: videoToAdd,
         };
+
+        // console.log(movieWithDetails);
 
         return movieWithDetails;
       })
@@ -465,6 +513,7 @@ async function addMoviesToDatabase(type) {
   }
 }
 
+// Call the movies api fetcher function
 // await addMoviesToDatabase("series");
 
 app.get("/movies", function (req, res) {
@@ -619,19 +668,53 @@ app.post("/search", async (req, res) => {
   try {
     const searchQuery = req.body.query;
     const results = await fetchSearchMovies(searchQuery);
-    const resultToSend = [];
 
-    results.forEach((movie) => {
-      if (movie.media_type === "movie" || movie.media_type === "tv") {
-        if (!movie.poster_path) return;
-        const movieWithUserRating = {
-          ...movie,
-        };
-        resultToSend.push(movieWithUserRating);
-      }
-    });
+    const resultToSend = await Promise.all(
+      results.map(async (movie) => {
+        if (movie.media_type === "movie" || movie.media_type === "tv") {
+          if (!movie.poster_path) return;
 
-    res.send({ results: resultToSend });
+          let castOption, movieId;
+          if (movie.media_type === "movie") {
+            castOption = "movies";
+          } else if (movie.media_type === "tv") {
+            castOption = "series";
+          }
+
+          const genreArr = movie.genre_ids;
+          const movieGenres = [];
+          genres.forEach((genre) => {
+            for (let i = 0; i < genreArr.length; i++) {
+              const genreId = genreArr[i];
+              if (genre.id === genreId) {
+                movieGenres.push(genre.name);
+              }
+            }
+          });
+
+          movieId = movie.id;
+          const casts = await fetchMovieDetails(movieId, "cast", castOption);
+          const castArray = [];
+          casts.forEach((cast, index) => {
+            if (index < 10) {
+              castArray.push(cast);
+            }
+          });
+
+          const movieWithDetails = {
+            ...movie,
+            cast: castArray,
+            genres: movieGenres,
+          };
+
+          return movieWithDetails;
+        }
+      })
+    );
+
+    const filteredResult = resultToSend.filter((entry) => entry !== undefined);
+
+    res.send({ results: filteredResult });
   } catch (err) {
     console.log(err);
   }
@@ -680,11 +763,7 @@ app.post("/rating", async (req, res) => {
   }
 });
 
-app.get("/home", auth, (req, res) => {
-  res.status(200).send("You are signed in");
-});
-
-const portNum = process.env.PORT;
+const portNum = process.env.PORT || 5000;
 
 app.listen(portNum, () => {
   console.log("Server started on port " + portNum);
