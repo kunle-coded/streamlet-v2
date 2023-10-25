@@ -51,12 +51,7 @@ function Main({
     }
   }, [trending, active]);
 
-  // set active poster
-  function handleActivePoster(movie) {
-    // if (movie) {
-    // }
-    // setActivePoster(movie);
-  }
+  // console.log(series);
 
   let watchlisted = useWatchlistMarker(watchlist, active);
   const movieImg = active
@@ -187,7 +182,6 @@ function Main({
               movie={active}
               index={0}
               border={true}
-              onActive={handleActivePoster}
             />
             {featured.map((movie, i) =>
               i === 0 ? null : (
@@ -197,7 +191,6 @@ function Main({
                   movie={movie}
                   index={i}
                   border={true}
-                  onActive={handleActivePoster}
                 />
               )
             )}
@@ -270,6 +263,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -284,6 +278,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -298,6 +293,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -312,6 +308,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -326,6 +323,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -340,6 +338,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -361,6 +360,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -375,6 +375,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -389,6 +390,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -403,6 +405,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}
@@ -417,6 +420,7 @@ function Main({
                         showNumber={false}
                         width="100%"
                         onMovieClick={onMovieClick}
+                        live={true}
                       />
                     )
                 )}

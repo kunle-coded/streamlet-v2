@@ -13,6 +13,7 @@ function Card({
   showLabel = true,
   showNumber = true,
   active = false,
+  live,
   movie,
   index,
   length,
@@ -31,6 +32,7 @@ function Card({
 
   const pg = movie.adult ? "18+" : "PG-13";
   const rating = parseFloat(movie.vote_average.toFixed(1));
+  const type = movie.title ? "Movie" : "Series";
 
   const cardCounter = movie.counter;
   let number;
@@ -72,12 +74,12 @@ function Card({
           <h4>{movie.title}</h4>
         </div>
         <div className="card-genre-label">
-          <Genre movie={movie} label={true} />
+          <Genre movie={movie} label={true} live={live} />
         </div>
         <div className="card-rating-label">
           <RatingLabel>
             <Rating>{rating}</Rating>
-            <Genre movie={movie} divider={true} genre={false} />
+            <span className="card-movie-type"> | {type}</span>
           </RatingLabel>
         </div>
       </div>

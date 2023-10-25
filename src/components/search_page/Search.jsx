@@ -6,16 +6,25 @@ import useGenreFetcher from "../../utils/useGenreFetcher";
 import genres from "../../genres";
 import ResultDetail from "./ResultDetail";
 import StarRating from "../rating/StarRating";
+import Loader from "../loader/Loader";
+import useWatchlistMarker from "../../utils/useWatchlistMarker";
 
-function Search({ movies, query, userRating, onRate }) {
+function Search({
+  movies,
+  query,
+  watchlist,
+  userRating,
+  onRate,
+  onWatchlist,
+  isLoading,
+  onDropdownGlobal,
+}) {
   const [resultCount, setResultCount] = useState(3);
   const [movie, setMovie] = useState({});
   const [rating, setRating] = useState(0);
   const [firstQuery, setFirstQuery] = useState("");
   const length = movies.length;
   const ref = useRef();
-
-  const updatedMovie = useGenreFetcher(movies, genres);
   const selectedMovieLength = movie.id;
 
   useEffect(() => {
@@ -26,6 +35,19 @@ function Search({ movies, query, userRating, onRate }) {
     }
   }, [firstQuery, query]);
 
+  useEffect(() => {
+    let rate = 0;
+    userRating.forEach((user) => {
+      if (user.movieId === movie.id) {
+        rate = user.rating;
+      }
+    });
+
+    setRating(rate);
+  }, [userRating, movie]);
+
+  let watchlisted = useWatchlistMarker(watchlist, movie);
+
   function handleLoadMore() {
     setResultCount((count) => count + 3);
   }
@@ -35,24 +57,16 @@ function Search({ movies, query, userRating, onRate }) {
     setMovie(movie);
   }
 
-  useEffect(() => {
-    let rate = 0;
-    userRating.forEach((user) => {
-      console.log("rated movie id x movie id", user.movieId, movie.id);
-      if (user.movieId === movie.id) {
-        rate = user.rating;
-      }
-    });
-
-    setRating(rate);
-  }, [userRating, movie]);
-
   function handleRating(rating) {
     onRate(movie.id, rating);
   }
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
-    <main className="search-page">
+    <main className="search-page" onClick={onDropdownGlobal}>
       <section className="search-header">
         <div className="header-top">
           <div className="search-result-title">
@@ -65,7 +79,7 @@ function Search({ movies, query, userRating, onRate }) {
       </section>
       <section className="search-results-container">
         <ul className="search-results">
-          {updatedMovie.map(
+          {movies.map(
             (movie, index) =>
               index <= resultCount && (
                 <li key={index}>
@@ -92,8 +106,31 @@ function Search({ movies, query, userRating, onRate }) {
               <StarRating rating={rating} onRate={handleRating} />
             </div>
 
-            <div className="results-movie-details-overview">movie mid</div>
-            <div className="results-movie-details-btn">movie bottom</div>
+            <div className="results-movie-details-overview">
+              <p>{movie.overview}</p>
+              <p className="results-movie-details-staring">
+                Staring{" "}
+                {movie.cast.map((cast, i) => (
+                  <React.Fragment key={i}>
+                    {" "}
+                    {cast.name}
+                    {i < movie.cast.length - 1 && ","}
+                  </React.Fragment>
+                ))}
+              </p>
+            </div>
+            <div className="results-movie-details-btn">
+              <Buttons
+                bookmark={true}
+                watchlisted={watchlisted}
+                width={watchlisted ? "170px" : "150px"}
+                height="35px"
+                borderRadius="9px"
+                onClick={() => onWatchlist(movie)}
+              >
+                {watchlisted ? "Remove Watchlist" : "Add Watchlist"}
+              </Buttons>
+            </div>
           </div>
         )}
       </section>

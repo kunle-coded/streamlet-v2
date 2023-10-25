@@ -41,7 +41,7 @@ function Poster({ movie, index, border = false, length, onMovieClick }) {
         <div className="poster-label">
           <RatingLabel>
             <Rating>{rating}</Rating>
-            <Genre movie={movie} divider={true} />
+            <Genre movie={movie} divider={true} live={true} />
           </RatingLabel>
         </div>
       </div>

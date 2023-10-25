@@ -16,6 +16,7 @@ function Slide({
 }) {
   let watchlisted = useWatchlistMarker(watchlist, movie);
   const title = movie.title ? movie.title : movie.name;
+  const duration = movie.title ? true : false;
 
   function handleClick(slide) {
     if (!slider) return;
@@ -40,7 +41,7 @@ function Slide({
         <div className="slide-movie-title">
           <h3>{title}</h3>
         </div>
-        <Genre movie={movie} duration={true} year={true} />
+        <Genre movie={movie} duration={duration} year={true} />
         {slider ? (
           <div className="slide-movie-desc">{movie.overview}</div>
         ) : null}

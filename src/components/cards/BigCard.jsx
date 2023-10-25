@@ -4,10 +4,6 @@ import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";
 
 function BigCard({ movie, onMovieClick }) {
-  const imgStyle = {
-    backgroundImage: `url(https://image.tmdb.org/t/p/w300/${movie.backdrop_path})`,
-  };
-
   const title = movie.title ? movie.title : movie.name;
   const rating = parseFloat(movie.vote_average.toFixed(1));
 

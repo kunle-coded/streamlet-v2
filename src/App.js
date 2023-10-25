@@ -148,6 +148,7 @@ function App() {
       }
     });
     setFeatured((prevFeatured) => [...moviesFeatured]);
+    // console.log(featured);
 
     // Add movies to awards state
     const moviesAward = [];
@@ -169,10 +170,11 @@ function App() {
         !fast.some((fastMovie) => fastMovie.name === movie.name)
       ) {
         const movieGenres = movie.genres;
-
-        if (movieGenres.includes("Thriller")) {
-          fastMovies.push(movie);
-        }
+        movieGenres.forEach((genre) => {
+          if (genre.name === "Thriller") {
+            fastMovies.push(movie);
+          }
+        });
       }
     });
     setFast((prevFast) => [...prevFast, ...fastMovies]);
@@ -877,6 +879,7 @@ function App() {
   };
 
   const searchMovies = async () => {
+    setIsLoading(true);
     try {
       const res = await fetch("/search", searchPostOptions);
 
@@ -887,6 +890,7 @@ function App() {
       const data = await res.json();
       const results = data.results;
       setSearched(results);
+      setIsLoading(false);
     } catch (err) {
       console.log(err.message);
     }
@@ -939,6 +943,10 @@ function App() {
   function handleGoBack() {
     setIsMoviePage(false);
     setIsSearch(false);
+  }
+
+  function handleLoader() {
+    console.log("loading");
   }
 
   if (isModal) {
@@ -1118,9 +1126,13 @@ function App() {
           <Search
             movies={searched}
             query={searchQuery}
+            watchlist={watchlist}
             isSearch={isSearch}
             userRating={userRating}
             onRate={handleRating}
+            onWatchlist={handleWatchlist}
+            isLoading={isLoading}
+            onDropdownGlobal={handleCloseDropdownGlobal}
           />
         </>
       )}

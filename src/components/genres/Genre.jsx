@@ -8,27 +8,24 @@ function Genre({
   duration = false,
   year = false,
   movie,
+  live = false,
 }) {
   const type = movie.title ? "Movie" : "Series";
-  const genres = movie.genres;
-  let genre1, genre2, releaseDate;
+  const genres = movie && movie.genres;
+
+  function secondsToHoursMinutes(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return { hours, minutes };
+  }
+
+  const totalSeconds = movie.runtime * 60;
+  const { hours, minutes } = secondsToHoursMinutes(totalSeconds);
+
+  // const genres = movie.genres;
+  let releaseDate;
 
   if (genres) {
-    if (genres.length > 1) {
-      if (genres[0].includes("&")) {
-        genre1 = genres[0];
-        genre2 = null;
-      } else if (genres[1].includes("&")) {
-        genre2 = genres[1].split("&")[0];
-        genre1 = genres[0];
-      } else {
-        genre1 = genres[0];
-        genre2 = genres[1];
-      }
-    } else {
-      genre1 = genres[0];
-    }
-
     releaseDate = movie.release_date
       ? movie.release_date.split("-")[0]
       : movie.first_air_date.split("-")[0];
@@ -38,12 +35,8 @@ function Genre({
     paddingTop: "5px",
   };
 
-  const genreStyle = {
-    paddingLeft: label ? 0 : "5px",
-  };
-
   return (
-    <div className="genre-label" style={genreStyle}>
+    <div className="genre-label">
       {label && (
         <span style={labelStyle}>
           <svg
@@ -61,11 +54,26 @@ function Genre({
         </span>
       )}
       {divider && <span> | </span>}
-      {duration && <span>2h40m &#8226; </span>}
+      {duration && (
+        <span>
+          {hours}h{minutes}m &#8226;{" "}
+        </span>
+      )}
       {year && <span>{releaseDate} &#8226; </span>}
-      {genre && <span>{genre1}</span>}
-      {genre && genre2 && <span> &#8226; </span>}
-      {genre && genre2 && <span> {genre2}</span>}
+      {genres &&
+        genres.map((genre, i) => (
+          <React.Fragment key={i}>
+            {" "}
+            {live ? (
+              i < 2 && <span>{genre.name}</span>
+            ) : (
+              <span>{genre.name}</span>
+            )}
+            {live
+              ? i < 1 && <span> &#8226; </span>
+              : i < genres.length - 1 && <span> &#8226; </span>}
+          </React.Fragment>
+        ))}
       {!genre && <span>{type}</span>}
     </div>
   );

@@ -169,6 +169,16 @@
   display: flex;
 }
 
+.results-movie-details-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 80%;
+}
+.results-movie-details-overview p {
+  font-size: var(--font-sm);
+}
+
 .button-sect {
   margin-top: 50px;
 }
