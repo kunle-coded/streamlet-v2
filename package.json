@@ -1,0 +1,11 @@
+{
+  "name": "streamlet-v2",
+  "version": "2.0.0",
+  "description": "Streamlet version 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adekunle Adesokan",
+  "license": "ISC"
+}
