@@ -1,0 +1,153 @@
+.card {
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* .slide-card {
+  height: 100px;
+  margin-right: 10px;
+  transition: transform 0.5s ease-in-out;
+} */
+
+.card-number h1 {
+  font-size: var(--font-title-xlg);
+  margin-right: 18px;
+}
+
+.card-image {
+  /* width: 45%; */
+  height: 100%;
+  margin: 0 10px 0 0px;
+}
+.card-image img {
+  /* width: 100%; */
+  height: 100%;
+}
+
+.card-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  width: max-content;
+}
+
+.card-pg-label {
+  background-color: var(--black-darkest);
+  border: 1px solid #28262d;
+  border-radius: 7px;
+  font-size: var(--font-xxsm);
+  padding: 3px 7px;
+  width: fit-content;
+}
+
+.card-title {
+  word-wrap: break-word;
+  /* white-space: nowrap; */
+  /* overflow: hidden; */
+}
+
+.card-movie-type {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  font-size: var(--font-xsm);
+  color: var(--gray);
+}
+
+.card-title h4 {
+  font-size: 15px;
+}
+
+/* Big card styles */
+
+.big-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  height: max-content;
+  cursor: pointer;
+}
+
+.big-card_image {
+  height: 180px;
+  width: 280px;
+  border-radius: 14px;
+}
+
+.big-card_image img {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 14px;
+}
+
+.big-card_text {
+  /* height: 30%; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.big-card_text h3 {
+  font-size: clamp(12px, 8vw, 14px);
+}
+
+/* Wide card styles */
+
+.wide-card-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+}
+
+.wide-card-img {
+  width: 100%;
+  min-height: 50%;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 56.25%;
+}
+
+.wide-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.wide-card-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  height: 50%;
+  margin-bottom: 9px;
+}
+
+.wide-card-tag {
+  width: fit-content;
+  height: auto;
+  padding: 5px 15px;
+  background: var(--black-darkest);
+  border: 1px solid var(--black-dark);
+  border-radius: 30px;
+  font-size: var(--font-sm);
+}
+
+.wide-card-title h3 {
+  font-size: var(--font-title-bg);
+}
+
+.wide-card-buttons {
+  display: flex;
+  gap: 20px;
+}
