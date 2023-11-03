@@ -40,6 +40,14 @@ function MoviePage({
     setLiked(isLiked);
   }, [likes, movie]);
 
+  useEffect(() => {
+    document.title = `Streamlet - ${movie.title ? movie.title : movie.name}`;
+
+    return () => {
+      document.title = "Streamlet";
+    };
+  }, [movie]);
+
   function handleTabClick(e) {
     const lists = ref.current.childNodes;
     const selected = e.target;

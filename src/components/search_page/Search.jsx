@@ -36,6 +36,16 @@ function Search({
   }, [firstQuery, query]);
 
   useEffect(() => {
+    if (!(movie.title || movie.name)) return;
+
+    document.title = `Streamlet - ${movie.title ? movie.title : movie.name}`;
+
+    return () => {
+      document.title = "Streamlet";
+    };
+  }, [movie, movie.name, movie.title]);
+
+  useEffect(() => {
     let rate = 0;
     userRating.forEach((user) => {
       if (user.movieId === movie.id) {

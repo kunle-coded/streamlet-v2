@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Buttons from "../buttons/Buttons";
 
 function VideoPlayer({ movie, onClose }) {
   const title = movie ? movie.title : null;
-  // console.log(movie ? movie : null);
   const url = movie ? movie.video_url[0] : null;
+
+  useEffect(() => {
+    document.title = `Streamlet - ${movie.title ? movie.title : movie.name}`;
+
+    return () => {
+      document.title = "Streamlet";
+    };
+  }, [movie]);
+
   return (
     <main className="video-page">
       <div className="video-player-container">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./navbar.css";
 import logo from "../../assets/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
@@ -29,6 +29,8 @@ function Navbar({
   const [watchlistCounter, setWatchlistCounter] = useState(0);
   const [likesCounter, setLikesCounter] = useState(0);
 
+  const inputRef = useRef(null);
+
   useEffect(() => {
     if (watchlist) {
       if (watchlist.length >= 1) {
@@ -48,6 +50,19 @@ function Navbar({
       setLikesCounter(likesCount);
     }
   }, [watchlist, likes]);
+
+  useEffect(() => {
+    inputRef.current.focus();
+
+    // function callback(e) {
+    //   if (e.code === "Enter") {
+    //     onMovieSearch();
+    //   }
+    // }
+
+    // document.addEventListener("keydown", callback);
+    // return () => document.addEventListener("keydown", callback);
+  }, [isExpanded]);
 
   function handleSearch() {
     setExpanded((exp) => !exp);
@@ -89,6 +104,7 @@ function Navbar({
             placeholder="Search movies..."
             className={`search-input ${isExpanded ? "reveal" : ""}`}
             onChange={(e) => onSearch(e.target)}
+            ref={inputRef}
           />
           <svg
             className="search-icon"
