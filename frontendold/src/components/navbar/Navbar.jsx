@@ -1,14 +1,13 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
 import "./navbar.css";
-import logo from "/Streamlet.svg";
+import logo from "../../assets/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
-import { ReactComponent as Bell } from "/bell.svg";
-import { ReactComponent as UserProfile } from "/user-icon.svg";
-import { ReactComponent as ArrowDown } from "/arrow_down.svg";
-import { ReactComponent as ArrowUp } from "/arrow-up.svg";
-import { ReactComponent as LikeFill } from "/like-icon.svg";
-import { ReactComponent as BookmarkSmall } from "/bookmark-small.svg";
+import { ReactComponent as Bell } from "../../assets/icons/bell.svg";
+import { ReactComponent as UserProfile } from "../../assets/icons/user-icon.svg";
+import { ReactComponent as ArrowDown } from "../../assets/icons/arrow_down.svg";
+import { ReactComponent as ArrowUp } from "../../assets/icons/arrow-up.svg";
+import { ReactComponent as LikeFill } from "../../assets/icons/like-icon.svg";
+import { ReactComponent as BookmarkSmall } from "../../assets/icons/bookmark-small.svg";
 
 function Navbar({
   watchlist,

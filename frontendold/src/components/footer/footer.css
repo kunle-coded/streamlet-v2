@@ -1,0 +1,129 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 400px;
+  border-top: 1px solid var(--black-dark);
+  margin-top: 30px;
+  padding: 70px 70px 20px;
+  /* background-color: aliceblue; */
+}
+
+.footer-one {
+  display: flex;
+  width: 100%;
+  height: 80%;
+}
+
+.footer-text {
+  display: flex;
+  align-items: flex-end;
+  width: 35%;
+}
+.footer-text h3 {
+  font-size: var(--font-title-lg);
+  font-weight: 500;
+}
+
+.footer-menu-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 65%;
+}
+
+.footer-menu ul {
+  display: flex;
+  position: relative;
+}
+
+.footer-menu ul li {
+  margin-right: 40px;
+  color: var(--gray);
+  font-size: var(--font-bg);
+  font-weight: 500;
+}
+
+.footer-menu ul li:last-child {
+  margin-right: 0;
+}
+
+.footer-menu ul li::after {
+  content: "/";
+  position: absolute;
+  padding-left: 20px;
+  color: var(--gray);
+}
+
+.footer-menu ul li:last-child::after {
+  content: "";
+}
+
+.footer-menu ul li:hover {
+  color: var(--white);
+}
+
+.footer-social-links ul {
+  display: flex;
+}
+
+.footer-social-links ul li {
+  margin-right: 40px;
+}
+
+.footer-social-links ul li:last-child {
+  margin-right: 0;
+}
+
+.footer-social-links ul li:hover .outer-square {
+  fill: #ed1d24;
+}
+
+.footer-social-links ul li:hover .inner-square {
+  fill: #fff;
+}
+
+.footer-social-links ul li:hover .play-square {
+  fill: #ed1d24;
+}
+
+.footer-social-links ul li:hover .ig-clr {
+  fill: #30618a;
+}
+.footer-social-links ul li:hover .face-square {
+  fill: #1877f2;
+}
+.footer-social-links ul li:hover .face-f {
+  fill: #fff;
+}
+.footer-social-links ul li:hover .twittr {
+  fill: #1da1f2;
+}
+
+/* yuo ED1D24 - face 1877F2 - x 1DA1F2 -  */
+
+.footer-two {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 20%;
+  font-size: var(--font-sm);
+  color: var(--gray);
+  margin-top: 40px;
+}
+
+.footer-links ul {
+  display: flex;
+}
+.footer-links ul li {
+  margin-right: 20px;
+}
+.footer-links ul li:hover {
+  color: var(--white);
+}
+
+.footer-copyright span a {
+  color: var(--white);
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "/Streamlet.svg";
+import logo from "../../assets/Streamlet.svg";
 import "./form.css";
 import Buttons from "../buttons/Buttons";
 

@@ -1,6 +1,5 @@
-/* eslint-disable react/prop-types */
 import React from "react";
-// import sampleImg from "../../assets/img/last-of-us.png";
+import sampleImg from "../../assets/img/last-of-us.png";
 import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";

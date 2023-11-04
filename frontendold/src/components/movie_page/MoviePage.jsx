@@ -1,14 +1,13 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
 import "./movie_page.css";
+import Slide from "../slider/Slide";
 import Buttons from "../buttons/Buttons";
-import { ReactComponent as Share } from "/share-icon.svg";
-import { ReactComponent as Like } from "/like.svg";
-import { ReactComponent as LikeFill } from "/like-fill.svg";
-import { ReactComponent as Download } from "/download.svg";
+import { ReactComponent as Share } from "../../assets/icons/share-icon.svg";
+import { ReactComponent as Like } from "../../assets/icons/like.svg";
+import { ReactComponent as LikeFill } from "../../assets/icons/like-fill.svg";
+import { ReactComponent as Download } from "../../assets/icons/download.svg";
 import Cast from "./Cast";
 import { BigCard, Section } from "..";
-import Slide from "../slider/Slide";
 
 function MoviePage({
   watchlist,
