@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+// import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
 import "./App.css";
 
 import {
@@ -16,6 +18,11 @@ import {
   Slider,
   VideoPlayer,
 } from "./components";
+import HomeScreen from "./screens/HomeScreen";
+import MovieScreen from "./screens/MovieScreen";
+import ModalScreen from "./screens/ModalScreen";
+import SearchScreen from "./screens/SearchScreen";
+import AboutScreen from "./screens/AboutScreen";
 
 function App() {
   const [slideMovies, setSlideMovies] = useState([]);
@@ -87,7 +94,7 @@ function App() {
 
   const fetchMovies = async (endpoint, setter) => {
     try {
-      const res = await fetch(`/${endpoint}`);
+      const res = await fetch(`/api/${endpoint}`);
 
       if (!res.ok) {
         throw new Error("Failed to load movies, please retry!");

@@ -517,6 +517,7 @@ async function addMoviesToDatabase(type) {
 // await addMoviesToDatabase("series");
 
 app.get("/movies", function (req, res) {
+  console.log(req);
   const movies = Movies.find()
     .then((movie) => {
       // console.log(movie);

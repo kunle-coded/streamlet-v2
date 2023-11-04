@@ -2,10 +2,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./movie_page.css";
 import Buttons from "../buttons/Buttons";
-import { ReactComponent as Share } from "/share-icon.svg";
-import { ReactComponent as Like } from "/like.svg";
-import { ReactComponent as LikeFill } from "/like-fill.svg";
-import { ReactComponent as Download } from "/download.svg";
+// import { ReactComponent as Share } from "/share-icon.svg";
+// import { ReactComponent as Like } from "/like.svg";
+// import { ReactComponent as LikeFill } from "/like-fill.svg";
+// import { ReactComponent as Download } from "/download.svg";
 import Cast from "./Cast";
 import { BigCard, Section } from "..";
 import Slide from "../slider/Slide";
@@ -79,9 +79,9 @@ function MoviePage({
             fontSize="11px"
             fontWeight="400"
           >
-            <span>
+            {/* <span>
               <Download />
-            </span>{" "}
+            </span>{" "} */}
             Download
           </Buttons>
           <Buttons
@@ -90,9 +90,9 @@ function MoviePage({
             fontSize="11px"
             fontWeight="400"
           >
-            <span>
+            {/* <span>
               <Share />
-            </span>{" "}
+            </span>{" "} */}
             Share
           </Buttons>
           <Buttons
@@ -104,7 +104,7 @@ function MoviePage({
             fontWeight="400"
             onClick={() => onLike(movie)}
           >
-            <span className="like">{liked ? <LikeFill /> : <Like />}</span>{" "}
+            {/* <span className="like">{liked ? <LikeFill /> : <Like />}</span>{" "} */}
             {liked ? "Liked" : "Like"}
           </Buttons>
         </div>

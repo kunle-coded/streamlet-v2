@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
-import { ReactComponent as HidePassword } from "/hide-password.svg";
-import { ReactComponent as ShowPassword } from "/show-password.svg";
+// import { ReactComponent as HidePassword } from "/hide-password.svg";
+// import { ReactComponent as ShowPassword } from "/show-password.svg";
 
 function FormInput({ onInput, formValue = "", children }) {
   const [isFocused, setIsFocused] = useState(false);
@@ -47,7 +47,7 @@ function FormInput({ onInput, formValue = "", children }) {
             className={`hide-show-password ${isFocused ? "fill-svg" : ""}`}
             onClick={handleShowPassword}
           >
-            {showPassword ? <ShowPassword /> : <HidePassword />}
+            {/* {showPassword ? <ShowPassword /> : <HidePassword />} */}
           </div>
         )}
       </div>

@@ -3,12 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import "./navbar.css";
 import logo from "/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
-import { ReactComponent as Bell } from "/bell.svg";
-import { ReactComponent as UserProfile } from "/user-icon.svg";
-import { ReactComponent as ArrowDown } from "/arrow_down.svg";
-import { ReactComponent as ArrowUp } from "/arrow-up.svg";
-import { ReactComponent as LikeFill } from "/like-icon.svg";
-import { ReactComponent as BookmarkSmall } from "/bookmark-small.svg";
+
+// import { ReactComponent as Bell } from "/bell.svg";
+// import { ReactComponent as UserProfile } from "/user-icon.svg";
+// import { ReactComponent as ArrowDown } from "/arrow_down.svg";
+// import { ReactComponent as ArrowUp } from "/arrow-up.svg";
+// import { ReactComponent as LikeFill } from "/like-icon.svg";
+// import { ReactComponent as BookmarkSmall } from "/bookmark-small.svg";
 
 function Navbar({
   watchlist,
@@ -146,7 +147,7 @@ function Navbar({
             </Buttons>
           </div>
         )}
-        {isLogin && (
+        {/* {isLogin && (
           <div className="profile-buttons">
             <div className="notification">
               <Bell />
@@ -161,7 +162,7 @@ function Navbar({
               </span>
             </div>
           </div>
-        )}
+        )} */}
       </div>
       <div
         className={`drop-down ${
