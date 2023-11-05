@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import React, { useRef } from "react";
 import "./card.css";
 import Genre from "../genres/Genre";
 import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
+import { Link } from "react-router-dom";
 
 function Card({
   height = "140px",
@@ -45,45 +47,52 @@ function Card({
   }
 
   return (
-    <div
-      className={`card ${
-        index === length
-          ? "half-visible_right"
-          : index === 0
-          ? "first-element"
-          : ""
-      }`}
-      style={cardStyle}
-      onClick={() => onMovieClick(movie)}
+    <Link
+      to={`/movie/${movie.id}&${decodeURIComponent(movie.title).replace(
+        / /g,
+        "-"
+      )}`}
     >
-      {showNumber && (
-        <div className="card-number">
-          <h1>{number}</h1>
+      <div
+        className={`card ${
+          index === length
+            ? "half-visible_right"
+            : index === 0
+            ? "first-element"
+            : ""
+        }`}
+        style={cardStyle}
+        onClick={() => onMovieClick(movie)}
+      >
+        {showNumber && (
+          <div className="card-number">
+            <h1>{number}</h1>
+          </div>
+        )}
+        <div className="card-image">
+          <img
+            src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}
+            alt="movie poster"
+            style={{ borderRadius: borderRadius }}
+          />
         </div>
-      )}
-      <div className="card-image">
-        <img
-          src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}
-          alt="movie poster"
-          style={{ borderRadius: borderRadius }}
-        />
+        <div className="card-text">
+          <div className="card-pg-label">{pg}</div>
+          <div className="card-title" style={titleStyle}>
+            <h4>{movie.title}</h4>
+          </div>
+          <div className="card-genre-label">
+            <Genre movie={movie} label={true} live={live} />
+          </div>
+          <div className="card-rating-label">
+            <RatingLabel>
+              <Rating>{rating}</Rating>
+              <span className="card-movie-type"> | {type}</span>
+            </RatingLabel>
+          </div>
+        </div>
       </div>
-      <div className="card-text">
-        <div className="card-pg-label">{pg}</div>
-        <div className="card-title" style={titleStyle}>
-          <h4>{movie.title}</h4>
-        </div>
-        <div className="card-genre-label">
-          <Genre movie={movie} label={true} live={live} />
-        </div>
-        <div className="card-rating-label">
-          <RatingLabel>
-            <Rating>{rating}</Rating>
-            <span className="card-movie-type"> | {type}</span>
-          </RatingLabel>
-        </div>
-      </div>
-    </div>
+    </Link>
   );
 }
 

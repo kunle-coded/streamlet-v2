@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import "./main.css";
 import Poster from "../poster/Poster";
@@ -33,11 +34,14 @@ function Main({
   isSlideCard,
   isSlideMovies,
   isSlideSeries,
+  fastPage,
+  livePage,
   onFast,
   onLive,
   onMovieClick,
   onVideo,
   onDropdownGlobal,
+  dispatch,
 }) {
   const [isLong, setIsLong] = useState(false);
   useEffect(() => {
@@ -59,6 +63,8 @@ function Main({
     : "4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg";
 
   // Trim movie overview
+
+  // console.log("main", fastMovies);
 
   return (
     <main className="main-section" onClick={onDropdownGlobal}>
@@ -253,95 +259,19 @@ function Main({
                 onSlideLeft={() => onSlideLeft("fast")}
                 onSlideRight={() => onSlideRight("fast")}
               />
-              {onFast.page1 &&
-                fastMovies.map(
-                  (movie, i) =>
-                    i < 4 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onFast.page2 &&
-                fastMovies.map(
-                  (movie, i) =>
-                    i > 3 &&
-                    i < 8 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onFast.page3 &&
-                fastMovies.map(
-                  (movie, i) =>
-                    i > 7 &&
-                    i < 12 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onFast.page4 &&
-                fastMovies.map(
-                  (movie, i) =>
-                    i > 11 &&
-                    i < 16 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onFast.page5 &&
-                fastMovies.map(
-                  (movie, i) =>
-                    i > 15 &&
-                    i < 20 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onFast.page6 &&
-                fastMovies.map(
-                  (movie, i) =>
-                    i > 19 &&
-                    i < 24 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
+              {fastMovies.map(
+                (movie, i) =>
+                  i < fastPage && (
+                    <Card
+                      movie={movie}
+                      key={movie.id}
+                      showNumber={false}
+                      width="100%"
+                      onMovieClick={onMovieClick}
+                      live={true}
+                    />
+                  )
+              )}
             </div>
             <div className="award-live">
               <Title
@@ -350,80 +280,19 @@ function Main({
                 onSlideLeft={() => onSlideLeft("live")}
                 onSlideRight={() => onSlideRight("live")}
               />
-              {onLive.page1 &&
-                liveMovies.map(
-                  (movie, i) =>
-                    i < 4 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onLive.page2 &&
-                liveMovies.map(
-                  (movie, i) =>
-                    i > 3 &&
-                    i < 8 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onLive.page3 &&
-                liveMovies.map(
-                  (movie, i) =>
-                    i > 7 &&
-                    i < 12 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onLive.page4 &&
-                liveMovies.map(
-                  (movie, i) =>
-                    i > 11 &&
-                    i < 16 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
-              {onLive.page5 &&
-                liveMovies.map(
-                  (movie, i) =>
-                    i > 15 &&
-                    i < 20 && (
-                      <Card
-                        movie={movie}
-                        key={movie.id}
-                        showNumber={false}
-                        width="100%"
-                        onMovieClick={onMovieClick}
-                        live={true}
-                      />
-                    )
-                )}
+              {liveMovies.map(
+                (movie, i) =>
+                  i < livePage && (
+                    <Card
+                      movie={movie}
+                      key={movie.id}
+                      showNumber={false}
+                      width="100%"
+                      onMovieClick={onMovieClick}
+                      live={true}
+                    />
+                  )
+              )}
             </div>
           </div>
         </div>

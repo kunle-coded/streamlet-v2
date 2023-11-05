@@ -1,10 +1,19 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
 import "./poster.css";
 import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";
+import { Link } from "react-router-dom";
 
-function Poster({ movie, index, border = false, length, onMovieClick }) {
+function Poster({
+  movie,
+  index,
+  border = false,
+  length,
+  onMovieClick,
+  dispatch,
+}) {
   const voteAverage = movie.vote_average;
   let rating;
 
@@ -29,22 +38,29 @@ function Poster({ movie, index, border = false, length, onMovieClick }) {
       }`}
       onClick={() => onMovieClick(movie)}
     >
-      <div className="poster-overlay"></div>
-      <div className="poster-image">
-        <img
-          src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}
-          alt=""
-        />
-      </div>
-      <div className="poster-info">
-        <div className="poster-title">{movie.title}</div>
-        <div className="poster-label">
-          <RatingLabel>
-            <Rating>{rating}</Rating>
-            <Genre movie={movie} divider={true} live={true} />
-          </RatingLabel>
+      <Link
+        to={`/movie/${movie.id}&${decodeURIComponent(movie.title).replace(
+          / /g,
+          "-"
+        )}`}
+      >
+        <div className="poster-overlay"></div>
+        <div className="poster-image">
+          <img
+            src={`https://image.tmdb.org/t/p/w342/${movie.poster_path}`}
+            alt=""
+          />
         </div>
-      </div>
+        <div className="poster-info">
+          <div className="poster-title">{movie.title}</div>
+          <div className="poster-label">
+            <RatingLabel>
+              <Rating>{rating}</Rating>
+              <Genre movie={movie} divider={true} live={true} />
+            </RatingLabel>
+          </div>
+        </div>
+      </Link>
     </div>
   );
 }

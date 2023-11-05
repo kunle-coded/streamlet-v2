@@ -1,9 +1,44 @@
-import { Header, Navbar, Slider } from "../components";
+/* eslint-disable react/prop-types */
+import { Footer, Header, Main, Navbar, Slider } from "../components";
 
-function HomeScreen() {
+function HomeScreen({
+  movies,
+  slides,
+  watchlist,
+  series,
+  active,
+  featured,
+  trending,
+  popular,
+  awards,
+  fastMovies,
+  fastPage,
+  liveMovies,
+  livePage,
+  onMovieClick,
+}) {
   return (
     <div className="app">
-      <h1>Home Screen</h1>
+      <Header>
+        <Navbar />
+        <Slider slides={slides} watchlist={watchlist} />
+      </Header>
+      <Main
+        movies={movies}
+        watchlist={watchlist}
+        series={series}
+        trending={trending}
+        popular={popular}
+        active={active}
+        awards={awards}
+        featured={featured}
+        fastMovies={fastMovies}
+        fastPage={fastPage}
+        liveMovies={liveMovies}
+        livePage={livePage}
+        onMovieClick={onMovieClick}
+      />
+      <Footer />
     </div>
   );
 }

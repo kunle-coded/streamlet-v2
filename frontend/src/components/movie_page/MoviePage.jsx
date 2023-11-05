@@ -9,6 +9,7 @@ import Buttons from "../buttons/Buttons";
 import Cast from "./Cast";
 import { BigCard, Section } from "..";
 import Slide from "../slider/Slide";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 function MoviePage({
   watchlist,
@@ -28,7 +29,12 @@ function MoviePage({
   onDropdownGlobal,
 }) {
   const [liked, setLiked] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const ref = useRef();
+
+  const id = searchParams.get("id");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -120,15 +126,16 @@ function MoviePage({
           <Section slide={true} btnTop="50%" marginBottomTitle="0">
             <div className="top-casts">
               <ul>
-                {movie.cast.map((castItem, index) => (
-                  <li key={castItem.id}>
-                    <Cast
-                      name={castItem.name}
-                      imgUrl={castItem.profile_path}
-                      character={castItem.character}
-                    />
-                  </li>
-                ))}
+                {movie.cast &&
+                  movie.cast.map((castItem, index) => (
+                    <li key={castItem.id}>
+                      <Cast
+                        name={castItem.name}
+                        imgUrl={castItem.profile_path}
+                        character={castItem.character}
+                      />
+                    </li>
+                  ))}
               </ul>
             </div>
           </Section>
