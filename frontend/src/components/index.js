@@ -20,6 +20,7 @@ export { default as WideCard } from "./cards/WideCard";
 export { default as Footer } from "./footer/Footer";
 export { default as VideoPlayer } from "./video_player/VideoPlayer";
 export { default as Loader } from "./loader/Loader";
+export { default as LoginLayout } from "./login/LoginLayout";
 export { default as Login } from "./login/Login";
 export { default as LoginForm } from "./forms/LoginForm";
 export { default as Success } from "./login/Success";

@@ -1,5 +1,11 @@
 import { useRef } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import MovieScreen from "./screens/MovieScreen";
 import ModalScreen from "./screens/ModalScreen";
@@ -7,7 +13,9 @@ import SearchScreen from "./screens/SearchScreen";
 import AboutScreen from "./screens/AboutScreen";
 import { useEffect, useReducer } from "react";
 import { initialState, reducer } from "./reducers/reducer";
-import { MoviePage } from "./components";
+import { initialFormState, formReducer } from "./reducers/formReducer";
+import { Login, LoginForm, Success } from "./components";
+import SignupForm from "./components/forms/SignupForm";
 
 function Appv2() {
   const [
@@ -30,6 +38,21 @@ function Appv2() {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
+
+  const [
+    {
+      username,
+      email,
+      password,
+      confirmPassword,
+      userExists,
+      existingEmail,
+      status,
+    },
+    formDispatch,
+  ] = useReducer(formReducer, initialFormState);
+
+  // console.log(username);
 
   // Functions
 
@@ -109,6 +132,93 @@ function Appv2() {
     dispatch({ type: "active", payload: newPosterToAdd });
   }, [featured]);
 
+  // form inputs handler functions
+  function handleFormInput(input) {
+    if (input.name === "Username") {
+      formDispatch({ type: "username", payload: input.value });
+    }
+    if (input.name === "Email") {
+      formDispatch({ type: "email", payload: input.value });
+      if (existingEmail !== email) {
+        formDispatch({ type: "userExists", payload: false });
+      }
+    }
+    if (input.name === "Password") {
+      formDispatch({ type: "password", payload: input.value });
+    }
+    if (input.name === "Confirm password") {
+      formDispatch({ type: "confirmPassword", payload: input.value });
+    }
+
+    // errorMessage("");
+  }
+
+  const signupFormData = {
+    username: username,
+    email: email,
+    password: password,
+    confirmPassword: confirmPassword,
+  };
+
+  const postOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(signupFormData),
+  };
+
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const formName = e.target.name;
+
+    if (formName === "signup") {
+      if (!(username && email && password)) return;
+
+      try {
+        const res = await fetch("/api/signup", postOptions);
+
+        const data = await res.text();
+
+        if (res.status === 409) {
+          formDispatch({ type: "userExists", payload: true });
+          formDispatch({ type: "registered", payload: data.userEmail });
+
+          // setSuccessMessage("");
+        } else {
+          formDispatch({ type: "userExists", payload: false });
+          // resetUserData();
+          // setSuccessMessage(data);
+          // setIsSuccess(true);
+          // setIsSignup(false);
+          console.log(data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (formName === "login") {
+      try {
+        const res = await fetch("/api/login", postOptions);
+
+        if (res.status === 201) {
+          formDispatch({ type: "loggedIn" });
+          // setErrorMessage("");
+          // closeModal();
+        } else {
+          const error = await res.text();
+          // setErrorMessage(error);
+          // setLogin(false);
+        }
+
+        // const data = await res.text();
+        console.log("form submitted", res);
+        // setToken(data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
   return (
     <div className="app">
       <BrowserRouter>
@@ -150,7 +260,33 @@ function Appv2() {
             }
           />
 
-          <Route path="login" element={<ModalScreen />} />
+          <Route path="/" element={<ModalScreen />}>
+            <Route
+              path="user/login"
+              element={
+                <LoginForm
+                  email={email}
+                  password={password}
+                  onFormInput={handleFormInput}
+                  onFormSubmit={handleFormSubmit}
+                />
+              }
+            />
+            <Route
+              path="user/signup"
+              element={
+                <SignupForm
+                  username={username}
+                  email={email}
+                  password={password}
+                  confirmPassword={confirmPassword}
+                  onFormInput={handleFormInput}
+                  onFormSubmit={handleFormSubmit}
+                />
+              }
+            />
+            <Route path="user/success" element={<Success />} />
+          </Route>
           <Route path="search" element={<SearchScreen />} />
           <Route path="about" element={<AboutScreen />} />
         </Routes>

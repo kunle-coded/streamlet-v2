@@ -1,15 +1,16 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/prop-types */
 import React from "react";
 import Buttons from "../buttons/Buttons";
 import FormTitle from "./FormTitle";
 import FormInput from "./FormInput";
+import { Link } from "react-router-dom";
 
 function LoginForm({
-  onLogin,
   onFormInput,
   email,
   password,
   passwordError,
-  onSignup,
   onCloseModal,
   onFormSubmit,
 }) {
@@ -49,7 +50,10 @@ function LoginForm({
           Login
         </Buttons>
         <p className="form-account">
-          Don't have an account? <span onClick={onSignup}>Sign up</span>
+          Don't have an account?{" "}
+          <span>
+            <Link to="/user/signup">Sign up</Link>
+          </span>
         </p>
       </div>
     </form>

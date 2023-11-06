@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Buttons from "../buttons/Buttons";
 import FormTitle from "./FormTitle";
 import FormInput from "./FormInput";
+import { Link } from "react-router-dom";
 
 function SignupForm({
   onLogin,
@@ -92,6 +93,7 @@ function SignupForm({
             <span>Term & Conditions</span>
           </p>
         </div>
+
         <Buttons
           width="100%"
           height="45px"
@@ -104,8 +106,12 @@ function SignupForm({
         >
           Continue
         </Buttons>
+
         <p className="form-account">
-          Already have an account? <span onClick={onLogin}>Login</span>
+          Already have an account?{" "}
+          <span>
+            <Link to="/user/login">Login</Link>
+          </span>
         </p>
       </div>
     </form>

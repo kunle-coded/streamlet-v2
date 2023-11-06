@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import Loader from "../loader/Loader";
 import LoginForm from "../forms/LoginForm";
 import SignupForm from "../forms/SignupForm";
 import Success from "./Success";
+import { Outlet, useParams, useSearchParams } from "react-router-dom";
 
 function Login({
-  formHeight = "490px",
   onFormInput,
   username,
   email,
@@ -22,27 +23,23 @@ function Login({
   onFormSubmit,
   isUserExist,
 }) {
-  const formStyle = {
-    height: formHeight,
-  };
-
   return (
     <main className="login-page">
-      {login && (
-        <div className="form-container" style={formStyle}>
-          <LoginForm
-            onFormInput={onFormInput}
-            email={email}
-            password={password}
-            passwordError={passwordError}
-            onCloseModal={onCloseModal}
-            onFormSubmit={onFormSubmit}
-            onSignup={onSignup}
-          />
-        </div>
-      )}
+      <div className="form-container">
+        {/* <LoginForm
+          onFormInput={onFormInput}
+          email={email}
+          password={password}
+          passwordError={passwordError}
+          onCloseModal={onCloseModal}
+          onFormSubmit={onFormSubmit}
+          onSignup={onSignup}
+        /> */}
+        <Outlet />
+      </div>
+
       {signup && (
-        <div className="form-container" style={formStyle}>
+        <div className="form-container">
           <SignupForm
             onFormInput={onFormInput}
             username={username}
@@ -57,7 +54,7 @@ function Login({
         </div>
       )}
       {isSuccess && (
-        <div className="form-container" style={formStyle}>
+        <div className="form-container">
           <Success
             signupSuccess={signupSuccess}
             username={username}

@@ -600,7 +600,8 @@ app.post("/signup", async function (req, res) {
 
     const token = jwt.sign(
       { user_id: newUser._id, email },
-      process.env.TOKEN_KEY,
+      `${process.env.TOKEN_KEY}`,
+
       {
         expiresIn: "2h",
       }
@@ -612,7 +613,7 @@ app.post("/signup", async function (req, res) {
 
     return res.status(201).send("Signup Successful");
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 });
 
@@ -630,7 +631,7 @@ app.post("/login", async function (req, res) {
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign(
         { user_id: user._id, email },
-        process.env.TOKEN_KEY,
+        `${process.env.TOKEN_KEY}`,
         {
           expiresIn: "1h",
         }

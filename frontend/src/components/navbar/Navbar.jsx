@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./navbar.css";
 import logo from "/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
+import { NavLink } from "react-router-dom";
 
 // import { ReactComponent as Bell } from "/bell.svg";
 // import { ReactComponent as UserProfile } from "/user-icon.svg";
@@ -81,20 +82,20 @@ function Navbar({
       </div>
       <div className="nav-links">
         <ul className="nav-links_items">
-          <li onClick={onBack}>
-            <a href="#home">Home</a>
+          <li>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li>
-            <a href="#discover">Discover</a>
+            <NavLink to="/">Discover</NavLink>
           </li>
           <li>
-            <a href="#new-release">New Release</a>
+            <NavLink to="/">New Release</NavLink>
           </li>
           <li>
-            <a href="#forum">Forum</a>
+            <NavLink to="/">Forum</NavLink>
           </li>
           <li>
-            <a href="#about">About</a>
+            <NavLink to="/">About</NavLink>
           </li>
         </ul>
       </div>
