@@ -1,7 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import Buttons from "../buttons/Buttons";
+import { useNavigate } from "react-router-dom";
 
 function VideoPlayer({ movie, onClose }) {
+  const navigate = useNavigate();
+
   const title = movie ? movie.title : null;
   const url = movie ? movie.video_url[0] : null;
 
@@ -26,7 +30,7 @@ function VideoPlayer({ movie, onClose }) {
             allowFullScreen
           ></iframe>
         </div>
-        <Buttons width="100px" color="#9ca4ab" onClick={onClose}>
+        <Buttons width="100px" color="#9ca4ab" onClick={() => navigate(-1)}>
           Close video
         </Buttons>
       </div>

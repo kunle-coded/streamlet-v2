@@ -16,12 +16,23 @@ function HomeScreen({
   liveMovies,
   livePage,
   onMovieClick,
+  onWatchlist,
+  onVideo,
+  status,
+  isSlide,
+  dispatch,
 }) {
   return (
     <div className="app">
       <Header>
-        <Navbar />
-        <Slider slides={slides} watchlist={watchlist} />
+        <Navbar isLogin={status} />
+        <Slider
+          slides={slides}
+          watchlist={watchlist}
+          onMovieClick={onMovieClick}
+          onWatchlist={onWatchlist}
+          onVideo={onVideo}
+        />
       </Header>
       <Main
         movies={movies}
@@ -37,6 +48,8 @@ function HomeScreen({
         liveMovies={liveMovies}
         livePage={livePage}
         onMovieClick={onMovieClick}
+        onWatchlist={onWatchlist}
+        onVideo={onVideo}
       />
       <Footer />
     </div>

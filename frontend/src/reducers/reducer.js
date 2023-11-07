@@ -72,10 +72,28 @@ export function reducer(state = initialState, action) {
       return { ...state, trending: action.payload };
     case "featured":
       return { ...state, featured: action.payload };
+    case "watchlist":
+      return { ...state, watchlist: [...state.watchlist, action.payload] };
+    case "watchlisted":
+      return {
+        ...state,
+        watchlist: state.watchlist.filter(
+          (movie) => movie.id !== action.payload.id
+        ),
+      };
     case "singleMovie":
       return {
         ...state,
         singleMovie: JSON.parse(localStorage.getItem("movie")),
+      };
+    case "likes":
+      return { ...state, likes: [...state.likes, action.payload] };
+    case "liked":
+      return {
+        ...state,
+        likes: state.likes.filter(
+          (likedItem) => likedItem.id !== action.payload.id
+        ),
       };
     case "active": {
       const activeExist = state.activePoster.id;

@@ -28,6 +28,10 @@
   cursor: pointer;
 }
 
+.nav-links_items .active {
+  color: var(--gray);
+}
+
 .nav-links_items a:hover {
   color: var(--gray);
 }

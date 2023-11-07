@@ -46,12 +46,11 @@ function Card({
     number = index + 1;
   }
 
+  const title = movie.title ? movie.title : movie.name;
+
   return (
     <Link
-      to={`/movie/${movie.id}&${decodeURIComponent(movie.title).replace(
-        / /g,
-        "-"
-      )}`}
+      to={`/movie/${movie.id}&${decodeURIComponent(title).replace(/ /g, "-")}`}
     >
       <div
         className={`card ${

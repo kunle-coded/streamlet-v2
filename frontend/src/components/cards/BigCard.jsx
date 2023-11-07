@@ -11,10 +11,7 @@ function BigCard({ movie, onMovieClick }) {
 
   return (
     <Link
-      to={`/movie/${movie.id}&${decodeURIComponent(movie.title).replace(
-        / /g,
-        "-"
-      )}`}
+      to={`/movie/${movie.id}&${decodeURIComponent(title).replace(/ /g, "-")}`}
     >
       <div className="big-card" onClick={() => onMovieClick(movie)}>
         <div className="big-card_image">

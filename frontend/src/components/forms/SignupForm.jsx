@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import Buttons from "../buttons/Buttons";
 import FormTitle from "./FormTitle";

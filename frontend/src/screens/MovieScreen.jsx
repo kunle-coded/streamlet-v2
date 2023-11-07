@@ -10,19 +10,27 @@ function MovieScreen({
   watchlist,
   likes,
   onMovieClick,
+  onWatchlist,
+  onLike,
+  onVideo,
+  status,
 }) {
   return (
     <div className="app">
       <Header slider={false}>
-        <Navbar />
+        <Navbar isLogin={status} />
       </Header>
       <MoviePage
         watchlist={watchlist}
         movie={movie}
         popular={popular}
         movies={movies}
+        series={series}
         likes={likes}
         onMovieClick={onMovieClick}
+        onWatchlist={onWatchlist}
+        onLike={onLike}
+        onVideo={onVideo}
       />
       <Footer />
     </div>

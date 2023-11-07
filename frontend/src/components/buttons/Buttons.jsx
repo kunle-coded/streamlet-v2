@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import "./buttons.css";
+import { Link } from "react-router-dom";
 
 function Buttons({
   watchlisted,
+  name = "",
   width = "75px",
   height = "32px",
   background = "#0d0c0f",
@@ -33,6 +36,7 @@ function Buttons({
 
   return (
     <button
+      name={name}
       className="global-btn"
       disabled={disabled}
       style={buttonStyle}

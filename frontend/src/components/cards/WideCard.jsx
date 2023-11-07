@@ -12,12 +12,11 @@ import { Link } from "react-router-dom";
 function WideCard({ movie, watchlist, onWatchlist, onMovieClick, onVideo }) {
   let watchlisted = useWatchlistMarker(watchlist, movie);
 
+  const title = movie.title ? movie.title : movie.name;
+
   return (
     <Link
-      to={`/movie/${movie.id}&${decodeURIComponent(movie.title).replace(
-        / /g,
-        "-"
-      )}`}
+      to={`/movie/${movie.id}&${decodeURIComponent(title).replace(/ /g, "-")}`}
     >
       <div className="wide-card-container" onClick={() => onMovieClick(movie)}>
         <div className="wide-card-img">

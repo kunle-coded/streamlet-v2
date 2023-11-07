@@ -26,43 +26,8 @@ function Login({
   return (
     <main className="login-page">
       <div className="form-container">
-        {/* <LoginForm
-          onFormInput={onFormInput}
-          email={email}
-          password={password}
-          passwordError={passwordError}
-          onCloseModal={onCloseModal}
-          onFormSubmit={onFormSubmit}
-          onSignup={onSignup}
-        /> */}
         <Outlet />
       </div>
-
-      {signup && (
-        <div className="form-container">
-          <SignupForm
-            onFormInput={onFormInput}
-            username={username}
-            email={email}
-            password={password}
-            confirmPassword={confirmPassword}
-            onLogin={onLogin}
-            onFormSubmit={onFormSubmit}
-            isUserExist={isUserExist}
-            onCloseModal={onCloseModal}
-          />
-        </div>
-      )}
-      {isSuccess && (
-        <div className="form-container">
-          <Success
-            signupSuccess={signupSuccess}
-            username={username}
-            onLogin={onLogin}
-            onCloseModal={onCloseModal}
-          />
-        </div>
-      )}
     </main>
   );
 }

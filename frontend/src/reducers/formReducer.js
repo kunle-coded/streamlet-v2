@@ -4,6 +4,8 @@ export const initialFormState = {
   password: "",
   confirmPassword: "",
   existingEmail: "",
+  loginErrorMessage: "",
+  signupSuccessMessage: "",
   userExists: false,
   status: "unauthorised",
 };
@@ -22,6 +24,10 @@ export function formReducer(state = initialFormState, action) {
       return { ...state, existingEmail: action.payload };
     case "userExists":
       return { ...state, userExists: action.payload };
+    case "error":
+      return { ...state, loginErrorMessage: action.payload };
+    case "signupSuccessful":
+      return { ...state, signupSuccessMessage: action.payload };
     case "loggedIn":
       return { ...state, status: "authorised" };
     default:

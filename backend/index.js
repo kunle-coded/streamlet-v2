@@ -611,7 +611,7 @@ app.post("/signup", async function (req, res) {
 
     await newUser.save();
 
-    return res.status(201).send("Signup Successful");
+    return res.status(201).send({ message: "Signup Successful" });
   } catch (err) {
     console.log(err.message);
   }

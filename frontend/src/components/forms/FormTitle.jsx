@@ -2,8 +2,10 @@ import React from "react";
 import logo from "/Streamlet.svg";
 import "./form.css";
 import Buttons from "../buttons/Buttons";
+import { useNavigate } from "react-router-dom";
 
 function FormTitle({ onClose, children }) {
+  const navigate = useNavigate();
   return (
     <div className="form-title-area">
       <div className="form-logo">
@@ -22,7 +24,7 @@ function FormTitle({ onClose, children }) {
           borderRadius="6px"
           padding="10px 15px"
           color="#fff"
-          onClick={onClose}
+          onClick={() => navigate(-1)}
         >
           Close
         </Buttons>

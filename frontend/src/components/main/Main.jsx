@@ -41,7 +41,6 @@ function Main({
   onMovieClick,
   onVideo,
   onDropdownGlobal,
-  dispatch,
 }) {
   const [isLong, setIsLong] = useState(false);
   useEffect(() => {

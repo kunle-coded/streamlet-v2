@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import Buttons from "../buttons/Buttons";
 import Genre from "../genres/Genre";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
+import { Link, useNavigate } from "react-router-dom";
 
 function Slide({
   watchlist,
@@ -14,28 +16,42 @@ function Slide({
   onClick,
   onVideo,
 }) {
+  const navigate = useNavigate();
+
   let watchlisted = useWatchlistMarker(watchlist, movie);
   const title = movie.title ? movie.title : movie.name;
   const duration = movie.title ? true : false;
 
-  function handleClick(slide) {
+  function handleClick(e, slide) {
     if (!slider) return;
 
     onClick(slide);
+    const title = movie.title ? movie.title : movie.name;
+
+    if (e.target.name === "slide") {
+      return;
+    }
+
+    navigate(
+      `/movie/${movie.id}&${decodeURIComponent(title).replace(/ /g, "-")}`
+    );
   }
 
   return (
     <div
       className={`slide ${index === currentSlide ? "active" : ""}`}
-      onClick={() => handleClick(movie)}
+      onClick={(e) => handleClick(e, movie)}
+      style={{ cursor: slider ? "pointer" : "" }}
     >
       <div className="slide-overlay"></div>
+
       <div
         className="slide-image"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/w1280/${movie.backdrop_path})`,
         }}
       ></div>
+
       <div className="slide-text-area">
         <div className="slide-movie-tag">{type}</div>
         <div className="slide-movie-title">
@@ -47,6 +63,7 @@ function Slide({
         ) : null}
         <div className="slide-movie-buttons">
           <Buttons
+            name="slide"
             play={true}
             width="150px"
             height="35px"
@@ -59,6 +76,7 @@ function Slide({
             Watch Trailer
           </Buttons>
           <Buttons
+            name="slide"
             bookmark={true}
             watchlisted={watchlisted}
             width={watchlisted ? "170px" : "150px"}

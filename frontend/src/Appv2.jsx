@@ -16,6 +16,7 @@ import { initialState, reducer } from "./reducers/reducer";
 import { initialFormState, formReducer } from "./reducers/formReducer";
 import { Login, LoginForm, Success } from "./components";
 import SignupForm from "./components/forms/SignupForm";
+import VideoScreen from "./screens/VideoScreen";
 
 function Appv2() {
   const [
@@ -35,6 +36,7 @@ function Appv2() {
       livePage,
       singleMovie,
       likes,
+      isSlide,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -45,14 +47,15 @@ function Appv2() {
       email,
       password,
       confirmPassword,
+      loginErrorMessage,
       userExists,
       existingEmail,
+      signupSuccessMessage,
       status,
     },
     formDispatch,
   ] = useReducer(formReducer, initialFormState);
-
-  // console.log(username);
+  const navigate = useNavigate();
 
   // Functions
 
@@ -97,8 +100,6 @@ function Appv2() {
     // Add movies to fast state
     dispatch({ type: "fast", payload: movies });
   }, [movies, series]);
-
-  // console.log(fast);
 
   useEffect(() => {
     // Add movies to featured state
@@ -145,6 +146,7 @@ function Appv2() {
     }
     if (input.name === "Password") {
       formDispatch({ type: "password", payload: input.value });
+      formDispatch({ type: "error", payload: "" });
     }
     if (input.name === "Confirm password") {
       formDispatch({ type: "confirmPassword", payload: input.value });
@@ -178,7 +180,7 @@ function Appv2() {
       try {
         const res = await fetch("/api/signup", postOptions);
 
-        const data = await res.text();
+        const data = await res.json();
 
         if (res.status === 409) {
           formDispatch({ type: "userExists", payload: true });
@@ -187,11 +189,12 @@ function Appv2() {
           // setSuccessMessage("");
         } else {
           formDispatch({ type: "userExists", payload: false });
+          formDispatch({ type: "signupSuccessful", payload: data.message });
+          navigate("/user/success");
           // resetUserData();
           // setSuccessMessage(data);
           // setIsSuccess(true);
           // setIsSignup(false);
-          console.log(data);
         }
       } catch (err) {
         console.log(err);
@@ -202,16 +205,17 @@ function Appv2() {
 
         if (res.status === 201) {
           formDispatch({ type: "loggedIn" });
-          // setErrorMessage("");
+          formDispatch({ type: "error", payload: "" });
+          navigate(-1);
           // closeModal();
         } else {
           const error = await res.text();
-          // setErrorMessage(error);
+          formDispatch({ type: "error", payload: error });
+
           // setLogin(false);
         }
 
         // const data = await res.text();
-        console.log("form submitted", res);
         // setToken(data);
       } catch (err) {
         console.log(err);
@@ -219,78 +223,147 @@ function Appv2() {
     }
   }
 
+  // Function to handle movie watchlist
+  // Add movies/series to watchlist on click AddWatchlist
+  function handleWatchlist(movie) {
+    if (status === "unauthorised") {
+      return navigate("/user/login");
+    }
+
+    const isMovieInWatchlist = watchlist.some(
+      (watchlistMovie) => watchlistMovie._id === movie._id
+    );
+
+    if (!isMovieInWatchlist) {
+      dispatch({ type: "watchlist", payload: movie });
+    }
+
+    if (isMovieInWatchlist) {
+      dispatch({ type: "watchlisted", payload: movie });
+    }
+  }
+
+  // Function to handle movie like
+  function handleMovieLike(movie) {
+    if (status === "unauthorised") {
+      return navigate("/user/login");
+    }
+
+    const isAlreadyLiked = likes.some((likedItem) => likedItem.id === movie.id);
+
+    if (isAlreadyLiked) {
+      // Remove the movie from likedMovies
+      dispatch({ type: "liked", payload: movie });
+    } else {
+      // Add the movie to likedMovies
+      dispatch({ type: "likes", payload: movie });
+    }
+  }
+
+  // Function to watch video
+  function handleVideoPlayer(movie) {
+    if (status === "unauthorised") {
+      return navigate("/user/login");
+    } else {
+      const title = movie.title ? movie.title : movie.name;
+      navigate(`/video/${movie.id}&${title}`);
+    }
+  }
+
   return (
     <div className="app">
-      <BrowserRouter>
-        <Routes>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomeScreen
+              movies={movies}
+              series={series}
+              slides={slideMovies}
+              watchlist={watchlist}
+              active={activePoster}
+              awards={awardMovies}
+              trending={trending}
+              featured={featured}
+              popular={popular}
+              fastMovies={fast}
+              fastPage={fastPage}
+              liveMovies={live}
+              livePage={livePage}
+              onMovieClick={handleMovieClick}
+              onWatchlist={handleWatchlist}
+              onVideo={handleVideoPlayer}
+              status={status}
+            />
+          }
+        />
+
+        <Route
+          path="movie/:id"
+          element={
+            <MovieScreen
+              movies={movies}
+              series={series}
+              popular={popular}
+              watchlist={watchlist}
+              movie={singleMovie}
+              likes={likes}
+              onMovieClick={handleMovieClick}
+              onWatchlist={handleWatchlist}
+              onLike={handleMovieLike}
+              onVideo={handleVideoPlayer}
+              status={status}
+            />
+          }
+        />
+
+        <Route path="/" element={<ModalScreen />}>
           <Route
-            path="/"
+            path="user/login"
             element={
-              <HomeScreen
-                movies={movies}
-                series={series}
-                slides={slideMovies}
-                watchlist={watchlist}
-                active={activePoster}
-                awards={awardMovies}
-                trending={trending}
-                featured={featured}
-                popular={popular}
-                fastMovies={fast}
-                fastPage={fastPage}
-                liveMovies={live}
-                livePage={livePage}
-                onMovieClick={handleMovieClick}
+              <LoginForm
+                email={email}
+                password={password}
+                passwordError={loginErrorMessage}
+                onFormInput={handleFormInput}
+                onFormSubmit={handleFormSubmit}
               />
             }
           />
-
           <Route
-            path="movie/:id"
+            path="user/signup"
             element={
-              <MovieScreen
-                movies={movies}
-                series={series}
-                popular={popular}
-                watchlist={watchlist}
-                movie={singleMovie}
-                likes={likes}
-                onMovieClick={handleMovieClick}
+              <SignupForm
+                username={username}
+                email={email}
+                password={password}
+                confirmPassword={confirmPassword}
+                onFormInput={handleFormInput}
+                onFormSubmit={handleFormSubmit}
+                isUserExist={userExists}
               />
             }
           />
-
-          <Route path="/" element={<ModalScreen />}>
-            <Route
-              path="user/login"
-              element={
-                <LoginForm
-                  email={email}
-                  password={password}
-                  onFormInput={handleFormInput}
-                  onFormSubmit={handleFormSubmit}
-                />
-              }
-            />
-            <Route
-              path="user/signup"
-              element={
-                <SignupForm
-                  username={username}
-                  email={email}
-                  password={password}
-                  confirmPassword={confirmPassword}
-                  onFormInput={handleFormInput}
-                  onFormSubmit={handleFormSubmit}
-                />
-              }
-            />
-            <Route path="user/success" element={<Success />} />
-          </Route>
-          <Route path="search" element={<SearchScreen />} />
-          <Route path="about" element={<AboutScreen />} />
-        </Routes>
-      </BrowserRouter>
+          <Route
+            path="user/success"
+            element={
+              <Success
+                username={username}
+                signupSuccess={signupSuccessMessage}
+              />
+            }
+          />
+        </Route>
+        <Route
+          path="video/:id"
+          element={
+            <VideoScreen onVideo={handleVideoPlayer} movie={singleMovie} />
+          }
+        />
+        <Route path="search" element={<SearchScreen />} />
+        <Route path="about" element={<AboutScreen />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
+      </Routes>
     </div>
   );
 }

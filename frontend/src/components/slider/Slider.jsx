@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
 import "./slider.css";
 import Slide from "./Slide";
@@ -22,9 +23,18 @@ function Slider({
   let totalSlides = slides.length;
 
   //   Next slide
-  function nextSlide() {
-    setCurrentSlide((prevSlide) => (prevSlide === 9 ? 0 : prevSlide + 1));
-  }
+  //Automatically advance to next slide
+  useEffect(() => {
+    function nextSlide() {
+      setCurrentSlide((prevSlide) => (prevSlide === 9 ? 0 : prevSlide + 1));
+    }
+
+    const intervalId = setInterval(nextSlide, 10000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   // Previuos slide
   const prevSlide = () => {
@@ -56,19 +66,6 @@ function Slider({
       }
     });
   }
-
-  //Automatically advance to next slide
-  function autoAdvance() {
-    nextSlide();
-  }
-
-  useEffect(() => {
-    const intervalId = setInterval(autoAdvance, 10000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
 
   return (
     <div className="slider" onClick={onDropdownGlobal}>
