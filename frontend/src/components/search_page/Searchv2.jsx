@@ -8,7 +8,7 @@ import StarRating from "../rating/StarRating";
 import Loader from "../loader/Loader";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
 
-function Search({
+function Searchv2({
   movies,
   query,
   watchlist,
@@ -62,7 +62,7 @@ function Search({
   }
 
   function handleResultClick(movie) {
-    window.scrollTo(0, ref);
+    // window.scrollTo(0, ref);
     setMovie(movie);
   }
 
@@ -70,7 +70,7 @@ function Search({
     onRate(movie.id, rating);
   }
 
-  if (isLoading) {
+  if (isLoading === "loading") {
     return <Loader />;
   }
 
@@ -82,7 +82,7 @@ function Search({
             <h4>{`Showing results for ${query ? `"${query}"` : ""}`}</h4>
           </div>
           <div className="search-result-rigth">
-            <div className="search-result-count">{`Found ${12} results`}</div>
+            <div className="search-result-count">{`Found ${length} results`}</div>
           </div>
         </div>
       </section>
@@ -159,4 +159,4 @@ function Search({
   );
 }
 
-export default Search;
+export default Searchv2;

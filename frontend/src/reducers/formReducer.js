@@ -6,6 +6,8 @@ export const initialFormState = {
   existingEmail: "",
   loginErrorMessage: "",
   signupSuccessMessage: "",
+  token: "",
+  userRating: [],
   userExists: false,
   status: "unauthorised",
 };
@@ -30,6 +32,10 @@ export function formReducer(state = initialFormState, action) {
       return { ...state, signupSuccessMessage: action.payload };
     case "loggedIn":
       return { ...state, status: "authorised" };
+    case "allow":
+      return { ...state, token: action.payload };
+    case "rating":
+      return { ...state, userRating: action.payload };
     default:
       throw new Error("Unknown action");
   }

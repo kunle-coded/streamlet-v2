@@ -24,7 +24,7 @@ import ModalScreen from "./screens/ModalScreen";
 import SearchScreen from "./screens/SearchScreen";
 import AboutScreen from "./screens/AboutScreen";
 
-function App() {
+function Appv1() {
   const [slideMovies, setSlideMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
@@ -852,6 +852,7 @@ function App() {
   function handleCloseDropdown() {
     setIsDropdown((prevState) => !prevState);
   }
+
   function handleCloseDropdownGlobal(e) {
     if (
       e.target.classList.contains("dropdown-items") ||
@@ -1149,4 +1150,4 @@ function App() {
   );
 }
 
-export default App;
+export default Appv1;

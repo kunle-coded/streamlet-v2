@@ -14,11 +14,17 @@ function MovieScreen({
   onLike,
   onVideo,
   status,
+  onDropdown,
+  isDropdown,
 }) {
   return (
     <div className="app">
       <Header slider={false}>
-        <Navbar isLogin={status} />
+        <Navbar
+          isLogin={status}
+          isDropdown={isDropdown}
+          onDropdown={onDropdown}
+        />
       </Header>
       <MoviePage
         watchlist={watchlist}

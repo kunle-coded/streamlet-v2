@@ -1,8 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
+// import dotenv from "dotenv";
+// dotenv.config();
+import { config } from "dotenv";
+import path from "path";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import genres from "./genres.js";
@@ -13,6 +15,10 @@ import auth from "./middleware/auth.js";
 // mongoose.connect(`mongodb+srv:${dbUrl}/streamletDB`, {
 //   useNewUrlParser: true,
 // });
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const envPath = path.join(__dirname, "../.env");
+config({ path: envPath });
 
 mongoose.connect("mongodb://localhost:27017/streamletDB", {
   useNewUrlParser: true,
@@ -241,6 +247,8 @@ const options = {
     Authorization: `Bearer ${process.env.ACCESS_TOKEN_AUTH}`,
   },
 };
+
+console.log(`Bearer ${process.env.ACCESS_TOKEN_AUTH}`);
 
 // Function to fetch movies from API
 async function fetchMovies(url) {
@@ -669,6 +677,7 @@ async function fetchSearchMovies(query) {
 app.post("/search", async (req, res) => {
   try {
     const searchQuery = req.body.query;
+    console.log(searchQuery);
     const results = await fetchSearchMovies(searchQuery);
 
     const resultToSend = await Promise.all(
@@ -765,7 +774,7 @@ app.post("/rating", async (req, res) => {
   }
 });
 
-const portNum = process.env.PORT || 5000;
+const portNum = process.env.PORT || 8000;
 
 app.listen(portNum, () => {
   console.log("Server started on port " + portNum);

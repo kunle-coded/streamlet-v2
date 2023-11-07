@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+import React, { useRef } from "react";
 import "./section.css";
 import { LeftArrow, RightArrow } from "..";
 
@@ -27,10 +28,12 @@ function Section({
   isSlideSeries = false,
   onSlideRight,
   onSlideLeft,
+  origin,
   children,
 }) {
   const sectionContentStyle = {
     gap: gap,
+    overflow: origin === "featured" ? "unset" : "hidden",
   };
 
   const sectionStyle = {
@@ -66,15 +69,15 @@ function Section({
         className={`section-content ${slide ? "sliding-card" : ""}`}
         style={sectionContentStyle}
       >
-        {slide &&
-          (isSlide || isSlideCard || isSlideMovies || isSlideSeries) && (
-            <LeftArrow
-              slide={true}
-              btnTop={btnTop}
-              left={arrowLeft}
-              onClick={onSlideLeft}
-            />
-          )}
+        {slide && (
+          <LeftArrow
+            origin={origin}
+            slide={true}
+            btnTop={btnTop}
+            left={arrowLeft}
+            onClick={onSlideLeft}
+          />
+        )}
         {children}
         {slide && (
           <RightArrow

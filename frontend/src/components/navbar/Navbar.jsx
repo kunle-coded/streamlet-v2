@@ -16,8 +16,9 @@ function Navbar({
   onDropdown,
   onBack,
   onDropdownGlobal,
+  // query,
   searchQuery,
-  onSearch,
+  onSearchQuery,
   onMovieSearch,
 }) {
   const [isExpanded, setExpanded] = useState(false);
@@ -64,9 +65,10 @@ function Navbar({
   function handleSearch() {
     setExpanded((exp) => !exp);
 
-    if (searchQuery) {
-      onMovieSearch();
-    }
+    if (!searchQuery) return;
+
+    onMovieSearch();
+    navigate(`/search/${searchQuery}`);
   }
 
   return (
@@ -100,7 +102,7 @@ function Navbar({
             value={searchQuery}
             placeholder="Search movies..."
             className={`search-input ${isExpanded ? "reveal" : ""}`}
-            onChange={(e) => onSearch(e.target)}
+            onChange={(e) => onSearchQuery(e.target.value)}
             ref={inputRef}
           />
           <svg

@@ -102,7 +102,14 @@
 .wide-card-container {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   height: 100%;
+  cursor: pointer;
+}
+.wide-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   cursor: pointer;
 }
 

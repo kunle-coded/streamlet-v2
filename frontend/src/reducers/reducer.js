@@ -15,50 +15,9 @@ export const initialState = {
   fastPage: 4,
   livePage: 4,
   status: "loading",
+  isSlidePoster: false,
+  isDropDown: false,
 };
-
-function addMoviesToSlide(movies, slides) {
-  const newMoviesToAdd = [];
-  movies.forEach((movie, ind) => {
-    if (
-      ind < 5 &&
-      !slides.some((slideItem) => slideItem.title === movie.title)
-    ) {
-      newMoviesToAdd.push(movie);
-    }
-  });
-
-  return newMoviesToAdd;
-}
-function addSeriesToSlide(movies, slides) {
-  const newMoviesToAdd = [];
-  movies.forEach((movie, ind) => {
-    if (ind < 5 && !slides.some((slideItem) => slideItem.name === movie.name)) {
-      newMoviesToAdd.push(movie);
-    }
-  });
-
-  return newMoviesToAdd;
-}
-
-function addMoviesToFast(movies, fasts) {
-  const fastMovies = [];
-  movies.forEach((movie) => {
-    if (
-      movie.genres &&
-      !fasts.some((fastMovie) => fastMovie.title === movie.title)
-    ) {
-      const movieGenres = movie.genres;
-      movieGenres.forEach((genre) => {
-        if (genre.name === "Thriller") {
-          fastMovies.push(movie);
-        }
-      });
-    }
-  });
-
-  return fastMovies;
-}
 
 export function reducer(state = initialState, action) {
   switch (action.type) {
@@ -118,7 +77,154 @@ export function reducer(state = initialState, action) {
       const slides = addSeriesToSlide(action.payload, state.slideMovies);
       return { ...state, slideMovies: [...state.slideMovies, ...slides] };
     }
+    case "slidePoster":
+      return { ...state, isSlidePoster: true };
+    case "featuredSlide": {
+      const updated = slideCardNext(state.featured, action.payload);
+      return { ...state, featured: updated, activePoster: updated[0] };
+    }
+    case "awardsSlide": {
+      const updated = slideCardNext(state.awardMovies, action.payload);
+      return { ...state, awardMovies: updated };
+    }
+    case "fastSlide": {
+      const updated = slideFastCard(state.fast, action.payload);
+      return { ...state, fast: updated };
+    }
+    case "liveSlide": {
+      const updated = slideFastCard(state.live, action.payload);
+      return { ...state, live: updated };
+    }
+    case "dropdown":
+      return { ...state, isDropDown: !state.isDropDown };
     default:
       throw new Error("Unknown action");
+  }
+}
+
+function addMoviesToSlide(movies, slides) {
+  const newMoviesToAdd = [];
+  movies.forEach((movie, ind) => {
+    if (
+      ind < 5 &&
+      !slides.some((slideItem) => slideItem.title === movie.title)
+    ) {
+      newMoviesToAdd.push(movie);
+    }
+  });
+
+  return newMoviesToAdd;
+}
+function addSeriesToSlide(movies, slides) {
+  const newMoviesToAdd = [];
+  movies.forEach((movie, ind) => {
+    if (ind < 5 && !slides.some((slideItem) => slideItem.name === movie.name)) {
+      newMoviesToAdd.push(movie);
+    }
+  });
+
+  return newMoviesToAdd;
+}
+
+function addMoviesToFast(movies, fasts) {
+  const fastMovies = [];
+  movies.forEach((movie) => {
+    if (
+      movie.genres &&
+      !fasts.some((fastMovie) => fastMovie.title === movie.title)
+    ) {
+      const movieGenres = movie.genres;
+      movieGenres.forEach((genre) => {
+        if (genre.name === "Thriller") {
+          fastMovies.push(movie);
+        }
+      });
+    }
+  });
+
+  return fastMovies;
+}
+
+function slideCardNext(state, direction) {
+  if (direction === 1) {
+    let newState = [];
+
+    let firstEl = [];
+    state.forEach((movie, index) => {
+      if (index === 0) {
+        firstEl.push(movie);
+      }
+    });
+
+    const updated = state.filter((movie, index) => index >= 1);
+
+    if (firstEl.length > 0) {
+      newState = [...updated, ...firstEl];
+    }
+
+    return newState;
+  }
+
+  if (direction === -1) {
+    let newState = [];
+
+    let lastEl = [];
+    const dataLength = state.length - 1;
+
+    state.forEach((movie, index) => {
+      if (index === dataLength) {
+        lastEl.push(movie);
+      }
+    });
+
+    const updated = state.filter((movie, index) => index < dataLength);
+
+    if (lastEl.length > 0) {
+      newState = [...lastEl, ...updated];
+    }
+
+    return newState;
+  }
+}
+
+function slideFastCard(state, direction) {
+  if (direction === 1) {
+    let newState = [];
+
+    let firstEl = [];
+    state.forEach((movie, index) => {
+      if (index < 4) {
+        firstEl.push(movie);
+      }
+    });
+
+    const updated = state.filter((movie, index) => index >= 4);
+
+    if (firstEl.length > 0) {
+      newState = [...updated, ...firstEl];
+    }
+
+    return newState;
+  }
+
+  if (direction === -1) {
+    let newState = [];
+
+    let lastEl = [];
+    const dataLength = state.length - 4;
+
+    state.forEach((movie, index) => {
+      if (index >= dataLength) {
+        lastEl.push(movie);
+      }
+    });
+
+    const updated = state.filter((movie, index) => index < dataLength);
+
+    if (lastEl.length > 0) {
+      newState = [...lastEl, ...updated];
+    }
+
+    return newState;
   }
 }

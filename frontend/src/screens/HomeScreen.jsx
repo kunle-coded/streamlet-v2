@@ -19,13 +19,27 @@ function HomeScreen({
   onWatchlist,
   onVideo,
   status,
-  isSlide,
+  isSlidePoster,
+  onSlideRight,
+  onSlideLeft,
   dispatch,
+  searchQuery,
+  onSearchQuery,
+  onSearch,
+  onDropdown,
+  isDropdown,
 }) {
   return (
     <div className="app">
       <Header>
-        <Navbar isLogin={status} />
+        <Navbar
+          isLogin={status}
+          onSearchQuery={onSearchQuery}
+          searchQuery={searchQuery}
+          onMovieSearch={onSearch}
+          onDropdown={onDropdown}
+          isDropdown={isDropdown}
+        />
         <Slider
           slides={slides}
           watchlist={watchlist}
@@ -50,6 +64,10 @@ function HomeScreen({
         onMovieClick={onMovieClick}
         onWatchlist={onWatchlist}
         onVideo={onVideo}
+        onSlideRight={onSlideRight}
+        onSlideLeft={onSlideLeft}
+        isSlidePoster={isSlidePoster}
+        dispatch={dispatch}
       />
       <Footer />
     </div>

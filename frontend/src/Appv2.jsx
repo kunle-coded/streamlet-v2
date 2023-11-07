@@ -14,6 +14,7 @@ import AboutScreen from "./screens/AboutScreen";
 import { useEffect, useReducer } from "react";
 import { initialState, reducer } from "./reducers/reducer";
 import { initialFormState, formReducer } from "./reducers/formReducer";
+import { initialSearchState, searchReducer } from "./reducers/searchReducer";
 import { Login, LoginForm, Success } from "./components";
 import SignupForm from "./components/forms/SignupForm";
 import VideoScreen from "./screens/VideoScreen";
@@ -36,7 +37,8 @@ function Appv2() {
       livePage,
       singleMovie,
       likes,
-      isSlide,
+      isSlidePoster,
+      isDropDown,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -51,10 +53,16 @@ function Appv2() {
       userExists,
       existingEmail,
       signupSuccessMessage,
+      token,
       status,
+      userRating,
     },
     formDispatch,
   ] = useReducer(formReducer, initialFormState);
+
+  const [{ query, searchQuery, results, searchStatus }, searchDispatch] =
+    useReducer(searchReducer, initialSearchState);
+
   const navigate = useNavigate();
 
   // Functions
@@ -207,7 +215,6 @@ function Appv2() {
           formDispatch({ type: "loggedIn" });
           formDispatch({ type: "error", payload: "" });
           navigate(-1);
-          // closeModal();
         } else {
           const error = await res.text();
           formDispatch({ type: "error", payload: error });
@@ -215,8 +222,8 @@ function Appv2() {
           // setLogin(false);
         }
 
-        // const data = await res.text();
-        // setToken(data);
+        const data = await res.text();
+        formDispatch({ type: "allow", payload: data });
       } catch (err) {
         console.log(err);
       }
@@ -270,6 +277,100 @@ function Appv2() {
     }
   }
 
+  let currentIndex = 0;
+
+  function slideCards(cardList, direction) {
+    const cards = cardList.childNodes;
+    const cardWidth = cards[0].offsetWidth;
+    currentIndex += direction;
+    if (currentIndex < 0) {
+      currentIndex = cards.length - 4;
+    } else if (currentIndex >= cards.length - 3) {
+      currentIndex = 0;
+    }
+    const translateX = -currentIndex * cardWidth;
+    cardList.style.transform = `translateX(${translateX}px)`;
+  }
+
+  // Handling movie search
+  function handleSearchQuery(input) {
+    searchDispatch({ type: "query", payload: input });
+  }
+
+  const searchData = {
+    query,
+  };
+
+  const searchPostOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(searchData),
+  };
+
+  const searchMovies = async () => {
+    try {
+      searchDispatch({ type: "searching" });
+      const res = await fetch("/api/search", searchPostOptions);
+
+      if (!res.ok) {
+        throw new Error("Failed to load movies, please retry!");
+      }
+
+      const data = await res.json();
+      const results = data.results;
+      searchDispatch({ type: "results", payload: results });
+      searchDispatch({ type: "loaded" });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const rateMovies = async (id, rating) => {
+    if (status === "unauthorised") {
+      return navigate("/user/login");
+    }
+
+    const ratingData = {
+      movieId: id,
+      rating: rating,
+    };
+
+    const ratingPostOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(ratingData),
+    };
+
+    try {
+      const res = await fetch("/api/rating", ratingPostOptions);
+
+      if (!res.ok) {
+        throw new Error("Failed to load movies, please retry!");
+      }
+
+      const data = await res.json();
+      formDispatch({ type: "rating", payload: data.userRating });
+      // setUserRating(data.userRating);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  function handleSearch() {
+    searchMovies();
+    searchDispatch({ type: "searchQuery", payload: query });
+    searchDispatch({ type: "query", payload: "" });
+  }
+
+  function handleCloseDropdown() {
+    dispatch({ type: "dropdown" });
+  }
+
   return (
     <div className="app">
       <Routes>
@@ -293,7 +394,16 @@ function Appv2() {
               onMovieClick={handleMovieClick}
               onWatchlist={handleWatchlist}
               onVideo={handleVideoPlayer}
+              onSlideRight={slideCards}
+              onSlideLeft={slideCards}
+              dispatch={dispatch}
+              isSlidePoster={isSlidePoster}
               status={status}
+              searchQuery={query}
+              onSearchQuery={handleSearchQuery}
+              onSearch={handleSearch}
+              onDropdown={handleCloseDropdown}
+              isDropdown={isDropDown}
             />
           }
         />
@@ -313,6 +423,8 @@ function Appv2() {
               onLike={handleMovieLike}
               onVideo={handleVideoPlayer}
               status={status}
+              onDropdown={handleCloseDropdown}
+              isDropdown={isDropDown}
             />
           }
         />
@@ -360,7 +472,26 @@ function Appv2() {
             <VideoScreen onVideo={handleVideoPlayer} movie={singleMovie} />
           }
         />
-        <Route path="search" element={<SearchScreen />} />
+        <Route
+          path="search/:id"
+          element={
+            <SearchScreen
+              movies={results}
+              query={query}
+              searchQuery={searchQuery}
+              watchlist={watchlist}
+              userRating={userRating}
+              onSearchQuery={handleSearchQuery}
+              onSearch={handleSearch}
+              isLoading={searchStatus}
+              onRate={rateMovies}
+              status={status}
+              onWatchlist={handleWatchlist}
+              onDropdown={handleCloseDropdown}
+              isDropdown={isDropDown}
+            />
+          }
+        />
         <Route path="about" element={<AboutScreen />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>

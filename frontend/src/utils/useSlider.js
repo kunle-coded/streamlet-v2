@@ -1,6 +1,6 @@
 //   Next button slider handler
-function handleNextSlide(stateName) {
-  setUpdate((update) => update + 1);
+export function useSlider(state, stateName) {
+  // setUpdate((update) => update + 1);
   // next button for trending section
   if (stateName === "trending") {
     setPosterIsSliding(true);

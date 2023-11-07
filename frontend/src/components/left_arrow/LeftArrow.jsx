@@ -1,6 +1,7 @@
 import React from "react";
 
 function LeftArrow({
+  origin = "",
   top = "0",
   left = "0",
   btnTop = "20%",
@@ -10,10 +11,13 @@ function LeftArrow({
   const btnStyle = {
     left: left,
     top: top,
+    marginLeft: origin === "featured" ? "-70px" : "",
+    background: origin === "featured" ? "transparent" : "",
   };
 
   const arrowStyle = {
     top: btnTop,
+    left: origin === "featured" ? "20px" : "",
   };
 
   if (!slide) {
