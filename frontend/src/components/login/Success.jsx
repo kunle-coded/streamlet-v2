@@ -2,14 +2,19 @@
 import React, { useEffect, useState } from "react";
 import FormTitle from "../forms/FormTitle";
 import Buttons from "../buttons/Buttons";
+import { useForms } from "../../contexts/FormContext";
+import { useNavigate } from "react-router-dom";
 
-function Success({ signupSuccess, username, onLogin, onCloseModal }) {
+function Success() {
+  const { username, signupSuccessMessage } = useForms();
+
+  const navigate = useNavigate();
   return (
     <div className="success-message">
-      <FormTitle onClose={onCloseModal}>Welcome {username}</FormTitle>
+      <FormTitle>Welcome {username}</FormTitle>
       <div className="message">
         <p>
-          {signupSuccess} <span>🍿</span>
+          {signupSuccessMessage} <span>🍿</span>
         </p>
         <p>Login, grab a popcorn and enjoy all our amazing movies</p>
       </div>
@@ -21,7 +26,7 @@ function Success({ signupSuccess, username, onLogin, onCloseModal }) {
         borderRadius="10px"
         color="#fff"
         fontWeight="800"
-        onClick={onLogin}
+        onClick={() => navigate("/user/login")}
       >
         Login
       </Buttons>

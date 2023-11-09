@@ -20,15 +20,15 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="movie/:id" element={<MovieScreen />} />
-            {/* <Route path="/" element={<ModalScreen />}>
+            <Route path="/" element={<ModalScreen />}>
               <Route path="user/login" element={<LoginForm />} />
               <Route path="user/signup" element={<SignupForm />} />
               <Route path="user/success" element={<Success />} />
-              </Route>
-              <Route path="video/:id" element={<VideoScreen />} />
-              <Route path="search/:id" element={<SearchScreen />} />
-              <Route path="about" element={<AboutScreen />} />
-            <Route path="*" element={<Navigate replace to="/" />} /> */}
+            </Route>
+            <Route path="video/:id" element={<VideoScreen />} />
+            <Route path="search/:id" element={<SearchScreen />} />
+            <Route path="about" element={<AboutScreen />} />
+            <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
         </FormProvider>
       </MoviesProvider>

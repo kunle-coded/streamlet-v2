@@ -9,22 +9,14 @@ import Buttons from "../buttons/Buttons";
 import Cast from "./Cast";
 import { BigCard, Section } from "..";
 import Slide from "../slider/Slide";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useMovies } from "../../contexts/MoviesContext";
+import { useForms } from "../../contexts/FormContext";
 
 function MoviePage() {
-  const {
-    singleMovie,
-    movies,
-    series,
-    popular,
-    watchlist,
-    likes,
-    handleWatchlist,
-    handleVideoPlayer,
-    handleMovieClick,
-    handleMovieLike,
-  } = useMovies();
+  const { singleMovie, movies, series, popular, likes, handleMovieLike } =
+    useMovies();
+
+  const { status } = useForms();
 
   const [liked, setLiked] = useState(false);
   const ref = useRef();
@@ -122,7 +114,7 @@ function MoviePage() {
             borderColor={liked ? "" : "#28262d"}
             fontSize="11px"
             fontWeight="400"
-            onClick={() => handleMovieLike(singleMovie)}
+            onClick={() => handleMovieLike(singleMovie, status)}
           >
             <span className="like">
               {liked ? (

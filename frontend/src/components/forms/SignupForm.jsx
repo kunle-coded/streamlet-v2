@@ -4,18 +4,19 @@ import Buttons from "../buttons/Buttons";
 import FormTitle from "./FormTitle";
 import FormInput from "./FormInput";
 import { Link } from "react-router-dom";
+import { useForms } from "../../contexts/FormContext";
 
-function SignupForm({
-  onLogin,
-  onFormInput,
-  email,
-  password,
-  username,
-  confirmPassword,
-  onFormSubmit,
-  isUserExist,
-  onCloseModal,
-}) {
+function SignupForm() {
+  const {
+    username,
+    email,
+    password,
+    confirmPassword,
+    userExists,
+    onFormInput,
+    onFormSubmit,
+  } = useForms();
+
   const [checked, setChecked] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isDisabledCheck, setIsDisabledCheck] = useState(true);
@@ -32,7 +33,7 @@ function SignupForm({
       setMismatch(false);
       setIsDisabled(false);
     }
-  }, [onFormInput]);
+  }, [confirmPassword, email, onFormInput, password, username]);
 
   function handleChecked(e) {
     if (e.target.checked) {
@@ -46,9 +47,7 @@ function SignupForm({
 
   return (
     <form className="form-user" name="signup" onSubmit={onFormSubmit}>
-      <FormTitle onClose={onCloseModal}>
-        Register to enjoy all features
-      </FormTitle>
+      <FormTitle>Register to enjoy all features</FormTitle>
 
       <div className="form-inputs-area">
         <FormInput onInput={onFormInput} formValue={username}>
@@ -70,7 +69,7 @@ function SignupForm({
 
           <span
             className={`password-mismatch ${
-              isUserExist && !misMatch ? "mismatch" : ""
+              userExists && !misMatch ? "mismatch" : ""
             }`}
           >
             User Already Exist. Please Login

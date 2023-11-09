@@ -5,21 +5,18 @@ import Buttons from "../buttons/Buttons";
 import FormTitle from "./FormTitle";
 import FormInput from "./FormInput";
 import { Link } from "react-router-dom";
+import { useForms } from "../../contexts/FormContext";
 
-function LoginForm({
-  onFormInput,
-  email,
-  password,
-  passwordError,
-  onCloseModal,
-  onFormSubmit,
-}) {
+function LoginForm() {
+  const { email, password, loginErrorMessage, onFormInput, onFormSubmit } =
+    useForms();
+
   const bgColor = email && password ? "#00925d" : "#fff";
   const color = email && password ? "#fff" : "#9ca4ab";
 
   return (
     <form className="form-user" name="login" onSubmit={onFormSubmit}>
-      <FormTitle onClose={onCloseModal}>Login to your account</FormTitle>
+      <FormTitle>Login to your account</FormTitle>
 
       <div className="form-inputs-area">
         <FormInput onInput={onFormInput} formValue={email}>
@@ -30,9 +27,11 @@ function LoginForm({
         </FormInput>
         <div className="signup-error-message">
           <span
-            className={`password-mismatch ${passwordError ? "mismatch" : ""}`}
+            className={`password-mismatch ${
+              loginErrorMessage ? "mismatch" : ""
+            }`}
           >
-            {passwordError}
+            {loginErrorMessage}
           </span>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { reducer, initialState } from "../reducers/reducer";
 import { initialFormState, formReducer } from "../reducers/formReducer";
 import { useNavigate } from "react-router-dom";
+import { useForms } from "./FormContext";
 
 const MovieContext = createContext();
 
@@ -29,8 +30,6 @@ function MoviesProvider({ children }) {
     },
     dispatch,
   ] = useReducer(reducer, initialState);
-
-  const [{ status }] = useReducer(formReducer, initialFormState);
 
   const navigate = useNavigate();
 
@@ -59,7 +58,7 @@ function MoviesProvider({ children }) {
   }
 
   // 3- Add movie to watchlist
-  function handleWatchlist(movie) {
+  function handleWatchlist(movie, status) {
     if (status === "unauthorised") {
       return navigate("/user/login");
     }
@@ -78,8 +77,9 @@ function MoviesProvider({ children }) {
   }
 
   // 4- Add movie to likes
-  function handleMovieLike(movie) {
+  function handleMovieLike(movie, status) {
     if (status === "unauthorised") {
+      console.log("status>>", status);
       return navigate("/user/login");
     }
 
@@ -95,7 +95,7 @@ function MoviesProvider({ children }) {
   }
 
   // 5- Watch video on movie click
-  function handleVideoPlayer(movie) {
+  function handleVideoPlayer(movie, status) {
     if (status === "unauthorised") {
       return navigate("/user/login");
     } else {

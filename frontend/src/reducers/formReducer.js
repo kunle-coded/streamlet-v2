@@ -30,13 +30,19 @@ export function formReducer(state = initialFormState, action) {
       return { ...state, loginErrorMessage: action.payload };
     case "signupSuccessful":
       return { ...state, signupSuccessMessage: action.payload };
-    case "loggedIn":
-      return { ...state, status: "authorised" };
+    case "success":
+      console.log("state before update", state.status);
+      console.log("state after update", action.payload);
+      return { ...state, status: action.payload };
+    case "failure":
+      return { ...state, status: action.payload };
     case "allow":
       return { ...state, token: action.payload };
     case "rating":
       return { ...state, userRating: action.payload };
-    default:
-      throw new Error("Unknown action");
+    default: {
+      // throw new Error("Unknown action");
+      return state;
+    }
   }
 }

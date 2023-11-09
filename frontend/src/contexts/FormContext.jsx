@@ -99,20 +99,23 @@ function FormProvider({ children }) {
     } else if (formName === "login") {
       try {
         const res = await fetch("/api/login", postOptions);
+        console.log(res.status);
 
         if (res.status === 201) {
-          formDispatch({ type: "loggedIn" });
+          formDispatch({ type: "success", payload: "authorised" });
           formDispatch({ type: "error", payload: "" });
-          navigate(-1);
+          navigate("/");
         } else {
           const error = await res.text();
           formDispatch({ type: "error", payload: error });
+          formDispatch({ type: "failure", payload: "unauthorised" });
         }
 
         const data = await res.text();
         formDispatch({ type: "allow", payload: data });
       } catch (err) {
         console.log(err);
+        formDispatch({ type: "failure", payload: "unauthorised" });
       }
     }
   }
