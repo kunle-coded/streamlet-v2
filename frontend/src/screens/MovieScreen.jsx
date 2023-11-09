@@ -1,43 +1,13 @@
 /* eslint-disable react/prop-types */
-import { Outlet } from "react-router-dom";
 import { Footer, Header, MoviePage, Navbar } from "../components";
 
-function MovieScreen({
-  movies,
-  series,
-  movie,
-  popular,
-  watchlist,
-  likes,
-  onMovieClick,
-  onWatchlist,
-  onLike,
-  onVideo,
-  status,
-  onDropdown,
-  isDropdown,
-}) {
+function MovieScreen() {
   return (
     <div className="app">
       <Header slider={false}>
-        <Navbar
-          isLogin={status}
-          isDropdown={isDropdown}
-          onDropdown={onDropdown}
-        />
+        <Navbar />
       </Header>
-      <MoviePage
-        watchlist={watchlist}
-        movie={movie}
-        popular={popular}
-        movies={movies}
-        series={series}
-        likes={likes}
-        onMovieClick={onMovieClick}
-        onWatchlist={onWatchlist}
-        onLike={onLike}
-        onVideo={onVideo}
-      />
+      <MoviePage />
       <Footer />
     </div>
   );

@@ -1,26 +1,20 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import "./navbar.css";
 import logo from "/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useMovies } from "../../contexts/MoviesContext";
+import { useForms } from "../../contexts/FormContext";
+import { formReducer, initialFormState } from "../../reducers/formReducer";
+import {
+  initialSearchState,
+  searchReducer,
+} from "../../reducers/searchReducer";
 
-function Navbar({
-  watchlist,
-  likes,
-  isLogin,
-  onLogin,
-  onSignup,
-  onLogout,
-  isDropdown,
-  onDropdown,
-  onBack,
-  onDropdownGlobal,
-  // query,
-  searchQuery,
-  onSearchQuery,
-  onMovieSearch,
-}) {
+function Navbar() {
+  const { watchlist, likes, onCloseDropdown, isDropdown } = useMovies();
+  const { status, searchQuery, onSearchQuery, onMovieSearch } = useForms();
   const [isExpanded, setExpanded] = useState(false);
   const [isNotify, setNotify] = useState(false);
   const [watchlistCounter, setWatchlistCounter] = useState(0);
@@ -72,7 +66,7 @@ function Navbar({
   }
 
   return (
-    <nav className="navbar" onClick={onDropdownGlobal}>
+    <nav className="navbar">
       <div className="logo">
         <img src={logo} alt="" />
       </div>
@@ -130,7 +124,7 @@ function Navbar({
             />
           </svg>
         </div>
-        {isLogin === "unauthorised" && (
+        {status === "unauthorised" && (
           <div className="login-buttons">
             <Buttons onClick={() => navigate("/user/signup")}>Sign up</Buttons>
             <Buttons
@@ -144,7 +138,7 @@ function Navbar({
             </Buttons>
           </div>
         )}
-        {isLogin === "authorised" && (
+        {status === "authorised" && (
           <div className="profile-buttons">
             <div className="notification">
               <span>
@@ -190,7 +184,7 @@ function Navbar({
                   />
                 </svg>
               </span>
-              <span onClick={onDropdown}>
+              <span onClick={onCloseDropdown}>
                 {isDropdown ? (
                   <svg
                     width="14"
@@ -249,9 +243,7 @@ function Navbar({
               Likes <span>{likesCounter}</span>
             </li>
             <li className="dropdown-item">Settings</li>
-            <li className="dropdown-item" onClick={onLogout}>
-              Logout
-            </li>
+            <li className="dropdown-item">Logout</li>
           </ul>
         )}
       </div>

@@ -4,23 +4,16 @@ import "./slider.css";
 import Slide from "./Slide";
 import LeftArrow from "../left_arrow/LeftArrow";
 import { RightArrow } from "..";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function Slider({
-  slides,
-  showButtons = false,
-  watchlist,
-  onWatchlist,
-  onMovieClick,
-  onVideo,
-  onDropdownGlobal,
-}) {
+function Slider({ showButtons = false }) {
+  const { slideMovies } = useMovies();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const ref = useRef();
 
   const transformX = `translateX(-${currentSlide * 100}%)`;
-
-  let totalSlides = slides.length;
+  let totalSlides = slideMovies.length;
 
   //   Next slide
   //Automatically advance to next slide
@@ -68,20 +61,16 @@ function Slider({
   }
 
   return (
-    <div className="slider" onClick={onDropdownGlobal}>
+    <div className="slider">
       {showButtons && <LeftArrow />}
       <div className="slide-container" style={{ transform: transformX }}>
-        {slides.map((slide, index) => (
+        {slideMovies.map((slide, index) => (
           <Slide
             key={slide.id}
-            watchlist={watchlist}
             movie={slide}
             type={slide.title ? "Movie" : "Series"}
             index={index}
             currentSlide={currentSlide}
-            onWatchlist={onWatchlist}
-            onClick={onMovieClick}
-            onVideo={onVideo}
           />
         ))}
       </div>

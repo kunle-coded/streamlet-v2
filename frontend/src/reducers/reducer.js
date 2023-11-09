@@ -65,10 +65,6 @@ export function reducer(state = initialState, action) {
       return { ...state, awardMovies: action.payload };
     case "live":
       return { ...state, live: action.payload };
-    case "fast": {
-      const fasts = addMoviesToFast(action.payload, state.fast);
-      return { ...state, fast: fasts };
-    }
     case "movieSlides": {
       const slides = addMoviesToSlide(action.payload, state.slideMovies);
       return { ...state, slideMovies: slides };
@@ -76,6 +72,10 @@ export function reducer(state = initialState, action) {
     case "serieSlides": {
       const slides = addSeriesToSlide(action.payload, state.slideMovies);
       return { ...state, slideMovies: [...state.slideMovies, ...slides] };
+    }
+    case "fast": {
+      const fasts = addMoviesToFast(action.payload, state.fast);
+      return { ...state, fast: fasts };
     }
     case "slidePoster":
       return { ...state, isSlidePoster: true };
@@ -131,14 +131,10 @@ function addMoviesToFast(movies, fasts) {
   movies.forEach((movie) => {
     if (
       movie.genres &&
-      !fasts.some((fastMovie) => fastMovie.title === movie.title)
+      !fasts.some((fastMovie) => fastMovie.title === movie.title) &&
+      movie.genres.some((genre) => genre.name === "Action")
     ) {
-      const movieGenres = movie.genres;
-      movieGenres.forEach((genre) => {
-        if (genre.name === "Thriller") {
-          fastMovies.push(movie);
-        }
-      });
+      fastMovies.push(movie);
     }
   });
 

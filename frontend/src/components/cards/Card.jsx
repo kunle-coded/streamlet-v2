@@ -5,6 +5,7 @@ import Genre from "../genres/Genre";
 import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import { Link } from "react-router-dom";
+import { useMovies } from "../../contexts/MoviesContext";
 
 function Card({
   height = "140px",
@@ -12,16 +13,13 @@ function Card({
   borderRadius = "12px",
   whiteSpace = "normal",
   orientation = false,
-  showLabel = true,
   showNumber = true,
-  active = false,
   live,
   movie,
   index,
   length,
-  slide = false,
-  onMovieClick,
 }) {
+  const { handleMovieClick } = useMovies();
   const cardStyle = {
     display: "flex",
     flexDirection: orientation ? "column" : "",
@@ -61,7 +59,7 @@ function Card({
             : ""
         }`}
         style={cardStyle}
-        onClick={() => onMovieClick(movie)}
+        onClick={() => handleMovieClick(movie)}
       >
         {showNumber && (
           <div className="card-number">

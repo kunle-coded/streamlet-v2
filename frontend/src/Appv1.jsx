@@ -82,7 +82,6 @@ function Appv1() {
   const [isPageTop, setIsPageTop] = useState(false);
   const [singleMovie, setSingleMovie] = useState({});
   const [likedMovies, setLikedMovies] = useState([]);
-  // const [isLike, setIsLike] = useState(false);
   const [isDropdown, setIsDropdown] = useState(false);
   const [isVideo, setIsVideo] = useState(false);
   const [singleVideo, setSingleVideo] = useState({});

@@ -8,14 +8,21 @@ import TextReveal from "../text_reveal/TextReveal";
 import Buttons from "../buttons/Buttons";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
 import { Link } from "react-router-dom";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function WideCard({ movie, watchlist, onWatchlist, onMovieClick, onVideo }) {
+function WideCard({ movie }) {
+  const { watchlist, handleMovieClick, handleWatchlist, handleVideoPlayer } =
+    useMovies();
+
   let watchlisted = useWatchlistMarker(watchlist, movie);
 
   const title = movie.title ? movie.title : movie.name;
 
   return (
-    <div className="wide-card-container" onClick={() => onMovieClick(movie)}>
+    <div
+      className="wide-card-container"
+      onClick={() => handleMovieClick(movie)}
+    >
       <Link
         to={`/movie/${movie.id}&${decodeURIComponent(title).replace(
           / /g,
@@ -63,7 +70,7 @@ function WideCard({ movie, watchlist, onWatchlist, onMovieClick, onVideo }) {
           border={false}
           borderRadius="9px"
           color="#fff"
-          onClick={() => onVideo(movie)}
+          onClick={() => handleVideoPlayer(movie)}
         >
           Play Now
         </Buttons>
@@ -73,7 +80,7 @@ function WideCard({ movie, watchlist, onWatchlist, onMovieClick, onVideo }) {
           width="150px"
           height="35px"
           borderRadius="9px"
-          onClick={() => onWatchlist(movie)}
+          onClick={() => handleWatchlist(movie)}
         >
           Add Watchlist
         </Buttons>

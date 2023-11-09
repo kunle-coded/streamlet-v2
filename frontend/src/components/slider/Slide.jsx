@@ -4,18 +4,11 @@ import Buttons from "../buttons/Buttons";
 import Genre from "../genres/Genre";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
 import { Link, useNavigate } from "react-router-dom";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function Slide({
-  watchlist,
-  movie,
-  type,
-  index,
-  currentSlide,
-  slider = true,
-  onWatchlist,
-  onClick,
-  onVideo,
-}) {
+function Slide({ movie, type, index, currentSlide, slider = true }) {
+  const { watchlist, handleMovieClick, handleWatchlist, handleVideoPlayer } =
+    useMovies();
   const navigate = useNavigate();
 
   let watchlisted = useWatchlistMarker(watchlist, movie);
@@ -25,7 +18,7 @@ function Slide({
   function handleClick(e, slide) {
     if (!slider) return;
 
-    onClick(slide);
+    handleMovieClick(slide);
     const title = movie.title ? movie.title : movie.name;
 
     if (e.target.name === "slide") {
@@ -71,7 +64,7 @@ function Slide({
             border={false}
             borderRadius="9px"
             color="#fff"
-            onClick={() => onVideo(movie)}
+            onClick={() => handleVideoPlayer(movie)}
           >
             Watch Trailer
           </Buttons>
@@ -82,7 +75,7 @@ function Slide({
             width={watchlisted ? "170px" : "150px"}
             height="35px"
             borderRadius="9px"
-            onClick={() => onWatchlist(movie)}
+            onClick={() => handleWatchlist(movie)}
           >
             {watchlisted ? "Remove Watchlist" : "Add Watchlist"}
           </Buttons>

@@ -18,6 +18,7 @@ import { initialSearchState, searchReducer } from "./reducers/searchReducer";
 import { Login, LoginForm, Success } from "./components";
 import SignupForm from "./components/forms/SignupForm";
 import VideoScreen from "./screens/VideoScreen";
+import "./App.css";
 
 function Appv2() {
   const [

@@ -4,8 +4,11 @@ import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";
 import { Link } from "react-router-dom";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function BigCard({ movie, onMovieClick }) {
+function BigCard({ movie }) {
+  const { handleMovieClick } = useMovies();
+
   const title = movie.title ? movie.title : movie.name;
   const rating = parseFloat(movie.vote_average.toFixed(1));
 
@@ -13,7 +16,7 @@ function BigCard({ movie, onMovieClick }) {
     <Link
       to={`/movie/${movie.id}&${decodeURIComponent(title).replace(/ /g, "-")}`}
     >
-      <div className="big-card" onClick={() => onMovieClick(movie)}>
+      <div className="big-card" onClick={() => handleMovieClick(movie)}>
         <div className="big-card_image">
           <img
             src={`https://image.tmdb.org/t/p/w342/${movie.backdrop_path}`}
@@ -37,14 +40,3 @@ function BigCard({ movie, onMovieClick }) {
 }
 
 export default BigCard;
-
-// {popular.map((movie) => (
-//     <Card
-//       key={movie.id}
-//       movie={movie}
-//       orientation={true}
-//       imgWidth="100%"
-//       showLabel={false}
-//       // height="100%"
-//     />
-//   ))}

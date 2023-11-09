@@ -5,15 +5,11 @@ import RatingLabel from "../poster_rating_label/RatingLabel";
 import Rating from "../rating/Rating";
 import Genre from "../genres/Genre";
 import { Link } from "react-router-dom";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function Poster({
-  movie,
-  index,
-  border = false,
-  length,
-  onMovieClick,
-  dispatch,
-}) {
+function Poster({ movie, index, border = false, length }) {
+  const { handleMovieClick } = useMovies();
+
   const voteAverage = movie.vote_average;
   let rating;
 
@@ -36,7 +32,7 @@ function Poster({
           ? "first-element"
           : ""
       }`}
-      onClick={() => onMovieClick(movie)}
+      onClick={() => handleMovieClick(movie)}
     >
       <Link
         to={`/movie/${movie.id}&${decodeURIComponent(movie.title).replace(

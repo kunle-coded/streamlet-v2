@@ -13,81 +13,68 @@ import TextReveal from "../text_reveal/TextReveal";
 import BigCard from "../cards/BigCard";
 import Title from "../title/Title";
 import WideCard from "../cards/WideCard";
-import VideoPlayer from "../video_player/VideoPlayer";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function Main({
-  movies,
-  trending,
-  active,
-  series,
-  popular,
-  featured,
-  awards,
-  fastMovies,
-  liveMovies,
-  watchlist,
-  onWatchlist,
-  onSlide,
-  onSlideRight,
-  onSlideLeft,
-  isSlidePoster,
-  isSlideCard,
-  isSlideMovies,
-  isSlideSeries,
-  fastPage,
-  livePage,
-  onFast,
-  onLive,
-  dispatch,
-  onMovieClick,
-  onVideo,
-  onDropdownGlobal,
-}) {
+function Main() {
+  const {
+    movies,
+    trending,
+    activePoster,
+    series,
+    popular,
+    featured,
+    awardMovies,
+    fast,
+    live,
+    watchlist,
+    isSlidePoster,
+    fastPage,
+    livePage,
+    dispatch,
+    handleWatchlist,
+    handleVideoPlayer,
+    slideCards,
+  } = useMovies();
+
   const [isLong, setIsLong] = useState(false);
   useEffect(() => {
-    if (active.title) {
-      const titleCount = active.title.length;
+    if (activePoster.title) {
+      const titleCount = activePoster.title.length;
       if (titleCount > 21) {
         setIsLong(true);
       } else {
         setIsLong(false);
       }
     }
-  }, [trending, active]);
+  }, [trending, activePoster]);
 
-  let watchlisted = useWatchlistMarker(watchlist, active);
-  const movieImg = active
-    ? active.poster_path
+  let watchlisted = useWatchlistMarker(watchlist, activePoster);
+  const movieImg = activePoster
+    ? activePoster.poster_path
     : "4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg";
 
   // Trim movie overview
 
   const ulRef = useRef(null);
   const ulRef2 = useRef(null);
-  const ulRef3 = useRef(null);
   const ulRef4 = useRef(null);
   const ulRef5 = useRef(null);
 
   return (
-    <main className="main-section" onClick={onDropdownGlobal}>
+    <main className="main-section">
       {/* New movie release section */}
       <Section
         title="New Release"
         btnTop="50%"
         slide={true}
         isSlide={isSlidePoster}
-        onSlideRight={() => onSlideRight(ulRef.current, 1)}
-        onSlideLeft={() => onSlideLeft(ulRef.current, -1)}
+        onSlideRight={() => slideCards(ulRef.current, 1)}
+        onSlideLeft={() => slideCards(ulRef.current, -1)}
       >
         <ul ref={ulRef} className="main-section-movie-list">
           {trending.map((movie, index) => (
             <li key={movie.id} className="main-section-movie-item">
-              <Poster
-                onMovieClick={onMovieClick}
-                movie={movie}
-                index={index}
-                length={trending.length}
-              />
+              <Poster movie={movie} index={index} length={trending.length} />
             </li>
           ))}
         </ul>
@@ -99,15 +86,13 @@ function Main({
         gap="50px"
         btnTop="50%"
         slide={true}
-        isSlideCard={isSlideCard}
-        onSlideRight={() => onSlideRight(ulRef2.current, 1)}
-        onSlideLeft={() => onSlideLeft(ulRef2.current, -1)}
+        onSlideRight={() => slideCards(ulRef2.current, 1)}
+        onSlideLeft={() => slideCards(ulRef2.current, -1)}
       >
         <ul ref={ulRef2} className="main-section-movie-list">
           {popular.map((movie, i) => (
             <li key={movie.id} className="main-section-movie-item">
               <Card
-                onMovieClick={onMovieClick}
                 movie={movie}
                 index={i}
                 slide={true}
@@ -148,13 +133,13 @@ function Main({
               <div
                 className={`featured-title ${isLong ? "smaller-title" : ""}`}
               >
-                <h1>{active.title}</h1>
+                <h1>{activePoster.title}</h1>
               </div>
               <div className="featured-genre">
                 <RatingLabel>
-                  <Rating>{active.vote_average}</Rating>
+                  <Rating>{activePoster.vote_average}</Rating>
                   <Genre
-                    movie={active}
+                    movie={activePoster}
                     genre={true}
                     label={false}
                     divider={true}
@@ -164,7 +149,9 @@ function Main({
                 </RatingLabel>
               </div>
               <div className="featured-desc">
-                {active.overview && <TextReveal>{active.overview}</TextReveal>}
+                {activePoster.overview && (
+                  <TextReveal>{activePoster.overview}</TextReveal>
+                )}
               </div>
             </div>
             <div className="featured-btn">
@@ -176,7 +163,7 @@ function Main({
                 border={false}
                 borderRadius="9px"
                 color="#fff"
-                onClick={() => onVideo(active)}
+                onClick={() => handleVideoPlayer(activePoster)}
               >
                 Play Now
               </Buttons>
@@ -186,28 +173,17 @@ function Main({
                 width="150px"
                 height="35px"
                 borderRadius="9px"
-                onClick={() => onWatchlist(active)}
+                onClick={() => handleWatchlist(activePoster)}
               >
                 Add Watchlist
               </Buttons>
             </div>
           </div>
           <div className="featured-movies-poster">
-            <Poster
-              onMovieClick={onMovieClick}
-              movie={active}
-              index={0}
-              border={true}
-            />
+            <Poster movie={activePoster} index={0} border={true} />
             {featured.map((movie, i) =>
               i === 0 ? null : (
-                <Poster
-                  onMovieClick={onMovieClick}
-                  key={movie.id}
-                  movie={movie}
-                  index={i}
-                  border={true}
-                />
+                <Poster key={movie.id} movie={movie} index={i} border={true} />
               )
             )}
           </div>
@@ -218,14 +194,13 @@ function Main({
         title="Movies"
         arrowTop="0px"
         slide={true}
-        isSlideMovies={isSlideMovies}
-        onSlideRight={() => onSlideRight(ulRef4.current, 1)}
-        onSlideLeft={() => onSlideLeft(ulRef4.current, -1)}
+        onSlideRight={() => slideCards(ulRef4.current, 1)}
+        onSlideLeft={() => slideCards(ulRef4.current, -1)}
       >
         <ul ref={ulRef4} className="main-section-movie-list">
           {movies.map((movie) => (
             <li key={movie.id} className="main-section-movie-item">
-              <BigCard movie={movie} onMovieClick={onMovieClick} />
+              <BigCard movie={movie} />
             </li>
           ))}
         </ul>
@@ -235,14 +210,13 @@ function Main({
         title="Series"
         arrowTop="0%"
         slide={true}
-        isSlideSeries={isSlideSeries}
-        onSlideRight={() => onSlideRight(ulRef5.current, 1)}
-        onSlideLeft={() => onSlideLeft(ulRef5.current, -1)}
+        onSlideRight={() => slideCards(ulRef5.current, 1)}
+        onSlideLeft={() => slideCards(ulRef5.current, -1)}
       >
         <ul ref={ulRef5} className="main-section-movie-list">
           {series.map((movie) => (
             <li key={movie.id} className="main-section-movie-item">
-              <BigCard movie={movie} onMovieClick={onMovieClick} />
+              <BigCard movie={movie} />
             </li>
           ))}
         </ul>
@@ -256,18 +230,8 @@ function Main({
               onSlideRight={() => dispatch({ type: "awardsSlide", payload: 1 })}
               onSlideLeft={() => dispatch({ type: "awardsSlide", payload: -1 })}
             />
-            {awards.map(
-              (movie, i) =>
-                i < 1 && (
-                  <WideCard
-                    key={i}
-                    movie={movie}
-                    onWatchlist={onWatchlist}
-                    watchlist={watchlist}
-                    onMovieClick={onMovieClick}
-                    onVideo={onVideo}
-                  />
-                )
+            {awardMovies.map(
+              (movie, i) => i < 1 && <WideCard key={i} movie={movie} />
             )}
           </div>
           <div className="fast-live">
@@ -277,7 +241,7 @@ function Main({
                 onSlideLeft={() => dispatch({ type: "fastSlide", payload: -1 })}
                 onSlideRight={() => dispatch({ type: "fastSlide", payload: 1 })}
               />
-              {fastMovies.map(
+              {fast.map(
                 (movie, i) =>
                   i < fastPage && (
                     <Card
@@ -285,7 +249,6 @@ function Main({
                       key={movie.id}
                       showNumber={false}
                       width="100%"
-                      onMovieClick={onMovieClick}
                       live={true}
                     />
                   )
@@ -298,7 +261,7 @@ function Main({
                 onSlideLeft={() => dispatch({ type: "liveSlide", payload: -1 })}
                 onSlideRight={() => dispatch({ type: "liveSlide", payload: 1 })}
               />
-              {liveMovies.map(
+              {live.map(
                 (movie, i) =>
                   i < livePage && (
                     <Card
@@ -306,7 +269,6 @@ function Main({
                       key={movie.id}
                       showNumber={false}
                       width="100%"
-                      onMovieClick={onMovieClick}
                       live={true}
                     />
                   )

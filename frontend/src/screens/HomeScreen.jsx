@@ -1,74 +1,15 @@
 /* eslint-disable react/prop-types */
 import { Footer, Header, Main, Navbar, Slider } from "../components";
+import { useMovies } from "../contexts/MoviesContext";
 
-function HomeScreen({
-  movies,
-  slides,
-  watchlist,
-  series,
-  active,
-  featured,
-  trending,
-  popular,
-  awards,
-  fastMovies,
-  fastPage,
-  liveMovies,
-  livePage,
-  onMovieClick,
-  onWatchlist,
-  onVideo,
-  status,
-  isSlidePoster,
-  onSlideRight,
-  onSlideLeft,
-  dispatch,
-  searchQuery,
-  onSearchQuery,
-  onSearch,
-  onDropdown,
-  isDropdown,
-}) {
+function HomeScreen() {
   return (
     <div className="app">
       <Header>
-        <Navbar
-          isLogin={status}
-          onSearchQuery={onSearchQuery}
-          searchQuery={searchQuery}
-          onMovieSearch={onSearch}
-          onDropdown={onDropdown}
-          isDropdown={isDropdown}
-        />
-        <Slider
-          slides={slides}
-          watchlist={watchlist}
-          onMovieClick={onMovieClick}
-          onWatchlist={onWatchlist}
-          onVideo={onVideo}
-        />
+        <Navbar />
+        <Slider />
       </Header>
-      <Main
-        movies={movies}
-        watchlist={watchlist}
-        series={series}
-        trending={trending}
-        popular={popular}
-        active={active}
-        awards={awards}
-        featured={featured}
-        fastMovies={fastMovies}
-        fastPage={fastPage}
-        liveMovies={liveMovies}
-        livePage={livePage}
-        onMovieClick={onMovieClick}
-        onWatchlist={onWatchlist}
-        onVideo={onVideo}
-        onSlideRight={onSlideRight}
-        onSlideLeft={onSlideLeft}
-        isSlidePoster={isSlidePoster}
-        dispatch={dispatch}
-      />
+      <Main />
       <Footer />
     </div>
   );

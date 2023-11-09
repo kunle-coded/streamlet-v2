@@ -248,8 +248,6 @@ const options = {
   },
 };
 
-console.log(`Bearer ${process.env.ACCESS_TOKEN_AUTH}`);
-
 // Function to fetch movies from API
 async function fetchMovies(url) {
   try {

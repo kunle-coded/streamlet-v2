@@ -10,46 +10,47 @@ import Cast from "./Cast";
 import { BigCard, Section } from "..";
 import Slide from "../slider/Slide";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function MoviePage({
-  watchlist,
-  movie,
-  series,
-  popular,
-  movies,
-  onWatchlist,
-  likes,
-  onLike,
-  isSlideCard,
-  isSlideMovies,
-  onSlideRight,
-  onSlideLeft,
-  onMovieClick,
-  isPageTop,
-  onVideo,
-  onDropdownGlobal,
-}) {
+function MoviePage() {
+  const {
+    singleMovie,
+    movies,
+    series,
+    popular,
+    watchlist,
+    likes,
+    handleWatchlist,
+    handleVideoPlayer,
+    handleMovieClick,
+    handleMovieLike,
+  } = useMovies();
+
   const [liked, setLiked] = useState(false);
   const ref = useRef();
 
-  const similarMovies = movie.title ? movies : series;
+  const similarMovies = singleMovie.title ? movies : series;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [isPageTop]);
+  }, []);
 
   useEffect(() => {
-    const isLiked = likes.some((likedMovie) => likedMovie.id === movie.id);
+    const isLiked = likes.some(
+      (likedMovie) => likedMovie.id === singleMovie.id
+    );
     setLiked(isLiked);
-  }, [likes, movie]);
+  }, [likes, singleMovie]);
 
   useEffect(() => {
-    document.title = `Streamlet - ${movie.title ? movie.title : movie.name}`;
+    document.title = `Streamlet - ${
+      singleMovie.title ? singleMovie.title : singleMovie.name
+    }`;
 
     return () => {
       document.title = "Streamlet";
     };
-  }, [movie]);
+  }, [singleMovie]);
 
   function handleTabClick(e) {
     const lists = ref.current.childNodes;
@@ -64,16 +65,9 @@ function MoviePage({
   }
 
   return (
-    <main className="movie-page" onClick={onDropdownGlobal}>
+    <main className="movie-page">
       <div className="slide-container">
-        <Slide
-          onWatchlist={onWatchlist}
-          watchlist={watchlist}
-          movie={movie}
-          type="Movie"
-          slider={false}
-          onVideo={onVideo}
-        />
+        <Slide movie={singleMovie} type="Movie" slider={false} />
         <div className="movie-engagement-btns">
           <Buttons
             width="100px"
@@ -128,7 +122,7 @@ function MoviePage({
             borderColor={liked ? "" : "#28262d"}
             fontSize="11px"
             fontWeight="400"
-            onClick={() => onLike(movie)}
+            onClick={() => handleMovieLike(singleMovie)}
           >
             <span className="like">
               {liked ? (
@@ -167,15 +161,15 @@ function MoviePage({
       <section className="movie-info-section">
         <div className="story-line">
           <h4>Story Line</h4>
-          <p>{movie.overview}</p>
+          <p>{singleMovie.overview}</p>
         </div>
         <div className="top-cast">
           <h4>Top Cast</h4>
           <Section slide={true} btnTop="50%" marginBottomTitle="0">
             <div className="top-casts">
               <ul>
-                {movie.cast &&
-                  movie.cast.map((castItem, index) => (
+                {singleMovie.cast &&
+                  singleMovie.cast.map((castItem, index) => (
                     <li key={castItem.id}>
                       <Cast
                         name={castItem.name}
@@ -196,9 +190,6 @@ function MoviePage({
           padding="70px"
           btnTop="50%"
           slide={true}
-          isSlideCard={isSlideCard}
-          onSlideRight={() => onSlideRight("popular")}
-          onSlideLeft={() => onSlideLeft("popular")}
         >
           <div className="movies-card-tabs">
             <div className="tab-items">
@@ -212,7 +203,7 @@ function MoviePage({
               <ul>
                 {popular.map((movie, ind) => (
                   <li key={movie.id}>
-                    <BigCard movie={movie} onMovieClick={onMovieClick} />
+                    <BigCard movie={movie} />
                   </li>
                 ))}
               </ul>
@@ -228,9 +219,6 @@ function MoviePage({
           marginBottomTitle="0"
           btnTop="50%"
           slide={true}
-          isSlideMovies={isSlideMovies}
-          onSlideRight={() => onSlideRight("movies")}
-          onSlideLeft={() => onSlideLeft("movies")}
         >
           <div className="movies-card-tabs">
             <div className="tab-items"></div>
@@ -238,7 +226,7 @@ function MoviePage({
               <ul>
                 {similarMovies.map((movie, ind) => (
                   <li key={movie.id}>
-                    <BigCard movie={movie} onMovieClick={onMovieClick} />
+                    <BigCard movie={movie} />
                   </li>
                 ))}
               </ul>
