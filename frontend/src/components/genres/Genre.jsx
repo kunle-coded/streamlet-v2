@@ -53,7 +53,7 @@ function Genre({
           </svg>
         </span>
       )}
-      {divider && <span> | </span>}
+      {divider && <span className="divider-genre"> | </span>}
       {duration && (
         <span>
           {hours}h{minutes}m &#8226;{" "}

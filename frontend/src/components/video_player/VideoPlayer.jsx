@@ -2,20 +2,24 @@
 import React, { useEffect } from "react";
 import Buttons from "../buttons/Buttons";
 import { useNavigate } from "react-router-dom";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function VideoPlayer({ movie, onClose }) {
+function VideoPlayer() {
+  const { singleMovie } = useMovies();
   const navigate = useNavigate();
 
-  const title = movie ? movie.title : null;
-  const url = movie ? movie.video_url[0] : null;
+  const title = singleMovie ? singleMovie.title : null;
+  const url = singleMovie ? singleMovie.video_url[0] : null;
 
   useEffect(() => {
-    document.title = `Streamlet - ${movie.title ? movie.title : movie.name}`;
+    document.title = `Streamlet - ${
+      singleMovie.title ? singleMovie.title : singleMovie.name
+    }`;
 
     return () => {
       document.title = "Streamlet";
     };
-  }, [movie]);
+  }, [singleMovie]);
 
   return (
     <main className="video-page">

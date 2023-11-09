@@ -31,8 +31,6 @@ export function formReducer(state = initialFormState, action) {
     case "signupSuccessful":
       return { ...state, signupSuccessMessage: action.payload };
     case "success":
-      console.log("state before update", state.status);
-      console.log("state after update", action.payload);
       return { ...state, status: action.payload };
     case "failure":
       return { ...state, status: action.payload };

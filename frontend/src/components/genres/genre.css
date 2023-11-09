@@ -10,3 +10,7 @@
 .genre-label span:last-child {
   white-space: nowrap;
 }
+
+.divider-genre {
+  margin-left: 5px;
+}

@@ -7,32 +7,28 @@ import ResultDetail from "./ResultDetail";
 import StarRating from "../rating/StarRating";
 import Loader from "../loader/Loader";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
+import { useForms } from "../../contexts/FormContext";
+import { useMovies } from "../../contexts/MoviesContext";
 
-function Search({
-  movies,
-  query,
-  watchlist,
-  userRating,
-  onRate,
-  onWatchlist,
-  isLoading,
-  onDropdownGlobal,
-}) {
+function Search() {
+  const { userRating, searchQuery, results, searchStatus, onRateMovie } =
+    useForms();
+  const { watchlist, handleWatchlist } = useMovies();
   const [resultCount, setResultCount] = useState(3);
   const [movie, setMovie] = useState({});
   const [rating, setRating] = useState(0);
   const [firstQuery, setFirstQuery] = useState("");
-  const length = movies.length;
+  const length = results.length;
   const ref = useRef();
   const selectedMovieLength = movie.id;
 
   useEffect(() => {
-    setFirstQuery(query);
+    setFirstQuery(searchQuery);
 
-    if (firstQuery !== query) {
+    if (firstQuery !== searchQuery) {
       setMovie({});
     }
-  }, [firstQuery, query]);
+  }, [firstQuery, searchQuery]);
 
   useEffect(() => {
     if (!(movie.title || movie.name)) return;
@@ -62,33 +58,35 @@ function Search({
   }
 
   function handleResultClick(movie) {
-    window.scrollTo(0, ref);
+    // window.scrollTo(0, ref);
     setMovie(movie);
   }
 
   function handleRating(rating) {
-    onRate(movie.id, rating);
+    onRateMovie(movie.id, rating);
   }
 
-  if (isLoading) {
+  if (searchStatus === "loading") {
     return <Loader />;
   }
 
   return (
-    <main className="search-page" onClick={onDropdownGlobal}>
+    <main className="search-page">
       <section className="search-header">
         <div className="header-top">
           <div className="search-result-title">
-            <h4>{`Showing results for ${query ? `"${query}"` : ""}`}</h4>
+            <h4>{`Showing results for ${
+              searchQuery ? `"${searchQuery}"` : ""
+            }`}</h4>
           </div>
           <div className="search-result-rigth">
-            <div className="search-result-count">{`Found ${12} results`}</div>
+            <div className="search-result-count">{`Found ${length} results`}</div>
           </div>
         </div>
       </section>
       <section className="search-results-container">
         <ul className="search-results">
-          {movies.map(
+          {results.map(
             (movie, index) =>
               index <= resultCount && (
                 <li key={index}>
@@ -135,7 +133,7 @@ function Search({
                 width={watchlisted ? "170px" : "150px"}
                 height="35px"
                 borderRadius="9px"
-                onClick={() => onWatchlist(movie)}
+                onClick={() => handleWatchlist(movie)}
               >
                 {watchlisted ? "Remove Watchlist" : "Add Watchlist"}
               </Buttons>

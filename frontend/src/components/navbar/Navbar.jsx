@@ -1,20 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./navbar.css";
 import logo from "/Streamlet.svg";
 import Buttons from "../buttons/Buttons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useMovies } from "../../contexts/MoviesContext";
 import { useForms } from "../../contexts/FormContext";
-import { formReducer, initialFormState } from "../../reducers/formReducer";
-import {
-  initialSearchState,
-  searchReducer,
-} from "../../reducers/searchReducer";
 
 function Navbar() {
   const { watchlist, likes, onCloseDropdown, isDropdown } = useMovies();
-  const { status, searchQuery, onSearchQuery, onMovieSearch } = useForms();
+  const { status, query, onSearchQuery, onMovieSearch } = useForms();
   const [isExpanded, setExpanded] = useState(false);
   const [isNotify, setNotify] = useState(false);
   const [watchlistCounter, setWatchlistCounter] = useState(0);
@@ -59,10 +54,10 @@ function Navbar() {
   function handleSearch() {
     setExpanded((exp) => !exp);
 
-    if (!searchQuery) return;
+    if (!query) return;
 
     onMovieSearch();
-    navigate(`/search/${searchQuery}`);
+    navigate(`/search/${query}`);
   }
 
   return (
@@ -93,7 +88,7 @@ function Navbar() {
         <div className="search-area ">
           <input
             type="text"
-            value={searchQuery}
+            value={query}
             placeholder="Search movies..."
             className={`search-input ${isExpanded ? "reveal" : ""}`}
             onChange={(e) => onSearchQuery(e.target.value)}

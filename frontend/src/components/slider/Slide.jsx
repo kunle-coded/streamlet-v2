@@ -5,10 +5,12 @@ import Genre from "../genres/Genre";
 import useWatchlistMarker from "../../utils/useWatchlistMarker";
 import { Link, useNavigate } from "react-router-dom";
 import { useMovies } from "../../contexts/MoviesContext";
+import { useForms } from "../../contexts/FormContext";
 
 function Slide({ movie, type, index, currentSlide, slider = true }) {
   const { watchlist, handleMovieClick, handleWatchlist, handleVideoPlayer } =
     useMovies();
+  const { status } = useForms();
   const navigate = useNavigate();
 
   let watchlisted = useWatchlistMarker(watchlist, movie);
@@ -64,7 +66,7 @@ function Slide({ movie, type, index, currentSlide, slider = true }) {
             border={false}
             borderRadius="9px"
             color="#fff"
-            onClick={() => handleVideoPlayer(movie)}
+            onClick={() => handleVideoPlayer(movie, status)}
           >
             Watch Trailer
           </Buttons>
